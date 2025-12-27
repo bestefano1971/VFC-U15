@@ -12,7 +12,7 @@ function logDebug(message, data = null) {
         msg += '\n' + JSON.stringify(data, null, 2);
     }
     console.log(message, data);
-    debugOutput.textContent = msg + '\n' + '-'.repeat(40) + '\n' + debugOutput.textContent;
+    if (debugOutput) debugOutput.textContent = msg + '\n' + '-'.repeat(40) + '\n' + debugOutput.textContent;
 }
 
 // --- CONSTANTS ---
@@ -35,8 +35,6 @@ function resetState() {
     APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: [] };
     TOTAL_MINUTES_PROCESSED = 0;
 }
-
-// --- CORE PARSING ---
 
 // --- CORE PARSING ---
 
@@ -492,58 +490,85 @@ function updateUI() {
     if (calTable && typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.calendario) {
         calTable.innerHTML = '';
         PRELOADED_DATABASE.calendario.forEach(row => {
-            // Salta righe vuote o che contengono l'intestazione del campionato
+            // Salta righe vuote o che contengono l'intestazione del campionato fissa
             const rowText = row.map(c => typeof c === 'object' && c.text ? c.text : String(c || '')).join(' ').toUpperCase();
             if (rowText.includes("CAMPIONATO REGIONALE") || row.every(cell => !cell || cell === "")) return;
 
             const tr = document.createElement('tr');
 
-            row.forEach(cell => {
-                const td = document.createElement('td');
+            // Logica Intelligente:
+            // Se c'è una data cella col 1, è una partita (Data - Partita - Risultato).
+            // Altrimenti intestazione (Giornata X).
+            const hasData = row[1] && String(row[1]).trim().length > 0;
 
-                // Gestione hyperlink (oggetto con text e url)
-                if (typeof cell === 'object' && cell !== null && cell.url) {
-                    const link = document.createElement('a');
-                    link.href = cell.url;
-                    link.target = '_blank';
-                    link.className = 'highlight-link';
+            if (hasData) {
+                // RIGA PARTITA: Data (1), Partita (2), Risultato (3). Ignora NR(0) e Struttura(4).
+                const targetIndices = [1, 2, 3];
 
-                    // Rileva il tipo di file dall'URL o dal testo
-                    const urlLower = cell.url.toLowerCase();
-                    const textLower = cell.text.toLowerCase();
-
-                    let icon = '🎬';
-                    let label = cell.text;
-
-                    // Immagini
-                    if (urlLower.match(/\.(jpg|jpeg|png|gif|webp|bmp)/) || textLower.includes('mday')) {
-                        icon = '📸';
-                        link.classList.add('link-image');
-                    }
-                    // Video
-                    else if (urlLower.match(/\.(mp4|avi|mov|wmv|flv|webm|mkv)/) || textLower.includes('video') || textLower.includes('mvp')) {
-                        icon = '🎬';
-                        link.classList.add('link-video');
-                    }
-                    // Highlights (caso speciale)
-                    else if (textLower.includes('highlight')) {
-                        icon = '🎬';
-                        link.classList.add('link-video');
-                    }
-
-                    link.innerHTML = `${icon} ${label}`;
-                    td.appendChild(link);
-                } else {
-                    // Cella normale
+                targetIndices.forEach(idx => {
+                    const td = document.createElement('td');
+                    const cell = row[idx];
                     const cellStr = String(cell || '');
+
                     td.textContent = cellStr;
                     if (cellStr.toUpperCase().includes("VALLI")) {
                         td.classList.add('highlight-valli');
                     }
+                    if (idx === 1) td.style.whiteSpace = 'nowrap';
+                    tr.appendChild(td);
+                });
+
+                // Cerca LINK nelle colonne successive (dalla 4 in poi)
+                let linkFound = false;
+                for (let i = 4; i < row.length; i++) {
+                    const cell = row[i];
+                    if (typeof cell === 'object' && cell !== null && cell.url) {
+                        const td = document.createElement('td');
+                        const link = document.createElement('a');
+                        link.href = cell.url;
+                        link.target = '_blank';
+                        link.className = 'highlight-link';
+
+                        const urlLower = cell.url.toLowerCase();
+                        const textLower = cell.text.toLowerCase();
+                        let icon = '🎬';
+                        let label = cell.text;
+
+                        if (urlLower.match(/\.(jpg|jpeg|png|gif|webp|bmp)/) || textLower.includes('mday')) {
+                            icon = '📸';
+                            link.classList.add('link-image');
+                        } else if (urlLower.match(/\.(mp4|avi|mov|wmv|flv|webm|mkv)/) || textLower.includes('video') || textLower.includes('mvp') || textLower.includes('highlight')) {
+                            icon = '🎬';
+                            link.classList.add('link-video');
+                        }
+
+                        link.innerHTML = `${icon} ${label}`;
+                        td.appendChild(link);
+                        linkFound = true;
+                    }
                 }
 
+                // Cella vuota se nessun link (per allineamento)
+                if (!linkFound) {
+                    const td = document.createElement('td');
+                    tr.appendChild(td);
+                }
+
+            } else {
+                // RIGA INTESTAZIONE (Giornata X)
+                // Usiamo il contenuto della cella 0 (NR) o la prima trovata
+                const headerText = row.find(c => c && String(c).trim() !== '') || row[0];
+                const td = document.createElement('td');
+                td.colSpan = 4; // Colspan = 4 (Data, Partita, Ris, Link)
+                td.textContent = String(headerText).toUpperCase();
+                td.style.fontWeight = '800';
+                td.style.textAlign = 'center';
+                td.style.backgroundColor = 'var(--bg)';
+                td.style.padding = '0.75rem';
+                td.style.color = 'var(--primary)';
                 tr.appendChild(td);
-            });
+            }
+
             calTable.appendChild(tr);
         });
     }
@@ -934,7 +959,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.forceSync = forceSync;
 
 
-    // Tabs Logic...
+    // Tabs Logic
     const tabs = document.querySelectorAll('.tab-btn');
     const views = document.querySelectorAll('.view-content');
     tabs.forEach(tab => {
