@@ -759,6 +759,34 @@ td.highlight-valli {
 
     .styled-table {
         min-width: 600px;
-        /* Force overflow for horizontal scroll on very small screens */
     }
+}
+
+/* =========================================================================
+   CALENDARIO SMART STYLES
+   ========================================================================= */
+
+.cal-date {
+    white-space: nowrap;
+    width: 1%;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: center;
+}
+
+.cal-content {
+    /* Style for match and results cells */
+    font-weight: 500;
+}
+
+.cal-link {
+    text-align: center;
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* Evidenzia il risultato (ultimo content) */
+.cal-content:last-child {
+    font-weight: bold;
+    text-align: center;
 }
