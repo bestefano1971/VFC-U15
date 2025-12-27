@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futsal Analytics - Local Edition</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/styles.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SheetJS (XLSX) Library -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <!-- Preloaded Database -->
+    <script id="db-sync-script" src="./js/database.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div class="app-wrapper">
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <div class="logo-container">
+                    <img src="assets/logo.png" alt="Logo" class="logo-img">
+                </div>
+                <h1>Valli Futsal Chioggia Under 15</h1>
+            </div>
+        </header>
+
+
+        <!-- Dashboard Content -->
+        <main id="dashboard" class="dashboard hidden">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-target="home-view">Home</button>
+                <button class="tab-btn" data-target="roster-view">Rosa</button>
+                <button class="tab-btn" data-target="players-view">Statistiche</button>
+                <button class="tab-btn" data-target="quartets-view">Quartetti</button>
+                <button class="tab-btn" data-target="goalkeepers-view">Portieri</button>
+                <button class="tab-btn" data-target="charts-view">Grafici</button>
+                <button class="tab-btn" data-target="calendario-view">Calendario</button>
+                <button class="tab-btn" data-target="classifica-view">Classifica</button>
+                <button class="tab-btn" data-target="files-view">File Elaborati</button>
+                <button class="tab-btn" data-target="debug-view">Debug</button>
+            </div>
+
+            <!-- Home View -->
+            <div id="home-view" class="view-content active">
+                <div class="home-hero">
+                    <div class="hero-logo">
+                        <img src="assets/logo.png" alt="Valli Futsal" class="hero-logo-img">
+                    </div>
+                    <h2 class="hero-title">Valli Futsal Chioggia Under 15</h2>
+                    <p class="hero-subtitle">Campionato Regionale di Promozione - Stagione 2025/2026</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">⚽</div>
+                        <div class="stat-value" id="home-matches">0</div>
+                        <div class="stat-label">Partite Giocate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-value" id="home-time">0:00</div>
+                        <div class="stat-label">Tempo Analizzato</div>
+                    </div>
+                    <div class="stat-card stat-clickable" data-goto="roster-view">
+                        <div class="stat-icon">👤</div>
+                        <div class="stat-value" id="home-players">0</div>
+                        <div class="stat-label">Giocatori Attivi</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-value" id="home-top-scorer">-</div>
+                        <div class="stat-label">Capocannoniere</div>
+                    </div>
+                </div>
+
+                <div class="quick-links">
+                    <h3>Accesso Rapido</h3>
+                    <div class="links-grid">
+                        <button class="quick-link-btn" data-goto="players-view">
+                            <span class="link-icon">📊</span>
+                            <span class="link-text">Statistiche Giocatori</span>
+                        </button>
+                        <button class="quick-link-btn" data-goto="calendario-view">
+                            <span class="link-icon">📅</span>
+                            <span class="link-text">Calendario</span>
+                        </button>
+                        <button class="quick-link-btn" data-goto="classifica-view">
+                            <span class="link-icon">🏅</span>
+                            <span class="link-text">Classifica</span>
+                        </button>
+                        <button class="quick-link-btn" data-goto="charts-view">
+                            <span class="link-icon">📈</span>
+                            <span class="link-text">Grafici</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roster View -->
+            <div id="roster-view" class="view-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Rosa Squadra - Giocatori Attivi</h2>
+                    </div>
+                    <div class="roster-grid" id="roster-grid">
+                        <!-- Le card dei giocatori verranno generate dinamicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Players View -->
+            <div id="players-view" class="view-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Performance Giocatori</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="styled-table" id="players-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Giocatore</th>
+                                    <th>Min</th>
+                                    <th>GF</th>
+                                    <th>GS</th>
+                                    <th>Tiri</th>
+                                    <th>PR</th>
+                                    <th>PP</th>
+                                    <th>FF</th>
+                                    <th>FS</th>
+                                    <th>IP %</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goalkeepers View -->
+            <div id="goalkeepers-view" class="view-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Statistiche Portieri</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="styled-table" id="goalkeepers-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Minuti</th>
+                                    <th>GS</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">GS SX</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">GS CT</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">GS DX</th>
+                                    <th>Parate</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">P SX</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">P CT</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">P DX</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quartets View -->
+            <div id="quartets-view" class="view-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Performance Quartetti</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="styled-table" id="quartets-table">
+                            <thead>
+                                <tr>
+                                    <th>Membri</th>
+                                    <th>GF</th>
+                                    <th>GS</th>
+                                    <th>TF</th>
+                                    <th>TS</th>
+                                    <th>PR</th>
+                                    <th>PP</th>
+                                    <th>Freq</th>
+                                    <th>IP %</th>
+                                    <th>Min</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Charts View -->
+            <div id="charts-view" class="view-content">
+                <div class="charts-container">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Rendimento giocatori di movimento</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="playersGoalsChart"></canvas></div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Rendimento quartetti</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="quartetsPerformanceChart"></canvas></div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Rendimento portieri</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="goalkeepersChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendario View -->
+            <div id="calendario-view" class="view-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>CAMPIONATO REGIONALE DI PROMOZIONE UNDER 15 - CALCIO A 5</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="styled-table" id="calendario-table">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classifica View -->
+            <div id="classifica-view" class="view-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>CLASSIFICA - CAMPIONATO REGIONALE DI PROMOZIONE UNDER 15 - CALCIO A 5</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="styled-table" id="classifica-table">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Files View -->
+            <div id="files-view" class="view-content">
+                <div class="card">
+                    <div class="card-header"
+                        style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>Elenco File Excel Elaborati</h2>
+                        <div class="sync-controls">
+                            <span class="stat-item" style="margin-right: 20px; color: #94a3b8; font-size: 0.9rem;">
+                                Tempo Totale: <strong id="total-match-time" style="color: #6366f1;">0:00</strong>
+                            </span>
+                            <button class="btn primary" onclick="forceSync()"
+                                style="padding: 10px 20px; font-size: 0.9rem;">
+                                🔄 Sincronizza ora
+                            </button>
+                            <div id="file-list" class="file-list"
+                                style="display: inline-block; margin-left: 15px; font-size: 0.8rem;"></div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="styled-table" id="files-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nome File</th>
+                                    <th>Stato</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Debug View -->
+            <div id="debug-view" class="view-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Console di Debug</h2>
+                    </div>
+                    <div class="card-body" style="padding: 1.5rem;">
+                        <pre id="debug-output"
+                            style="background: #000; color: #0f0; padding: 1.5rem; border-radius: 0.5rem; font-family: monospace; font-size: 0.85rem; max-height: 600px; overflow-y: auto; white-space: pre-wrap;">In attesa di dati...</pre>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Main Logic Script (No Module) -->
+    <script src="./js/script.js"></script>
+
+</body>
+
+</html>
