@@ -577,6 +577,10 @@ td.highlight-valli {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+.player-role-badge.role-field {
+    background: var(--primary);
+}
+
 .player-placeholder {
     font-size: 6rem;
     opacity: 0.3;
