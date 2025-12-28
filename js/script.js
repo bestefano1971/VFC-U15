@@ -22,6 +22,8 @@ const MIN_PER_DAY = 24 * 60;
 
 // --- STATE ---
 let PLAYER_NAMES = {};
+let PLAYER_ROLES = {};
+let PLAYER_BIO = {};
 let TOTAL_MINUTES_PROCESSED = 0;
 let APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: [] };
 
@@ -163,13 +165,28 @@ function updateUI() {
                     <img src="assets/players/${p.id}.png" class="player-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
                     <div class="player-placeholder" style="display:none;font-size:4rem;">👤</div>
                     <div class="player-number-badge">${p.id}</div>
-                    ${isGk ? '<div class="player-role-badge">PORTIERE</div>' : ''}
+                    ${isGk ? '<div class="player-role-badge">PORTIERE</div>' : (PLAYER_ROLES[p.id] ? `<div class="player-role-badge role-field">${PLAYER_ROLES[p.id]}</div>` : '')}
                 </div>
                 <div class="player-info">
                     <div class="player-name">${fullName}</div>
-                    <div class="player-stats-mini">
-                        <div class="stat-mini"><div class="stat-mini-label">MIN</div><div class="stat-mini-value">${Math.floor(p.minutes || 0)}</div></div>
-                        <div class="stat-mini"><div class="stat-mini-label">${isGk ? 'GS' : 'GOAL'}</div><div class="stat-mini-value">${isGk ? (p.gs || 0) : (p.goals || 0)}</div></div>
+                    <div class="player-stats-mini" style="grid-template-columns: repeat(2, 1fr);">
+                        <!-- Bio Stats -->
+                        <div class="stat-mini">
+                            <div class="stat-mini-label">ANNO</div>
+                            <div class="stat-mini-value" style="font-size: 1rem;">${(PLAYER_BIO[p.id] && PLAYER_BIO[p.id].year) || '-'}</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-mini-label">PIEDE</div>
+                            <div class="stat-mini-value" style="font-size: 1rem;">${(PLAYER_BIO[p.id] && PLAYER_BIO[p.id].foot) || '-'}</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-mini-label">ILLINOIS</div>
+                            <div class="stat-mini-value" style="font-size: 1rem;">${(PLAYER_BIO[p.id] && PLAYER_BIO[p.id].illinois) || '-'}</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-mini-label">BMI</div>
+                            <div class="stat-mini-value" style="font-size: 1rem;">${(PLAYER_BIO[p.id] && PLAYER_BIO[p.id].bmi) || '-'}</div>
+                        </div>
                     </div>
                 </div>`;
             rosterGrid.appendChild(card);
@@ -212,17 +229,34 @@ function updateUI() {
                     tr.appendChild(td);
                 }
 
-                let linkFound = false;
+                let linkCells = [];
                 row.forEach(cell => {
                     if (typeof cell === 'object' && cell.url) {
+                        linkCells.push(cell);
+                    }
+                });
+
+                if (linkCells.length > 0) {
+                    // Sorting Order: MDAY -> MVP -> HIGHLIGHTS
+                    const getScore = (text) => {
+                        const t = text.toUpperCase();
+                        if (t.includes('MDAY')) return 1;
+                        if (t.includes('MVP')) return 2;
+                        if (t.includes('HIGH') || t.includes('HIGHT')) return 3;
+                        return 4; // Other
+                    };
+
+                    linkCells.sort((a, b) => getScore(a.text) - getScore(b.text));
+
+                    linkCells.forEach(cell => {
                         const td = document.createElement('td'); td.className = 'cal-link';
                         const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
                         td.innerHTML = `<a href="${cell.url}" target="_blank" class="highlight-link">${icon} ${cell.text}</a>`;
                         tr.appendChild(td);
-                        linkFound = true;
-                    }
-                });
-                if (!linkFound) tr.appendChild(document.createElement('td'));
+                    });
+                } else {
+                    tr.appendChild(document.createElement('td'));
+                }
             }
             calTable.appendChild(tr);
         });
@@ -249,6 +283,109 @@ function updateUI() {
     if (activePlayers.length > 0 && typeof Chart !== 'undefined') {
         try { renderCharts(activePlayers); } catch (e) { console.error("Chart Error", e); }
     }
+
+    // Render Stats Tables
+    renderPlayersTable(activePlayers);
+    renderGoalkeepersTable(activeGoalkeepers);
+    renderQuartetsTable();
+    renderFilesTable();
+}
+
+function renderPlayersTable(players) {
+    const tbody = document.querySelector('#players-table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    // Sort by Goals descending
+    players.sort((a, b) => (b.goals || 0) - (a.goals || 0));
+
+    players.forEach(p => {
+        const tr = document.createElement('tr');
+        const name = PLAYER_NAMES[p.id] || `Player ${p.id}`;
+        const totalShots = (p.shotsOn || 0) + (p.shotsOff || 0);
+
+        tr.innerHTML = `
+            <td>${p.id}</td>
+            <td>${name}</td>
+            <td>${formatTime(p.minutes)}</td>
+            <td class="text-success">${p.goals || 0}</td>
+            <td class="text-danger">${p.gs || 0}</td>
+            <td>${totalShots} <small class="text-muted">(${p.shotsOn || 0})</small></td>
+            <td>${p.pr || 0}</td>
+            <td>${p.pp || 0}</td>
+            <td>${p.ff || 0}</td>
+            <td>${p.fs || 0}</td>
+            <td>${p.plusMinus || 0}</td> 
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderGoalkeepersTable(gks) {
+    const tbody = document.querySelector('#goalkeepers-table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    gks.sort((a, b) => b.minutes - a.minutes);
+
+    gks.forEach(g => {
+        const tr = document.createElement('tr');
+        const name = PLAYER_NAMES[g.id] || `GK ${g.id}`;
+        tr.innerHTML = `
+            <td>${name}</td>
+            <td>${formatTime(g.minutes)}</td>
+            <td class="text-danger" style="font-weight:bold;">${g.gs || 0}</td>
+            <td class="text-muted">${g.goalsSX || 0}</td>
+            <td class="text-muted">${g.goalsCT || 0}</td>
+            <td class="text-muted">${g.goalsDX || 0}</td>
+            <td class="text-success" style="font-weight:bold;">${g.saves || 0}</td>
+            <td class="text-muted">${g.savesSX || 0}</td>
+            <td class="text-muted">${g.savesCT || 0}</td>
+            <td class="text-muted">${g.savesDX || 0}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderQuartetsTable() {
+    const tbody = document.querySelector('#quartets-table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const quartets = Object.values(APP_STATE.quartets).sort((a, b) => b.minutes - a.minutes);
+
+    quartets.forEach(q => {
+        const tr = document.createElement('tr');
+        // Format names: just surnames if possible, or simple join
+        const names = q.members.map(id => (PLAYER_NAMES[id] || id).split(' ')[0]).join(', ');
+        const totalShots = (q.shotsOn || 0) + (q.shotsOff || 0);
+        const plusMinus = (q.gf || 0) - (q.gs || 0);
+
+        tr.innerHTML = `
+            <td style="font-size: 0.85rem;">${names}</td>
+            <td class="text-success">${q.gf || 0}</td>
+            <td class="text-danger">${q.gs || 0}</td>
+            <td>${totalShots}</td>
+            <td>${q.shotsAgainst || 0}</td>
+            <td>${q.pr || 0}</td>
+            <td>${q.pp || 0}</td>
+            <td>${q.freq || 0}</td>
+            <td style="color: ${plusMinus > 0 ? 'var(--success)' : (plusMinus < 0 ? 'var(--danger)' : 'inherit')}">${plusMinus > 0 ? '+' + plusMinus : plusMinus}</td>
+            <td>${formatTime(q.minutes)}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderFilesTable() {
+    const tbody = document.querySelector('#files-table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    APP_STATE.processedFiles.forEach((f, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${idx + 1}</td><td>${f}</td><td><span class="badge text-success">Caricato</span></td>`;
+        tbody.appendChild(tr);
+    });
 }
 
 let chartInstances = {};
@@ -348,6 +485,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof PRELOADED_DATABASE === 'undefined') return;
         resetState();
         if (PRELOADED_DATABASE.players_list) PLAYER_NAMES = PRELOADED_DATABASE.players_list;
+        if (PRELOADED_DATABASE.players_roles) PLAYER_ROLES = PRELOADED_DATABASE.players_roles;
+        if (PRELOADED_DATABASE.players_bio) PLAYER_BIO = PRELOADED_DATABASE.players_bio;
         if (PRELOADED_DATABASE.matches) {
             PRELOADED_DATABASE.matches.forEach(m => {
                 if (m.name) APP_STATE.processedFiles.push(m.name);
