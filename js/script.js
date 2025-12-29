@@ -262,11 +262,13 @@ function updateUI() {
                     tr.appendChild(td);
                 } else {
                     let dateIdx = row.findIndex(c => { const s = typeof c === 'object' ? (c ? c.text : '') : String(c || ''); return s.match(/\d{1,2}[\/\-]\d{1,2}/); });
-                    if (dateIdx === -1 && row[5]) dateIdx = 5;
-                    if (dateIdx === -1) dateIdx = 2;
+                    const isHeader = row[0] === 'DATA';
+                    if (dateIdx === -1) dateIdx = isHeader ? 0 : 0;
 
-                    const tdDate = document.createElement('td'); tdDate.className = 'cal-date';
+                    const tdDate = document.createElement('td');
+                    tdDate.className = 'cal-date';
                     if (dateIdx !== -1 && row[dateIdx]) tdDate.textContent = typeof row[dateIdx] === 'object' ? (row[dateIdx] ? row[dateIdx].text : '') : String(row[dateIdx]);
+                    if (isHeader) tdDate.style.fontWeight = 'bold';
                     tr.appendChild(tdDate);
 
                     for (let i = 0; i < row.length; i++) {
@@ -277,6 +279,7 @@ function updateUI() {
                         const s = String(cell || '');
                         td.textContent = s;
                         if (s.toUpperCase().includes('VALLI')) td.classList.add('highlight-valli');
+                        if (isHeader) td.style.fontWeight = 'bold';
                         tr.appendChild(td);
                     }
 
@@ -297,7 +300,9 @@ function updateUI() {
                             td.innerHTML = `<a href="${cell.url}" target="_blank" class="highlight-link">${icon} ${cell.text}</a>`;
                             tr.appendChild(td);
                         });
-                    } else { tr.appendChild(document.createElement('td')); }
+                    } else if (!isHeader) {
+                        tr.appendChild(document.createElement('td'));
+                    }
                 }
                 calTable.appendChild(tr);
             });
