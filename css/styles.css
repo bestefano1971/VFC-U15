@@ -41,7 +41,39 @@ header {
 .brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1.5rem;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.brand-text h1 {
+    font-size: 2.4rem;
+    line-height: 1.1;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.header-subtitle {
+    color: var(--primary);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.header-season {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .logo-container {
@@ -161,6 +193,8 @@ header {
     padding: 0.5rem 1rem;
     cursor: pointer;
     transition: color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .tab-btn.active {
@@ -180,6 +214,21 @@ header {
 .card-header {
     padding: 1.25rem 1.5rem;
     border-bottom: 1px solid var(--border);
+}
+
+.card-header h2 {
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.card-header h3 {
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
 }
 
 .table-responsive {
@@ -279,6 +328,8 @@ header {
     transition: all 0.2s;
     font-size: 0.9rem;
     white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .sub-tab-btn:hover {
@@ -374,12 +425,22 @@ td.highlight-valli {
 
 /* --- HOME PAGE --- */
 
+.home-main-layout {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    align-items: stretch;
+}
+
 .home-hero {
+    flex: 0 0 65%;
     text-align: center;
-    padding: 3rem 1rem;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(129, 140, 248, 0.05));
+    padding: 0;
+    background: transparent;
     border-radius: 1rem;
-    margin-bottom: 2rem;
+    overflow: hidden;
+    min-width: 300px;
+    min-height: 200px;
 }
 
 .hero-logo {
@@ -387,38 +448,78 @@ td.highlight-valli {
 }
 
 .hero-logo-img {
-    width: 120px;
-    height: 120px;
+    width: 180px;
+    height: 180px;
     object-fit: contain;
-    filter: drop-shadow(0 8px 16px rgba(99, 102, 241, 0.3));
+    filter: drop-shadow(0 12px 24px rgba(99, 102, 241, 0.4));
+    transition: transform 0.3s ease;
+}
+
+.hero-logo-img:hover {
+    transform: scale(1.05);
 }
 
 .hero-title {
-    font-size: 2rem;
+    font-size: 2.8rem;
     margin-bottom: 0.5rem;
     background: linear-gradient(135deg, var(--primary), #818cf8);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.hero-championship {
+    color: var(--text);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    text-align: center;
 }
 
 .hero-subtitle {
     color: var(--text-muted);
     font-size: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.hero-team-photo-container {
+    width: 100%;
+    height: auto;
+    min-height: 250px;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-team-photo {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    display: block;
+    object-fit: cover;
+    border-radius: 1rem;
 }
 
 .stats-grid {
+    flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
 }
 
 .stat-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 1rem;
-    padding: 2rem;
+    padding: 1rem;
     text-align: center;
     transition: all 0.3s;
 }
@@ -430,20 +531,20 @@ td.highlight-valli {
 }
 
 .stat-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .stat-value {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--primary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
 }
 
 .stat-label {
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -713,6 +814,16 @@ td.highlight-valli {
 
     .hero-title {
         font-size: 1.5rem;
+    }
+
+    .home-main-layout {
+        flex-direction: column;
+    }
+
+    .home-hero {
+        flex: none;
+        width: 100%;
+        margin-bottom: 1.5rem;
     }
 
     .stats-grid {
