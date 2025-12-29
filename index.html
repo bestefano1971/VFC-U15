@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futsal Analytics - Local Edition</title>
+    <title>Valli Futsal Chioggia Under 15 - Campionato Regionale - Stagione 2025/2026</title>
     <!-- CSS -->
     <link rel="stylesheet" href="./css/styles.css">
     <!-- Google Fonts -->
@@ -23,16 +23,20 @@
         <!-- Header -->
         <header>
             <div class="brand">
-                <div class="logo-container">
+                <div class="logo-container" style="width: 150px; height: 150px; border-radius: 20px;">
                     <img src="assets/logo.png" alt="Logo" class="logo-img">
                 </div>
-                <h1>Valli Futsal Chioggia Under 15</h1>
+                <div class="brand-text">
+                    <h1>Valli Futsal Chioggia Under 15</h1>
+                    <p class="header-subtitle">Camp. Reg. di Promozione Under 15</p>
+                    <p class="header-season">Stagione 2025/2026</p>
+                </div>
             </div>
         </header>
 
 
         <!-- Dashboard Content -->
-        <main id="dashboard" class="dashboard hidden">
+        <main id="dashboard" class="dashboard">
             <!-- Tabs -->
             <div class="tabs">
                 <button class="tab-btn active" data-target="home-view">Home</button>
@@ -46,34 +50,47 @@
 
             <!-- Home View -->
             <div id="home-view" class="view-content active">
-                <div class="home-hero">
-                    <div class="hero-logo">
-                        <img src="assets/logo.png" alt="Valli Futsal" class="hero-logo-img">
-                    </div>
-                    <h2 class="hero-title">Valli Futsal Chioggia Under 15</h2>
-                    <p class="hero-subtitle">Campionato Regionale di Promozione - Stagione 2025/2026</p>
-                </div>
 
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">⚽</div>
-                        <div class="stat-value" id="home-matches">0</div>
-                        <div class="stat-label">Partite Giocate</div>
+
+                <div class="home-main-layout">
+                    <div class="home-hero">
+                        <div class="hero-team-photo-container">
+                            <img src="assets/Foto Squadra.jpeg" alt="Foto di Squadra" class="hero-team-photo">
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">⏱️</div>
-                        <div class="stat-value" id="home-time">0:00</div>
-                        <div class="stat-label">Tempo Analizzato</div>
-                    </div>
-                    <div class="stat-card stat-clickable" data-goto="roster-view">
-                        <div class="stat-icon">👤</div>
-                        <div class="stat-value" id="home-players">0</div>
-                        <div class="stat-label">Rosa Giocatori</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">🏆</div>
-                        <div class="stat-value" id="home-top-scorer">-</div>
-                        <div class="stat-label">Capocannoniere</div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">⚽</div>
+                            <div class="stat-value" id="home-matches">0</div>
+                            <div class="stat-label">Partite Giocate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="color: var(--success);">📈</div>
+                            <div class="stat-value" id="home-wins">0</div>
+                            <div class="stat-label">Vinte</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="color: var(--text-muted);">🤝</div>
+                            <div class="stat-value" id="home-draws">0</div>
+                            <div class="stat-label">Pareggiate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="color: var(--danger);">📉</div>
+                            <div class="stat-value" id="home-losses">0</div>
+                            <div class="stat-label">Perse</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-value" id="home-gf">0</div>
+                            <div class="stat-label">Goal Fatti</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🥅</div>
+                            <div class="stat-value" id="home-gs">0</div>
+                            <div class="stat-label">Goal Subiti</div>
+                        </div>
+
                     </div>
                 </div>
 
