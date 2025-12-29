@@ -463,11 +463,25 @@ document.addEventListener('DOMContentLoaded', () => {
     logDebug("App Initialized");
 
     // Tabs
+    const protectedViews = ['files-view', 'debug-view'];
+    const STAFF_PASSWORD = 'valli2025';
+
     document.querySelectorAll('.tab-btn').forEach(t => t.addEventListener('click', () => {
+        const targetId = t.dataset.target;
+
+        // Password Protection for specific views
+        if (protectedViews.includes(targetId)) {
+            const pass = prompt("Area Riservata allo Staff. Inserisci la password:");
+            if (pass !== STAFF_PASSWORD) {
+                alert("Password errata. Accesso negato.");
+                return;
+            }
+        }
+
         document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
         document.querySelectorAll('.view-content').forEach(x => x.classList.remove('active'));
         t.classList.add('active');
-        const tg = document.getElementById(t.dataset.target);
+        const tg = document.getElementById(targetId);
         if (tg) tg.classList.add('active');
     }));
 
