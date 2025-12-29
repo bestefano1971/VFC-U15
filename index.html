@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="./css/styles.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- SheetJS (XLSX) Library -->
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <!-- Preloaded Database -->
     <script id="db-sync-script" src="./js/database.js"></script>
     <!-- Chart.js -->
@@ -29,7 +27,9 @@
                 <div class="brand-text">
                     <h1>Valli Futsal Chioggia Under 15</h1>
                     <p class="header-subtitle">Camp. Reg. di Promozione Under 15</p>
-                    <p class="header-season">Stagione 2025/2026</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <p class="header-season">Stagione 2025/2026</p>
+                    </div>
                 </div>
             </div>
         </header>
@@ -53,7 +53,7 @@
 
 
                 <div class="home-main-layout">
-                    <div class="home-hero" style="flex: 0 0 75% !important; min-height: 500px !important;">
+                    <div class="home-hero">
                         <div class="hero-team-photo-container" style="min-height: 500px !important;">
                             <img src="assets/Foto Squadra.jpeg" alt="Foto di Squadra" class="hero-team-photo"
                                 style="max-height: 800px !important; object-fit: cover !important;">
@@ -96,19 +96,19 @@
                 </div>
 
                 <div class="quick-links">
-                    <h3>Accesso Rapido</h3>
+                    <h3>Accesso Rapido Statistiche</h3>
                     <div class="links-grid">
                         <button class="quick-link-btn" data-goto="players-view">
                             <span class="link-icon">📊</span>
                             <span class="link-text">Giocatori</span>
                         </button>
-                        <button class="quick-link-btn" data-goto="calendario-view">
-                            <span class="link-icon">📅</span>
-                            <span class="link-text">Calendario</span>
+                        <button class="quick-link-btn" data-goto="quartets-view">
+                            <span class="link-icon">👥</span>
+                            <span class="link-text">Quartetti</span>
                         </button>
-                        <button class="quick-link-btn" data-goto="classifica-view">
-                            <span class="link-icon">🏅</span>
-                            <span class="link-text">Classifica</span>
+                        <button class="quick-link-btn" data-goto="goalkeepers-view">
+                            <span class="link-icon">🧤</span>
+                            <span class="link-text">Portieri</span>
                         </button>
                         <button class="quick-link-btn" data-goto="charts-view">
                             <span class="link-icon">📈</span>
