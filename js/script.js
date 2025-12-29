@@ -2,13 +2,16 @@
 // Includes: Smart Calendar, Full Charts, Navigation Logic (Fixed)
 
 // --- Utility: Log & Debug ---
-const debugOutput = document.getElementById('debug-output');
 function logDebug(message, data = null) {
     const timestamp = new Date().toLocaleTimeString();
     let msg = `[${timestamp}] ${message}`;
     if (data) msg += '\n' + JSON.stringify(data, null, 2);
     console.log(message, data);
-    if (debugOutput) debugOutput.textContent = msg + '\n' + '-'.repeat(40) + '\n' + debugOutput.textContent;
+    const out = document.getElementById('debug-output');
+    if (out) {
+        if (out.textContent === "In attesa di dati..." || out.textContent === "Inizializzazione...") out.textContent = "";
+        out.textContent = msg + '\n' + '-'.repeat(40) + '\n' + out.textContent;
+    }
 }
 
 // Global Error Handler
@@ -29,12 +32,21 @@ let APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: []
 function resetState() {
     APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: [], totalGF: 0, totalGS: 0 };
     TOTAL_MINUTES_PROCESSED = 0;
+    logDebug("State Reset Success");
 }
 
 // --- CORE PARSING ---
 function processTimelineSheet(rows, sheetName) {
     if (!rows || rows.length < 2) return;
-    const headers = rows[0].map(h => (String(h) || "").toUpperCase().trim());
+
+    // Find the header row (the one containing 'TIMING' or 'PORTIERI')
+    let headerIdx = rows.findIndex(r => r && r.some(c => String(c || "").toUpperCase().includes("TIMING")));
+    if (headerIdx === -1) {
+        logDebug(`WARNING: Headers not found in sheet ${sheetName}`);
+        return;
+    }
+
+    const headers = rows[headerIdx].map(h => (String(h) || "").toUpperCase().trim());
     const findIdx = (names) => headers.findIndex(h => names.some(n => h.includes(n)));
     const IDX = {
         TIMING: findIdx(["TIMING"]),
@@ -53,7 +65,7 @@ function processTimelineSheet(rows, sheetName) {
 
     let lastQuartetKey = null;
 
-    for (let i = 1; i < rows.length; i++) {
+    for (let i = headerIdx + 1; i < rows.length; i++) {
         const row = rows[i];
         const nextRow = rows[i + 1];
         let duration = 0;
@@ -129,62 +141,87 @@ function processTimelineSheet(rows, sheetName) {
 }
 
 function addStat(store, id, prop, val, metadata = {}) {
-    if (!store[id]) store[id] = { id: id, ...metadata };
-    else Object.assign(store[id], metadata);
-    if (!store[id][prop]) store[id][prop] = 0;
-    store[id][prop] += val;
+    const cleanId = String(id).trim();
+    if (!store[cleanId]) store[cleanId] = { id: cleanId, ...metadata };
+    else if (metadata.members) store[cleanId].members = metadata.members;
+    if (!store[cleanId][prop]) store[cleanId][prop] = 0;
+    store[cleanId][prop] += val;
 }
-function hasValue(val) { return val !== undefined && val !== null && val !== ""; }
+function hasValue(val) { return val !== undefined && val !== null && String(val).trim() !== ""; }
 function formatTime(m) {
-    if (!m) return "0:00";
+    if (!m || isNaN(m)) return "0:00";
     const mm = Math.floor(m), ss = Math.round((m - mm) * 60);
     return `${mm}:${ss.toString().padStart(2, '0')}`;
 }
 
 // --- UI LOGIC ---
 function updateUI() {
-    const totalTimeEl = document.getElementById('total-match-time');
-    if (totalTimeEl) totalTimeEl.textContent = formatTime(TOTAL_MINUTES_PROCESSED);
+    logDebug("Updating UI...");
+    let activePlayers = [];
+    let activeGoalkeepers = [];
 
-    const activePlayers = Object.values(APP_STATE.players).filter(p => !APP_STATE.goalkeepers[p.id] && PLAYER_NAMES[p.id]);
-    const activeGoalkeepers = Object.values(APP_STATE.goalkeepers).filter(g => PLAYER_NAMES[g.id]);
+    try {
+        const totalTimeEl = document.getElementById('total-match-time');
+        if (totalTimeEl) totalTimeEl.textContent = formatTime(TOTAL_MINUTES_PROCESSED);
 
-    // Stats from Classifica
-    if (typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.classifica) {
-        const valliRow = PRELOADED_DATABASE.classifica.find(row => row && row[0] && String(row[0]).toUpperCase().includes("VALLI"));
-        if (valliRow) {
-            const matchesEl = document.getElementById('home-matches');
-            const winsEl = document.getElementById('home-wins');
-            const drawsEl = document.getElementById('home-draws');
-            const lossesEl = document.getElementById('home-losses');
-            const gfEl = document.getElementById('home-gf');
-            const gsEl = document.getElementById('home-gs');
-
-            if (winsEl) winsEl.textContent = valliRow[3] || 0;
-            if (drawsEl) drawsEl.textContent = valliRow[4] || 0;
-            if (lossesEl) lossesEl.textContent = valliRow[5] || 0;
-
-            // Goal Calculation Logic (Sync Files + Classifica)
-            const finalGF = Math.max(APP_STATE.totalGF, parseInt(valliRow[6]) || 0);
-            const finalGS = Math.max(APP_STATE.totalGS, parseInt(valliRow[7]) || 0);
-            const finalPG = Math.max(APP_STATE.processedFiles.length, parseInt(valliRow[2]) || 0);
-
-            if (matchesEl) matchesEl.textContent = finalPG;
-            if (gfEl) gfEl.textContent = finalGF;
-            if (gsEl) gsEl.textContent = finalGS;
+        // Safeguard PLAYER_NAMES
+        if (!PLAYER_NAMES || Object.keys(PLAYER_NAMES).length === 0) {
+            if (typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.players_list) {
+                PLAYER_NAMES = PRELOADED_DATABASE.players_list;
+            }
         }
-    }
 
-    // Roster
-    const rosterGrid = document.getElementById('roster-grid');
-    if (rosterGrid) {
-        rosterGrid.innerHTML = '';
-        [...activeGoalkeepers, ...activePlayers].sort((a, b) => parseInt(a.id) - parseInt(b.id)).forEach(p => {
-            const fullName = PLAYER_NAMES[p.id];
-            const isGk = !!APP_STATE.goalkeepers[p.id];
-            const card = document.createElement('div');
-            card.className = 'player-card';
-            card.innerHTML = `
+        activePlayers = Object.values(APP_STATE.players || {}).filter(p => p && (!APP_STATE.goalkeepers || !APP_STATE.goalkeepers[p.id]) && PLAYER_NAMES[p.id]);
+        activeGoalkeepers = Object.values(APP_STATE.goalkeepers || {}).filter(g => g && PLAYER_NAMES[g.id]);
+
+        // Official Stats from Classifica
+        let classGF = 0, classGS = 0, classPG = 0;
+        if (typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.classifica) {
+            const valliRow = PRELOADED_DATABASE.classifica.find(r => {
+                if (!r || !r[0]) return false;
+                const name = String(r[0]).toUpperCase();
+                return name.includes("VALLI") || name.includes("CHIOGGIA") || name.includes("V.F.C");
+            });
+
+            if (valliRow) {
+                logDebug("MATCH FOUND in classifica:", valliRow);
+                classPG = parseInt(valliRow[2]) || 0;
+                classGF = parseInt(valliRow[6]) || 0;
+                classGS = parseInt(valliRow[7]) || 0;
+
+                const winsEl = document.getElementById('home-wins');
+                const drawsEl = document.getElementById('home-draws');
+                const lossesEl = document.getElementById('home-losses');
+                if (winsEl) winsEl.textContent = valliRow[3] !== undefined ? valliRow[3] : 0;
+                if (drawsEl) drawsEl.textContent = valliRow[4] !== undefined ? valliRow[4] : 0;
+                if (lossesEl) lossesEl.textContent = valliRow[5] !== undefined ? valliRow[5] : 0;
+            }
+        }
+
+        // Goal Calculation Logic (Max of Sync Files and Classifica)
+        const finalGF = Math.max(APP_STATE.totalGF || 0, classGF);
+        const finalGS = Math.max(APP_STATE.totalGS || 0, classGS);
+        const finalPG = Math.max((APP_STATE.processedFiles || []).length, classPG);
+
+        const matchesEl = document.getElementById('home-matches');
+        const gfEl = document.getElementById('home-gf');
+        const gsEl = document.getElementById('home-gs');
+
+        if (matchesEl) matchesEl.textContent = finalPG;
+        if (gfEl) gfEl.textContent = finalGF;
+        if (gsEl) gsEl.textContent = finalGS;
+
+        // Roster
+        const rosterGrid = document.getElementById('roster-grid');
+        if (rosterGrid) {
+            rosterGrid.innerHTML = '';
+            [...activeGoalkeepers, ...activePlayers].sort((a, b) => parseInt(a.id) - parseInt(b.id)).forEach(p => {
+                if (!p || !p.id) return;
+                const fullName = PLAYER_NAMES[p.id] || `ID: ${p.id}`;
+                const isGk = !!(APP_STATE.goalkeepers && APP_STATE.goalkeepers[p.id]);
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = `
                 <div class="player-photo-container">
                     <img src="assets/players/${p.id}.png" class="player-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
                     <div class="player-placeholder" style="display:none;font-size:4rem;">👤</div>
@@ -204,133 +241,109 @@ function updateUI() {
                         </div>
                     </div>
                 </div>`;
-            rosterGrid.appendChild(card);
-        });
-    }
+                rosterGrid.appendChild(card);
+            });
+        }
 
-    // Calendar Smart Logic
-    const calTable = document.querySelector('#calendario-table tbody');
-    if (calTable && typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.calendario) {
-        calTable.innerHTML = '';
-        PRELOADED_DATABASE.calendario.forEach(row => {
-            const rowText = row.map(c => typeof c === 'object' ? c.text : String(c || '')).join(' ').toUpperCase();
-            if (rowText.includes("CAMPIONATO REGIONALE") || row.every(c => !c)) return;
+        // Calendar Smart Logic
+        const calTable = document.querySelector('#calendario-table tbody');
+        if (calTable && typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.calendario) {
+            calTable.innerHTML = '';
+            PRELOADED_DATABASE.calendario.forEach(row => {
+                if (!row || row.length === 0) return;
+                const rowText = row.map(c => typeof c === 'object' ? (c ? c.text : '') : String(c || '')).join(' ').toUpperCase();
+                if (rowText.includes("CAMPIONATO REGIONALE") || row.every(c => !c)) return;
 
-            const tr = document.createElement('tr');
-            if (String(row[0] || '').length > 0 && (!row[1] || String(row[1]) === '')) {
-                // Header
-                const td = document.createElement('td');
-                td.textContent = (typeof row[0] === 'object' ? row[0].text : String(row[0])).toUpperCase();
-                td.colSpan = 10; td.style.fontWeight = '800'; td.style.textAlign = 'center'; td.style.background = 'var(--bg)';
-                tr.appendChild(td);
-            } else {
-                // Data Row
-                let dateIdx = row.findIndex(c => { const s = typeof c === 'object' ? c.text : String(c || ''); return s.match(/\d{1,2}[\/\-]\d{1,2}/); });
-                if (dateIdx === -1 && row[5]) dateIdx = 5;
-                else if (dateIdx === -1) dateIdx = 2;
-
-                const tdDate = document.createElement('td'); tdDate.className = 'cal-date';
-                if (dateIdx !== -1 && row[dateIdx]) tdDate.textContent = typeof row[dateIdx] === 'object' ? row[dateIdx].text : String(row[dateIdx]);
-                tr.appendChild(tdDate);
-
-                for (let i = 2; i < row.length; i++) {
-                    if (i === dateIdx) continue;
-                    const cell = row[i];
-                    if (typeof cell === 'object' && cell.url) continue;
-                    const td = document.createElement('td'); td.className = 'cal-content';
-                    const s = String(cell || '');
-                    td.textContent = s;
-                    if (s.toUpperCase().includes('VALLI')) td.classList.add('highlight-valli');
+                const tr = document.createElement('tr');
+                if (String(row[0] || '').length > 0 && (!row[1] || String(row[1]) === '')) {
+                    const td = document.createElement('td');
+                    td.textContent = (typeof row[0] === 'object' ? (row[0] ? row[0].text : '') : String(row[0])).toUpperCase();
+                    td.colSpan = 10; td.style.fontWeight = '800'; td.style.textAlign = 'center'; td.style.background = 'var(--bg)';
                     tr.appendChild(td);
-                }
-
-                let linkCells = [];
-                row.forEach(cell => {
-                    if (typeof cell === 'object' && cell.url) {
-                        linkCells.push(cell);
-                    }
-                });
-
-                if (linkCells.length > 0) {
-                    // Sorting Order: MDAY -> MVP -> HIGHLIGHTS
-                    const getScore = (text) => {
-                        const t = text.toUpperCase();
-                        if (t.includes('MDAY')) return 1;
-                        if (t.includes('MVP')) return 2;
-                        if (t.includes('HIGH') || t.includes('HIGHT')) return 3;
-                        return 4; // Other
-                    };
-
-                    linkCells.sort((a, b) => getScore(a.text) - getScore(b.text));
-
-                    linkCells.forEach(cell => {
-                        const td = document.createElement('td'); td.className = 'cal-link';
-                        const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
-                        td.innerHTML = `<a href="${cell.url}" target="_blank" class="highlight-link">${icon} ${cell.text}</a>`;
-                        tr.appendChild(td);
-                    });
                 } else {
-                    tr.appendChild(document.createElement('td'));
+                    let dateIdx = row.findIndex(c => { const s = typeof c === 'object' ? (c ? c.text : '') : String(c || ''); return s.match(/\d{1,2}[\/\-]\d{1,2}/); });
+                    if (dateIdx === -1 && row[5]) dateIdx = 5;
+                    if (dateIdx === -1) dateIdx = 2;
+
+                    const tdDate = document.createElement('td'); tdDate.className = 'cal-date';
+                    if (dateIdx !== -1 && row[dateIdx]) tdDate.textContent = typeof row[dateIdx] === 'object' ? (row[dateIdx] ? row[dateIdx].text : '') : String(row[dateIdx]);
+                    tr.appendChild(tdDate);
+
+                    for (let i = 0; i < row.length; i++) {
+                        if (i === dateIdx) continue;
+                        const cell = row[i];
+                        if (typeof cell === 'object' && cell && cell.url) continue;
+                        const td = document.createElement('td'); td.className = 'cal-content';
+                        const s = String(cell || '');
+                        td.textContent = s;
+                        if (s.toUpperCase().includes('VALLI')) td.classList.add('highlight-valli');
+                        tr.appendChild(td);
+                    }
+
+                    let linkCells = [];
+                    row.forEach(cell => { if (cell && typeof cell === 'object' && cell.url) linkCells.push(cell); });
+                    if (linkCells.length > 0) {
+                        const getScore = (text) => {
+                            const t = (text || "").toUpperCase();
+                            if (t.includes('MDAY')) return 1;
+                            if (t.includes('MVP')) return 2;
+                            if (t.includes('HIGH') || t.includes('HIGHT')) return 3;
+                            return 4;
+                        };
+                        linkCells.sort((a, b) => getScore(a.text) - getScore(b.text));
+                        linkCells.forEach(cell => {
+                            const td = document.createElement('td'); td.className = 'cal-link';
+                            const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
+                            td.innerHTML = `<a href="${cell.url}" target="_blank" class="highlight-link">${icon} ${cell.text}</a>`;
+                            tr.appendChild(td);
+                        });
+                    } else { tr.appendChild(document.createElement('td')); }
                 }
-            }
-            calTable.appendChild(tr);
-        });
+                calTable.appendChild(tr);
+            });
+        }
+
+        // Classifica
+        const claTable = document.querySelector('#classifica-table tbody');
+        if (claTable && typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.classifica) {
+            claTable.innerHTML = '';
+            PRELOADED_DATABASE.classifica.forEach(row => {
+                if (!row || row.every(c => !c)) return;
+                const tr = document.createElement('tr');
+                if (row.join(' ').toUpperCase().includes("VALLI")) tr.classList.add('highlight-valli');
+                row.forEach(c => { const td = document.createElement('td'); td.textContent = c; tr.appendChild(td); });
+                claTable.appendChild(tr);
+            });
+        }
+
+        // Render Charts
+        if (activePlayers.length > 0 && typeof Chart !== 'undefined') {
+            try { renderCharts(activePlayers); } catch (e) { console.error("Chart Error:", e); }
+        }
+
+        // Render Stats Tables
+        renderPlayersTable(activePlayers);
+        renderGoalkeepersTable(activeGoalkeepers);
+        renderQuartetsTable();
+        renderFilesTable();
+
+    } catch (err) {
+        logDebug("CRITICAL ERROR in updateUI: " + err.stack);
     }
-
-    // Classifica
-    const claTable = document.querySelector('#classifica-table tbody');
-    if (claTable && typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.classifica) {
-        claTable.innerHTML = '';
-        PRELOADED_DATABASE.classifica.forEach(row => {
-            if (row.every(c => !c)) return;
-            const tr = document.createElement('tr');
-            if (row.join(' ').toUpperCase().includes("VALLI")) tr.classList.add('highlight-valli');
-            row.forEach(c => { const td = document.createElement('td'); td.textContent = c; tr.appendChild(td); });
-            claTable.appendChild(tr);
-        });
-    }
-
-    // --- SHOW DASHBOARD ---
-    const db = document.getElementById('dashboard');
-    if (db) db.classList.remove('hidden');
-
-    // Render Charts
-    if (activePlayers.length > 0 && typeof Chart !== 'undefined') {
-        try { renderCharts(activePlayers); } catch (e) { console.error("Chart Error", e); }
-    }
-
-    // Render Stats Tables
-    renderPlayersTable(activePlayers);
-    renderGoalkeepersTable(activeGoalkeepers);
-    renderQuartetsTable();
-    renderFilesTable();
 }
 
 function renderPlayersTable(players) {
     const tbody = document.querySelector('#players-table tbody');
     if (!tbody) return;
     tbody.innerHTML = '';
-
-    // Sort by Goals descending
     players.sort((a, b) => (b.goals || 0) - (a.goals || 0));
-
     players.forEach(p => {
         const tr = document.createElement('tr');
         const name = PLAYER_NAMES[p.id] || `Player ${p.id}`;
         const totalShots = (p.shotsOn || 0) + (p.shotsOff || 0);
-
         tr.innerHTML = `
-            <td>${p.id}</td>
-            <td>${name}</td>
-            <td>${formatTime(p.minutes)}</td>
-            <td class="text-success">${p.goals || 0}</td>
-            <td class="text-danger">${p.gs || 0}</td>
-            <td>${totalShots} <small class="text-muted">(${p.shotsOn || 0})</small></td>
-            <td>${p.pr || 0}</td>
-            <td>${p.pp || 0}</td>
-            <td>${p.ff || 0}</td>
-            <td>${p.fs || 0}</td>
-            <td>${p.plusMinus || 0}</td> 
+            <td>${p.id}</td><td>${name}</td><td>${formatTime(p.minutes)}</td><td class="text-success">${p.goals || 0}</td><td class="text-danger">${p.gs || 0}</td>
+            <td>${totalShots} <small class="text-muted">(${p.shotsOn || 0})</small></td><td>${p.pr || 0}</td><td>${p.pp || 0}</td><td>${p.ff || 0}</td><td>${p.fs || 0}</td><td>${p.plusMinus || 0}</td> 
         `;
         tbody.appendChild(tr);
     });
@@ -340,23 +353,14 @@ function renderGoalkeepersTable(gks) {
     const tbody = document.querySelector('#goalkeepers-table tbody');
     if (!tbody) return;
     tbody.innerHTML = '';
-
     gks.sort((a, b) => b.minutes - a.minutes);
-
     gks.forEach(g => {
         const tr = document.createElement('tr');
         const name = PLAYER_NAMES[g.id] || `GK ${g.id}`;
         tr.innerHTML = `
-            <td>${name}</td>
-            <td>${formatTime(g.minutes)}</td>
-            <td class="text-danger" style="font-weight:bold;">${g.gs || 0}</td>
-            <td class="text-muted">${g.goalsSX || 0}</td>
-            <td class="text-muted">${g.goalsCT || 0}</td>
-            <td class="text-muted">${g.goalsDX || 0}</td>
-            <td class="text-success" style="font-weight:bold;">${g.saves || 0}</td>
-            <td class="text-muted">${g.savesSX || 0}</td>
-            <td class="text-muted">${g.savesCT || 0}</td>
-            <td class="text-muted">${g.savesDX || 0}</td>
+            <td>${name}</td><td>${formatTime(g.minutes)}</td><td class="text-danger" style="font-weight:bold;">${g.gs || 0}</td>
+            <td class="text-muted">${g.goalsSX || 0}</td><td class="text-muted">${g.goalsCT || 0}</td><td class="text-muted">${g.goalsDX || 0}</td>
+            <td class="text-success" style="font-weight:bold;">${g.saves || 0}</td><td class="text-muted">${g.savesSX || 0}</td><td class="text-muted">${g.savesCT || 0}</td><td class="text-muted">${g.savesDX || 0}</td>
         `;
         tbody.appendChild(tr);
     });
@@ -366,27 +370,16 @@ function renderQuartetsTable() {
     const tbody = document.querySelector('#quartets-table tbody');
     if (!tbody) return;
     tbody.innerHTML = '';
-
     const quartets = Object.values(APP_STATE.quartets).sort((a, b) => b.minutes - a.minutes);
-
     quartets.forEach(q => {
         const tr = document.createElement('tr');
-        // Format names: just surnames if possible, or simple join
-        const names = q.members.map(id => (PLAYER_NAMES[id] || id).split(' ')[0]).join(', ');
+        const names = q.members.map(id => String(PLAYER_NAMES[id] || id).split(' ')[0]).join(', ');
         const totalShots = (q.shotsOn || 0) + (q.shotsOff || 0);
         const plusMinus = (q.gf || 0) - (q.gs || 0);
-
         tr.innerHTML = `
-            <td style="font-size: 0.85rem;">${names}</td>
-            <td class="text-success">${q.gf || 0}</td>
-            <td class="text-danger">${q.gs || 0}</td>
-            <td>${totalShots}</td>
-            <td>${q.shotsAgainst || 0}</td>
-            <td>${q.pr || 0}</td>
-            <td>${q.pp || 0}</td>
-            <td>${q.freq || 0}</td>
-            <td style="color: ${plusMinus > 0 ? 'var(--success)' : (plusMinus < 0 ? 'var(--danger)' : 'inherit')}">${plusMinus > 0 ? '+' + plusMinus : plusMinus}</td>
-            <td>${formatTime(q.minutes)}</td>
+            <td style="font-size: 0.85rem;">${names}</td><td class="text-success">${q.gf || 0}</td><td class="text-danger">${q.gs || 0}</td>
+            <td>${totalShots}</td><td>${q.shotsAgainst || 0}</td><td>${q.pr || 0}</td><td>${q.pp || 0}</td><td>${q.freq || 0}</td>
+            <td style="color: ${plusMinus > 0 ? 'var(--success)' : (plusMinus < 0 ? 'var(--danger)' : 'inherit')}">${plusMinus > 0 ? '+' + plusMinus : plusMinus}</td><td>${formatTime(q.minutes)}</td>
         `;
         tbody.appendChild(tr);
     });
@@ -405,7 +398,6 @@ function renderFilesTable() {
 
 let chartInstances = {};
 function renderCharts(players) {
-    // 1. Goals Chart
     if (chartInstances.goals) chartInstances.goals.destroy();
     const ctxGoals = document.getElementById('playersGoalsChart');
     if (ctxGoals) {
@@ -413,14 +405,13 @@ function renderCharts(players) {
         chartInstances.goals = new Chart(ctxGoals.getContext('2d'), {
             type: 'bar',
             data: {
-                labels: top.map(p => PLAYER_NAMES[p.id].split(' ')[0]),
+                labels: top.map(p => String(PLAYER_NAMES[p.id] || p.id).split(' ')[0]),
                 datasets: [{ label: 'Goal', data: top.map(p => p.goals || 0), backgroundColor: '#6366f1' }]
             },
             options: { responsive: true, maintainAspectRatio: false }
         });
     }
 
-    // 2. Quartets Chart
     if (chartInstances.quartets) chartInstances.quartets.destroy();
     const ctxQ = document.getElementById('quartetsPerformanceChart');
     if (ctxQ) {
@@ -428,17 +419,13 @@ function renderCharts(players) {
         chartInstances.quartets = new Chart(ctxQ.getContext('2d'), {
             type: 'bar',
             data: {
-                labels: topQ.map(q => q.members.map(id => (PLAYER_NAMES[id] || '').split(' ')[0]).join('-')),
-                datasets: [
-                    { label: 'GF', data: topQ.map(q => q.gf || 0), backgroundColor: '#22c55e' },
-                    { label: 'GS', data: topQ.map(q => q.gs || 0), backgroundColor: '#ef4444' }
-                ]
+                labels: topQ.map(q => q.members.map(id => String(PLAYER_NAMES[id] || id).split(' ')[0]).join('-')),
+                datasets: [{ label: 'GF', data: topQ.map(q => q.gf || 0), backgroundColor: '#22c55e' }, { label: 'GS', data: topQ.map(q => q.gs || 0), backgroundColor: '#ef4444' }]
             },
             options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
         });
     }
 
-    // 3. Goalkeepers Chart
     if (chartInstances.goalkeepers) chartInstances.goalkeepers.destroy();
     const ctxGK = document.getElementById('goalkeepersChart');
     if (ctxGK) {
@@ -446,11 +433,8 @@ function renderCharts(players) {
         chartInstances.goalkeepers = new Chart(ctxGK.getContext('2d'), {
             type: 'bar',
             data: {
-                labels: gks.map(g => (PLAYER_NAMES[g.id] || '').split(' ')[0]),
-                datasets: [
-                    { label: 'Parate', data: gks.map(g => g.saves || 0), backgroundColor: '#22c55e' },
-                    { label: 'GS', data: gks.map(g => -(g.gs || 0)), backgroundColor: '#ef4444' }
-                ]
+                labels: gks.map(g => String(PLAYER_NAMES[g.id] || g.id).split(' ')[0]),
+                datasets: [{ label: 'Parate', data: gks.map(g => g.saves || 0), backgroundColor: '#22c55e' }, { label: 'GS', data: gks.map(g => -(g.gs || 0)), backgroundColor: '#ef4444' }]
             },
             options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
         });
@@ -459,25 +443,16 @@ function renderCharts(players) {
 
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('dashboard').classList.remove('hidden');
-    logDebug("App Initialized");
-
     // Tabs
     const protectedViews = ['files-view', 'debug-view'];
     const STAFF_PASSWORD = 'valli2025';
 
     document.querySelectorAll('.tab-btn').forEach(t => t.addEventListener('click', () => {
         const targetId = t.dataset.target;
-
-        // Password Protection for specific views
         if (protectedViews.includes(targetId)) {
             const pass = prompt("Area Riservata allo Staff. Inserisci la password:");
-            if (pass !== STAFF_PASSWORD) {
-                alert("Password errata. Accesso negato.");
-                return;
-            }
+            if (pass !== STAFF_PASSWORD) { alert("Password errata. Accesso negato."); return; }
         }
-
         document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
         document.querySelectorAll('.view-content').forEach(x => x.classList.remove('active'));
         t.classList.add('active');
@@ -485,7 +460,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tg) tg.classList.add('active');
     }));
 
-    // Sub-Tabs
     document.querySelectorAll('.sub-tab-btn').forEach(t => t.addEventListener('click', () => {
         document.querySelectorAll('.sub-tab-btn').forEach(x => x.classList.remove('active'));
         document.querySelectorAll('.sub-view').forEach(x => x.classList.remove('active'));
@@ -494,7 +468,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tg) tg.classList.add('active');
     }));
 
-    // Advanced Navigation Helper
     function navigateTo(targetView) {
         const mainTab = document.querySelector(`[data-target="${targetView}"]`);
         if (mainTab) { mainTab.click(); return; }
@@ -506,31 +479,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Quick Links & Stat Cards
     document.querySelectorAll('.quick-link-btn').forEach(b => b.addEventListener('click', () => navigateTo(b.dataset.goto)));
     document.querySelectorAll('.stat-clickable').forEach(c => c.addEventListener('click', () => navigateTo(c.dataset.goto)));
 
     // Data Load
     const loadDB = () => {
-        if (typeof PRELOADED_DATABASE === 'undefined') return;
+        logDebug("Inizio caricamento database...");
+
+        if (typeof PRELOADED_DATABASE === 'undefined') {
+            logDebug("ERRORE: PRELOADED_DATABASE non trovato.");
+            return;
+        }
+
         resetState();
+
         if (PRELOADED_DATABASE.players_list) PLAYER_NAMES = PRELOADED_DATABASE.players_list;
         if (PRELOADED_DATABASE.players_roles) PLAYER_ROLES = PRELOADED_DATABASE.players_roles;
+
         if (PRELOADED_DATABASE.matches) {
             PRELOADED_DATABASE.matches.forEach(m => {
                 if (m.name) APP_STATE.processedFiles.push(m.name);
-                m.sheets.forEach(s => processTimelineSheet(s.rows, s.name));
+                if (m.sheets) m.sheets.forEach(s => { if (s.rows) processTimelineSheet(s.rows, s.name); });
             });
         }
+
+        logDebug(`Dati caricati: ${APP_STATE.processedFiles.length} file elaborati.`);
         updateUI();
     };
     loadDB();
 
-    // Auto-Sync
-    window.forceSync = function () {
-        const s = document.createElement('script');
-        s.src = `js/database.js?t=${Date.now()}`;
-        s.onload = loadDB;
-        document.body.appendChild(s);
-    };
 });
