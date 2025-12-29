@@ -23,12 +23,11 @@ const MIN_PER_DAY = 24 * 60;
 // --- STATE ---
 let PLAYER_NAMES = {};
 let PLAYER_ROLES = {};
-let PLAYER_BIO = {};
 let TOTAL_MINUTES_PROCESSED = 0;
-let APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: [] };
+let APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: [], totalGF: 0, totalGS: 0 };
 
 function resetState() {
-    APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: [] };
+    APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: [], totalGF: 0, totalGS: 0 };
     TOTAL_MINUTES_PROCESSED = 0;
 }
 
@@ -36,14 +35,19 @@ function resetState() {
 function processTimelineSheet(rows, sheetName) {
     if (!rows || rows.length < 2) return;
     const headers = rows[0].map(h => (String(h) || "").toUpperCase().trim());
+    const findIdx = (names) => headers.findIndex(h => names.some(n => h.includes(n)));
     const IDX = {
-        TIMING: headers.indexOf("TIMING"),
-        PORTIERI: headers.indexOf("PORTIERI"),
-        Q1: headers.indexOf("Q1"), Q2: headers.indexOf("Q2"), Q3: headers.indexOf("Q3"), Q4: headers.indexOf("Q4"),
-        GF: headers.indexOf("GOAL FATTI"), GS: headers.indexOf("GOAL SUBITI"),
-        TF: headers.indexOf("TIRI IN PORTA"), TO: headers.indexOf("TIRI OUT"),
-        PARATE: headers.indexOf("PARATE"), PP: headers.indexOf("PALLE PERSE"), PR: headers.indexOf("PALLE RECUPERATE"),
-        FF: headers.indexOf("FALLI FATTI"), FS: headers.indexOf("FALLI SUBITI")
+        TIMING: findIdx(["TIMING"]),
+        PORTIERI: findIdx(["PORTIERI", "PORTIERE"]),
+        Q1: findIdx(["Q1"]), Q2: findIdx(["Q2"]), Q3: findIdx(["Q3"]), Q4: findIdx(["Q4"]),
+        GF: findIdx(["GOAL FATTI", "GOAL F", "RETI F"]),
+        GS: findIdx(["GOAL SUBITI", "GOAL S", "RETI S"]),
+        TF: findIdx(["TIRI IN PORTA", "TIRI IN"]),
+        TO: findIdx(["TIRI OUT", "TIRI FUORI"]),
+        PARATE: findIdx(["PARATE"]),
+        PP: findIdx(["PALLE PERSE", "P.P.", "PP"]),
+        PR: findIdx(["PALLE RECUPERATE", "P.R.", "PR"]),
+        FF: findIdx(["FALLI FATTI"]), FS: findIdx(["FALLI SUBITI"])
     };
     if (IDX.TIMING === -1 || IDX.Q1 === -1) return;
 
@@ -104,11 +108,13 @@ function processTimelineSheet(rows, sheetName) {
 
         const scorerId = row[IDX.GF];
         if (hasValue(scorerId)) {
+            APP_STATE.totalGF++;
             addStat(APP_STATE.players, scorerId, 'goals', 1);
             qMembers.forEach(pid => addStat(APP_STATE.players, pid, 'plusMinus', 1));
             addStat(APP_STATE.quartets, quartetKey, 'gf', 1);
         }
         if (hasValue(row[IDX.GS])) {
+            APP_STATE.totalGS++;
             qMembers.forEach(pid => { addStat(APP_STATE.players, pid, 'gs', 1); addStat(APP_STATE.players, pid, 'plusMinus', -1); });
             addStat(APP_STATE.quartets, quartetKey, 'gs', 1);
         }
@@ -137,18 +143,36 @@ function formatTime(m) {
 
 // --- UI LOGIC ---
 function updateUI() {
-    document.getElementById('home-matches').textContent = APP_STATE.processedFiles.length;
-    document.getElementById('home-time').textContent = formatTime(TOTAL_MINUTES_PROCESSED);
-    document.getElementById('total-match-time').textContent = formatTime(TOTAL_MINUTES_PROCESSED);
+    const totalTimeEl = document.getElementById('total-match-time');
+    if (totalTimeEl) totalTimeEl.textContent = formatTime(TOTAL_MINUTES_PROCESSED);
 
     const activePlayers = Object.values(APP_STATE.players).filter(p => !APP_STATE.goalkeepers[p.id] && PLAYER_NAMES[p.id]);
     const activeGoalkeepers = Object.values(APP_STATE.goalkeepers).filter(g => PLAYER_NAMES[g.id]);
-    document.getElementById('home-players').textContent = activePlayers.length + activeGoalkeepers.length;
 
-    if (activePlayers.length > 0) {
-        const topScorer = activePlayers.sort((a, b) => (b.goals || 0) - (a.goals || 0))[0];
-        const topName = PLAYER_NAMES[topScorer.id] || `Player ${topScorer.id}`;
-        document.getElementById('home-top-scorer').textContent = `${topName.split(' ')[0]} (${topScorer.goals || 0})`;
+    // Stats from Classifica
+    if (typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.classifica) {
+        const valliRow = PRELOADED_DATABASE.classifica.find(row => row && row[0] && String(row[0]).toUpperCase().includes("VALLI"));
+        if (valliRow) {
+            const matchesEl = document.getElementById('home-matches');
+            const winsEl = document.getElementById('home-wins');
+            const drawsEl = document.getElementById('home-draws');
+            const lossesEl = document.getElementById('home-losses');
+            const gfEl = document.getElementById('home-gf');
+            const gsEl = document.getElementById('home-gs');
+
+            if (winsEl) winsEl.textContent = valliRow[3] || 0;
+            if (drawsEl) drawsEl.textContent = valliRow[4] || 0;
+            if (lossesEl) lossesEl.textContent = valliRow[5] || 0;
+
+            // Goal Calculation Logic (Sync Files + Classifica)
+            const finalGF = Math.max(APP_STATE.totalGF, parseInt(valliRow[6]) || 0);
+            const finalGS = Math.max(APP_STATE.totalGS, parseInt(valliRow[7]) || 0);
+            const finalPG = Math.max(APP_STATE.processedFiles.length, parseInt(valliRow[2]) || 0);
+
+            if (matchesEl) matchesEl.textContent = finalPG;
+            if (gfEl) gfEl.textContent = finalGF;
+            if (gsEl) gsEl.textContent = finalGS;
+        }
     }
 
     // Roster
@@ -169,23 +193,14 @@ function updateUI() {
                 </div>
                 <div class="player-info">
                     <div class="player-name">${fullName}</div>
-                    <div class="player-stats-mini" style="grid-template-columns: repeat(2, 1fr);">
-                        <!-- Bio Stats -->
+                    <div class="player-stats-mini">
+                        <div class="stat-mini"><div class="stat-mini-label">MIN</div><div class="stat-mini-value">${Math.floor(p.minutes || 0)}</div></div>
+                        <div class="stat-mini"><div class="stat-mini-label">${isGk ? 'GS' : 'GOAL'}</div><div class="stat-mini-value">${isGk ? (p.gs || 0) : (p.goals || 0)}</div></div>
                         <div class="stat-mini">
-                            <div class="stat-mini-label">ANNO</div>
-                            <div class="stat-mini-value" style="font-size: 1rem;">${(PLAYER_BIO[p.id] && PLAYER_BIO[p.id].year) || '-'}</div>
-                        </div>
-                        <div class="stat-mini">
-                            <div class="stat-mini-label">PIEDE</div>
-                            <div class="stat-mini-value" style="font-size: 1rem;">${(PLAYER_BIO[p.id] && PLAYER_BIO[p.id].foot) || '-'}</div>
-                        </div>
-                        <div class="stat-mini">
-                            <div class="stat-mini-label">ILLINOIS</div>
-                            <div class="stat-mini-value" style="font-size: 1rem;">${(PLAYER_BIO[p.id] && PLAYER_BIO[p.id].illinois) || '-'}</div>
-                        </div>
-                        <div class="stat-mini">
-                            <div class="stat-mini-label">BMI</div>
-                            <div class="stat-mini-value" style="font-size: 1rem;">${(PLAYER_BIO[p.id] && PLAYER_BIO[p.id].bmi) || '-'}</div>
+                            <div class="stat-mini-label">PR-PP</div>
+                            <div class="stat-mini-value" style="color: ${(p.pr || 0) - (p.pp || 0) > 0 ? 'var(--success)' : ((p.pr || 0) - (p.pp || 0) < 0 ? 'var(--danger)' : 'var(--text-muted)')}">
+                                ${(p.pr || 0) - (p.pp || 0) > 0 ? '+' : ''}${(p.pr || 0) - (p.pp || 0)}
+                            </div>
                         </div>
                     </div>
                 </div>`;
@@ -444,6 +459,7 @@ function renderCharts(players) {
 
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('dashboard').classList.remove('hidden');
     logDebug("App Initialized");
 
     // Tabs
@@ -486,7 +502,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resetState();
         if (PRELOADED_DATABASE.players_list) PLAYER_NAMES = PRELOADED_DATABASE.players_list;
         if (PRELOADED_DATABASE.players_roles) PLAYER_ROLES = PRELOADED_DATABASE.players_roles;
-        if (PRELOADED_DATABASE.players_bio) PLAYER_BIO = PRELOADED_DATABASE.players_bio;
         if (PRELOADED_DATABASE.matches) {
             PRELOADED_DATABASE.matches.forEach(m => {
                 if (m.name) APP_STATE.processedFiles.push(m.name);
