@@ -30,6 +30,19 @@ body {
     padding: 2rem;
 }
 
+.dashboard {
+    opacity: 1;
+    visibility: visible;
+}
+
+.view-content {
+    display: none;
+}
+
+.view-content.active {
+    display: block !important;
+}
+
 /* Header */
 header {
     display: flex;
@@ -433,7 +446,7 @@ td.highlight-valli {
 }
 
 .home-hero {
-    flex: 0 0 66%;
+    flex: 0 0 75%;
     text-align: center;
     padding: 0;
     background: transparent;
@@ -489,7 +502,7 @@ td.highlight-valli {
 .hero-team-photo-container {
     width: 100%;
     height: auto;
-    min-height: 300px;
+    min-height: 450px;
     border-radius: 1rem;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -501,10 +514,10 @@ td.highlight-valli {
 .hero-team-photo {
     width: 100%;
     height: auto;
-    max-height: 500px;
+    max-height: 800px;
     display: block;
     object-fit: cover;
-    border-radius: 1rem;
+    border-radius: 1.5rem;
 }
 
 .stats-grid {
