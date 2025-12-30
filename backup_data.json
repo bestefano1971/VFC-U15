@@ -1,0 +1,366 @@
+{
+  "users": [
+    {
+      "username": "be.stefano1971@gmail.com",
+      "password": "Alask@2025",
+      "role": "Admin"
+    },
+    {
+      "username": "admin@example.com",
+      "password": "password",
+      "role": "Admin"
+    }
+  ],
+  "logs": [
+    {
+      "date": "2025-12-30T11:27:39.814Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:27:34.589Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:27:34.589Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:16:27.645Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:16:25.841Z",
+      "section": "relazioni-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:16:21.876Z",
+      "section": "schemi-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:16:19.145Z",
+      "section": "classifica-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:16:15.094Z",
+      "section": "calendario-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:16:13.216Z",
+      "section": "stats-container-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:15:44.936Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:15:44.935Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:09:38.297Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:09:34.266Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:09:34.265Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:04:56.524Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:04:44.600Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:04:44.599Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:02:23.165Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T11:02:23.156Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T10:55:18.567Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T10:55:11.059Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T10:36:56.299Z",
+      "section": "staff-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T10:22:23.958Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T10:22:17.514Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T10:22:17.514Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T10:20:30.871Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T10:20:23.899Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T10:20:23.897Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:46:05.279Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:45:54.728Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:45:46.064Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:45:46.063Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:42:52.257Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:42:49.707Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:42:49.706Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:37:22.376Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:37:19.982Z",
+      "section": "roster-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:37:02.588Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:36:58.741Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:36:58.741Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:35:34.273Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "admin",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:35:32.148Z",
+      "section": "home-view",
+      "success": true,
+      "role": "admin",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:35:32.148Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "admin (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:35:02.976Z",
+      "section": "home-view",
+      "success": true,
+      "role": "admin",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T07:35:02.969Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "admin (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T05:25:44.844Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "admin",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T05:25:39.168Z",
+      "section": "home-view",
+      "success": true,
+      "role": "admin",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T05:25:39.166Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "admin (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T05:12:29.045Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "admin",
+      "device": "Desktop"
+    },
+    {
+      "date": "2025-12-30T05:12:15.539Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "admin (Admin)",
+      "device": "Desktop"
+    }
+  ]
+}

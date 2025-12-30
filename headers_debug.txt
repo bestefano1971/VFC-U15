@@ -1,0 +1,11 @@
+--- FIRST 10 ROWS ---
+ROW 0: ['SCHEDA DI AUTOVALUTAZIONE PERFORMANCE', nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+ROW 1: ['DE ANTONI Mattia', nan, nan, nan, 'D.NASCITA', 'STAGIONE', 'VALUTAZIONE GENERALE', datetime.datetime(2025, 5, 1, 0, 0), datetime.datetime(2025, 9, 1, 0, 0), datetime.datetime(2025, 12, 1, 0, 0), 'MEDIA', nan]
+ROW 2: [nan, nan, nan, nan, datetime.datetime(2012, 6, 22, 0, 0), '2025/2026', nan, 59.817127991675335, 10.917289664174675, 11.36822119378189, nan, nan]
+ROW 3: [nan, 'PESO (kg)', nan, nan, 'PIEDE FORTE', 'PIEDE DEBOLE', 'FISICA', 65, 0, 0, 65, 'FIS']
+ROW 4: [nan, datetime.datetime(2025, 5, 1, 0, 0), datetime.datetime(2025, 9, 1, 0, 0), datetime.datetime(2025, 12, 1, 0, 0), 'Dx', 'Sufficiente', 'TATTICA', 75, 0, 0, 75, 'TAT']
+ROW 5: [nan, 44, 46, 47.9, 'RUOLO', 'ATTITUDINE', 'TECNICA', 70, 0, 0, 70, 'TEC']
+ROW 6: [nan, 'ALTEZZA (cm)', nan, nan, 'Portiere', 'Portiere', 'PSICOLOGIA', 75, 0, 0, 75, 'PSI']
+ROW 7: [nan, datetime.datetime(2025, 5, 1, 0, 0), datetime.datetime(2025, 9, 1, 0, 0), datetime.datetime(2025, 12, 1, 0, 0), 'BMI', 'MORFOLOGIA', 'BMIx3', 54.94276795005203, 54.58644832087337, 56.84110596890945, 55, 'BMI']
+ROW 8: [nan, 155, 159, 159, 'Sottopeso', 'Brevilineo', 'ILLINOIS', 18.96, nan, nan, nan, nan]
+ROW 9: ['VALUTAZIONE FISICA', datetime.datetime(2025, 5, 1, 0, 0), datetime.datetime(2025, 9, 1, 0, 0), datetime.datetime(2025, 12, 1, 0, 0), 'MEDIA', nan, 'VALUTAZIONE TECNICA', datetime.datetime(2025, 5, 1, 0, 0), datetime.datetime(2025, 9, 1, 0, 0), datetime.datetime(2025, 12, 1, 0, 0), 'MEDIA', nan]
