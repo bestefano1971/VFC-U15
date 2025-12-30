@@ -717,11 +717,11 @@ function initUsers() {
     let users = JSON.parse(localStorage.getItem('appUsers') || '[]');
 
     // Ensure default admin exists
-    const defaultAdminEmail = 'admin@example.com';
+    const defaultAdminEmail = 'be.stefano1971';
     const hasDefaultAdmin = users.find(u => u.username === defaultAdminEmail);
 
     if (!hasDefaultAdmin) {
-        users.push({ username: defaultAdminEmail, password: 'password', role: 'Admin' });
+        users.push({ username: defaultAdminEmail, password: 'Alask@2025', role: 'Admin' });
         localStorage.setItem('appUsers', JSON.stringify(users));
     }
 }
