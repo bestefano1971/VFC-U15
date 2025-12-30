@@ -753,12 +753,16 @@
                     style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #fff; font-size: 1rem;">
             </div>
             <div class="form-group" style="margin-bottom: 2rem;">
-                <option value="Atleta +18">Atleta +18</option>
-                <option value="Atleta -18">Atleta -18</option>
-                <option value="Dirigenza">Dirigenza</option>
-                <option value="Genitore">Genitore</option>
-                <option value="Ospite">Ospite</option>
-                <option value="Staff Tecnico">Staff Tecnico</option>
+                <label style="display: block; margin-bottom: 0.5rem; color: #94a3b8;">Ruolo Richiesto</label>
+                <select id="reg-role" class="modal-input"
+                    style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #fff; font-size: 1rem;">
+                    <option value="" disabled selected>-- Seleziona Ruolo --</option>
+                    <option value="Atleta +18">Atleta +18</option>
+                    <option value="Atleta -18">Atleta -18</option>
+                    <option value="Dirigenza">Dirigenza</option>
+                    <option value="Genitore">Genitore</option>
+                    <option value="Ospite">Ospite</option>
+                    <option value="Staff Tecnico">Staff Tecnico</option>
                 </select>
             </div>
             <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 1rem;">
