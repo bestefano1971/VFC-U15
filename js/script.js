@@ -1092,7 +1092,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('reg-password').value.trim();
             const role = document.getElementById('reg-role').value;
 
-            if (!email || !password) { alert("Compila tutti i campi."); return; }
+            if (!email || !password || !role) { alert("Compila tutti i campi e seleziona un ruolo."); return; }
 
             // Validate email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
