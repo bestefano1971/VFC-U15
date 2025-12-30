@@ -171,8 +171,23 @@ function updateUI() {
             }
         }
 
-        activePlayers = Object.values(APP_STATE.players || {}).filter(p => p && (!APP_STATE.goalkeepers || !APP_STATE.goalkeepers[p.id]) && PLAYER_NAMES[p.id]);
-        activeGoalkeepers = Object.values(APP_STATE.goalkeepers || {}).filter(g => g && PLAYER_NAMES[g.id]);
+        const allIds = Object.keys(PLAYER_NAMES).map(k => parseInt(k));
+        activePlayers = [];
+        activeGoalkeepers = [];
+
+        allIds.forEach(id => {
+            const role = PLAYER_ROLES[id];
+            const isGkRole = role === 'PORTIERE';
+            const hasGkStats = APP_STATE.goalkeepers && APP_STATE.goalkeepers[id];
+
+            if (isGkRole || hasGkStats) {
+                const gState = (APP_STATE.goalkeepers && APP_STATE.goalkeepers[id]) || { id: id, minutes: 0, gs: 0, goalsSX: 0, goalsCT: 0, goalsDX: 0, saves: 0, savesSX: 0, savesCT: 0, savesDX: 0 };
+                activeGoalkeepers.push(gState);
+            } else {
+                const pState = (APP_STATE.players && APP_STATE.players[id]) || { id: id, minutes: 0, goals: 0, gs: 0, pr: 0, pp: 0, shotsOn: 0, shotsOff: 0, ff: 0, fs: 0, plusMinus: 0 };
+                activePlayers.push(pState);
+            }
+        });
 
         // Official Stats from Classifica
         let classGF = 0, classGS = 0, classPG = 0;
@@ -215,21 +230,29 @@ function updateUI() {
         const rosterGrid = document.getElementById('roster-grid');
         if (rosterGrid) {
             rosterGrid.innerHTML = '';
-            [...activeGoalkeepers, ...activePlayers].sort((a, b) => parseInt(a.id) - parseInt(b.id)).forEach(p => {
-                if (!p || !p.id) return;
-                const fullName = PLAYER_NAMES[p.id] || `ID: ${p.id}`;
-                const isGk = !!(APP_STATE.goalkeepers && APP_STATE.goalkeepers[p.id]);
+            const allIds = Object.keys(PLAYER_NAMES).map(k => parseInt(k)).sort((a, b) => a - b);
+
+            allIds.forEach(id => {
+                const pState = (APP_STATE.players && APP_STATE.players[id]) || (APP_STATE.goalkeepers && APP_STATE.goalkeepers[id]);
+                // Default object if no stats
+                const p = pState || { id: id, minutes: 0, goals: 0, gs: 0, pr: 0, pp: 0 };
+
+                let fullName = PLAYER_NAMES[id] || `ID: ${id}`;
+                const role = PLAYER_ROLES[id];
+                const isGk = role === 'PORTIERE' || (APP_STATE.goalkeepers && APP_STATE.goalkeepers[id]);
+                const isCaptain = id === 4; // Biolcati is Captain
+
                 const card = document.createElement('div');
                 card.className = 'player-card';
                 card.innerHTML = `
                 <div class="player-photo-container">
-                    <img src="assets/players/${p.id}.png" class="player-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                    <img src="assets/players/${id}.png" class="player-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
                     <div class="player-placeholder" style="display:none;font-size:4rem;">👤</div>
-                    <div class="player-number-badge">${p.id}</div>
-                    ${isGk ? '<div class="player-role-badge">PORTIERE</div>' : (PLAYER_ROLES[p.id] ? `<div class="player-role-badge role-field">${PLAYER_ROLES[p.id]}</div>` : '')}
+                    <div class="player-number-badge">${id}</div>
+                    ${isGk ? '<div class="player-role-badge">PORTIERE</div>' : (role ? `<div class="player-role-badge role-field">${role}</div>` : '')}
                 </div>
                 <div class="player-info">
-                    <div class="player-name">${fullName}</div>
+                    <div class="player-name">${fullName} ${isCaptain ? '<span style="color:var(--primary); font-weight:bold; margin-left:5px;" title="Capitano">©</span>' : ''}</div>
                     <div class="player-stats-mini">
                         <div class="stat-mini"><div class="stat-mini-label">MIN</div><div class="stat-mini-value">${Math.floor(p.minutes || 0)}</div></div>
                         <div class="stat-mini"><div class="stat-mini-label">${isGk ? 'GS' : 'GOAL'}</div><div class="stat-mini-value">${isGk ? (p.gs || 0) : (p.goals || 0)}</div></div>
@@ -314,6 +337,8 @@ function updateUI() {
             claTable.innerHTML = '';
             PRELOADED_DATABASE.classifica.forEach(row => {
                 if (!row || row.every(c => !c)) return;
+                const rowStr = row.join(' ').toUpperCase();
+                if (rowStr.includes("CAMPIONATO")) return;
                 const tr = document.createElement('tr');
                 if (row.join(' ').toUpperCase().includes("VALLI")) tr.classList.add('highlight-valli');
                 row.forEach(c => { const td = document.createElement('td'); td.textContent = c; tr.appendChild(td); });
@@ -330,6 +355,8 @@ function updateUI() {
         renderPlayersTable(activePlayers);
         renderGoalkeepersTable(activeGoalkeepers);
         renderQuartetsTable();
+        renderPresenzeTable();
+        renderRelazioniList();
         renderFilesTable();
 
     } catch (err) {
@@ -390,6 +417,182 @@ function renderQuartetsTable() {
     });
 }
 
+function renderPresenzeTable() {
+    const container = document.querySelector('#presenze-view .card-body');
+    if (!container) {
+        console.error("Presenze view container not found");
+        return;
+    }
+
+    // Check if data exists
+    if (!PRELOADED_DATABASE.presenze || PRELOADED_DATABASE.presenze.length < 2) {
+        console.warn("Presenze data insufficient:", PRELOADED_DATABASE.presenze);
+        container.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">Nessun dato presenze disponibile (Dati insufficienti).</div>';
+        return;
+    }
+
+    const data = PRELOADED_DATABASE.presenze;
+    console.log("Presenze Data Loaded:", data);
+    const headerRow = data[0];
+    const totalRow = data[data.length - 1];
+    const playersList = PRELOADED_DATABASE.players_list || {};
+
+    // Helper to fuzzy find player ID
+    const findPlayerId = (sheetName) => {
+        const sName = sheetName.toLowerCase().replace('.', '').trim();
+        // Specific overrides
+        if (sName.includes('riki')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('riccardo'));
+        if (sName.includes('rayenne') || sName.includes('rayane')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('rayane') || playersList[k].toLowerCase().includes('daifi'));
+        if (sName.includes('yousef')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('youssef'));
+
+        // General search: check if surname or name matches
+        const parts = sName.split(' ');
+        const mainName = parts[0]; // "Erik", "Mattia"
+
+        for (const [id, fullName] of Object.entries(playersList)) {
+            const fName = fullName.toLowerCase();
+            if (fName.includes(mainName)) {
+                // If there's an initial in sheetName "Mattia D.", check if full name has "De" or surname match
+                if (parts.length > 1) {
+                    // This is a bit weak but works for now. 
+                    // Refinement: if multiple Mattia, we need more logic. 
+                    // "Mattia A." (Avella) vs "Mattia D." (De Antoni)
+                    if (sName.includes('mattia a') && fName.includes('avella')) return id;
+                    if (sName.includes('mattia d') && fName.includes('antoni')) return id;
+                } else {
+                    return id;
+                }
+            }
+        }
+        // Fallback: try finding exact match of main name in any part of full name
+        return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes(mainName));
+    };
+
+    // Extract stats
+    const stats = [];
+    for (let i = 1; i < headerRow.length; i++) {
+        if (!headerRow[i]) continue;
+        const name = headerRow[i];
+        const pid = findPlayerId(name);
+        stats.push({
+            name: name,
+            total: totalRow[i] || 0,
+            id: pid
+        });
+    }
+
+    // Sort by Total Descending
+    stats.sort((a, b) => b.total - a.total);
+
+    // Build Grid HTML
+    let styleBlock = `
+        <style>
+            .attendance-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            .attendance-card {
+                background: #1e293b; 
+                background: var(--card-bg, #1e293b);
+                border-radius: 16px;
+                padding: 1.5rem 1rem;
+                text-align: center;
+                border: 1px solid #334155;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s, box-shadow 0.2s;
+                position: relative;
+                overflow: hidden;
+            }
+            .attendance-card:hover {
+                transform: translateY(-5px);
+                border-color: #6366f1;
+                box-shadow: 0 10px 20px -2px rgba(99, 102, 241, 0.2);
+            }
+            .att-photo {
+                width: 80px;
+                height: 80px;
+                margin: 0 auto 1rem auto;
+                border-radius: 50%;
+                overflow: hidden;
+                border: 3px solid #334155;
+                background: #0f172a;
+            }
+            .att-photo img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .att-name {
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+                font-size: 0.95rem;
+                color: #e2e8f0;
+                min-height: 1.5em;
+                line-height: 1.2;
+            }
+            .att-value {
+                font-size: 2.5rem;
+                font-weight: 800;
+                color: #6366f1;
+                line-height: 1;
+                margin-bottom: 0.25rem;
+            }
+            .att-label {
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: #94a3b8;
+                font-weight: 600;
+            }
+        </style>
+    `;
+
+    let html = styleBlock + '<div class="attendance-grid">';
+    stats.forEach(s => {
+        // Photo URL
+        const photoUrl = s.id ? `assets/players/${s.id}.png` : 'assets/staff/placeholder.png'; // Fallback to a generic placeholder if we had one, or handle onerror
+
+        html += `
+            <div class="attendance-card">
+                <div class="att-photo">
+                    <img src="${photoUrl}" alt="${s.name}" onerror="this.src='https://via.placeholder.com/150?text=USER'">
+                </div>
+                <div class="att-name">${s.name}</div>
+                <div class="att-value">${s.total}</div>
+                <div class="att-label">Presenze</div>
+            </div>
+        `;
+    });
+    html += '</div>';
+
+    container.innerHTML = html;
+}
+
+function renderRelazioniList() {
+    const list = document.getElementById('relazioni-list');
+    if (!list) return;
+
+    list.innerHTML = '';
+
+    if (!PRELOADED_DATABASE.relazioni_files || PRELOADED_DATABASE.relazioni_files.length === 0) {
+        list.innerHTML = '<li style="padding: 1rem; color: var(--text-muted); text-align: center;">Nessuna relazione disponibile.</li>';
+        return;
+    }
+
+    PRELOADED_DATABASE.relazioni_files.forEach(file => {
+        const li = document.createElement('li');
+        li.style.margin = '0.5rem 0';
+        li.innerHTML = `
+            <a href="DB/Relazioni/${file}" target="_blank" class="highlight-link" style="display: block; text-align: left;">
+                📄 ${file}
+            </a>
+        `;
+        list.appendChild(li);
+    });
+}
+
 function renderFilesTable() {
     const tbody = document.querySelector('#files-table tbody');
     if (!tbody) return;
@@ -446,30 +649,549 @@ function renderCharts(players) {
     }
 }
 
+// --- Access Logs Logic ---
+function logAccessAttempt(section, success) {
+    const logs = JSON.parse(localStorage.getItem('accessLogs') || '[]');
+    logs.unshift({
+        date: new Date().toISOString(),
+        section: section,
+        success: success
+    });
+    // Keep max 50 logs
+    if (logs.length > 50) logs.pop();
+    localStorage.setItem('accessLogs', JSON.stringify(logs));
+}
+
+function renderAccessLogs() {
+    const tbody = document.querySelector('#access-log-table tbody');
+    if (!tbody) return;
+
+    const logs = JSON.parse(localStorage.getItem('accessLogs') || '[]');
+
+    if (logs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:1rem; color:var(--text-muted);">Nessun accesso registrato.</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = '';
+    logs.forEach(log => {
+        const tr = document.createElement('tr');
+        const d = new Date(log.date);
+        const dateStr = d.toLocaleDateString('it-IT');
+        const timeStr = d.toLocaleTimeString('it-IT');
+
+        tr.innerHTML = `
+            <td>${dateStr}</td>
+            <td>${timeStr}</td>
+            <td><span class="badge">${log.section.replace('-view', '').toUpperCase()}</span></td>
+            <td>
+                <span class="badge ${log.success ? 'text-success' : 'text-danger'}" style="border: 1px solid currentColor;">
+                    ${log.success ? '✅ SUCCESSO' : '❌ NEGATO'}
+                </span>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+window.clearAccessLogs = function () {
+    if (confirm("Sei sicuro di voler cancellare il registro accessi?")) {
+        localStorage.removeItem('accessLogs');
+        renderAccessLogs();
+    }
+}
+
+// --- User Management Logic ---
+function initUsers() {
+    // 1. Try to load from Preloaded DB (Source of Truth from Excel)
+    if (typeof PRELOADED_DATABASE !== 'undefined') {
+        if (PRELOADED_DATABASE.users_data && PRELOADED_DATABASE.users_data.length > 0) {
+            localStorage.setItem('appUsers', JSON.stringify(PRELOADED_DATABASE.users_data));
+        }
+        if (PRELOADED_DATABASE.access_logs && PRELOADED_DATABASE.access_logs.length > 0) {
+            localStorage.setItem('accessLogs', JSON.stringify(PRELOADED_DATABASE.access_logs));
+        }
+    }
+
+    // 2. Fallback / Ensure Admin
+    let users = JSON.parse(localStorage.getItem('appUsers') || '[]');
+
+    // Ensure default admin exists
+    const defaultAdminEmail = 'admin@example.com';
+    const hasDefaultAdmin = users.find(u => u.username === defaultAdminEmail);
+
+    if (!hasDefaultAdmin) {
+        users.push({ username: defaultAdminEmail, password: 'password', role: 'Admin' });
+        localStorage.setItem('appUsers', JSON.stringify(users));
+    }
+}
+
+// --- Backup / Export Logic ---
+window.exportBackup = function () {
+    const data = {
+        users: getUsers(),
+        logs: JSON.parse(localStorage.getItem('accessLogs') || '[]')
+    };
+
+    const dataStr = JSON.stringify(data, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "backup_data.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    alert("File 'backup_data.json' scaricato!\n\nSalvalo nella cartella dell'app e poi premi 'Sincronizza ora' per aggiornare il file Excel LEGENDA.");
+};
+
+window.forceSync = function () {
+    // Ideally this would trigger python script, but in browser we assume user runs it.
+    // We reload to get new database.js
+    if (confirm("Hai eseguito lo script 'sync_data.py'?\n\nPremi OK per ricaricare i dati aggiornati.")) {
+        location.reload();
+    }
+};
+
+function getUsers() {
+    return JSON.parse(localStorage.getItem('appUsers') || '[]');
+}
+
+function saveUsers(users) {
+    localStorage.setItem('appUsers', JSON.stringify(users));
+    renderUsersTable();
+}
+
+function addUser() {
+    const userIn = document.getElementById('new-username');
+    const passIn = document.getElementById('new-password');
+    const roleIn = document.getElementById('new-role');
+
+    const username = userIn.value.trim();
+    const password = passIn.value.trim();
+    const role = roleIn.value;
+
+    if (!username || !password) { alert("Completa tutti i campi."); return; }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(username)) {
+        alert("Inserisci un indirizzo email valido.");
+        return;
+    }
+
+    const users = getUsers();
+    if (users.find(u => u.username === username)) { alert("Utente già esistente."); return; }
+
+    users.push({ username, password, role });
+    saveUsers(users);
+
+    userIn.value = '';
+    passIn.value = '';
+    alert("Utente aggiunto!");
+}
+
+window.deleteUser = function (username) {
+    if (!confirm(`Eliminare l'utente "${username}"?`)) return;
+    let users = getUsers();
+    users = users.filter(u => u.username !== username);
+    saveUsers(users);
+}
+
+function renderUsersTable() {
+    const tbody = document.querySelector('#users-table tbody');
+    if (!tbody) return;
+
+    const users = getUsers();
+    tbody.innerHTML = '';
+
+    users.forEach(u => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${u.username}</td>
+            <td><span class="badge" style="background: ${['Admin', 'Staff Tecnico', 'Dirigenza'].includes(u.role) ? 'var(--primary)' : 'var(--border)'}">${u.role}</span></td>
+            <td style="font-family: monospace;">${u.password}</td>
+            <td style="text-align: right;">
+                <button class="btn danger" style="padding: 2px 8px; font-size: 0.7rem;" onclick="deleteUser('${u.username}')">🗑️</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    // Also render pending requests whenever users table is updated
+    renderPendingRequestsTable();
+}
+
+// --- Pending Requests Logic ---
+function getPendingRequests() {
+    return JSON.parse(localStorage.getItem('pendingRegistrations') || '[]');
+}
+
+function savePendingRequests(reqs) {
+    localStorage.setItem('pendingRegistrations', JSON.stringify(reqs));
+    renderPendingRequestsTable();
+    updateSetupNotification();
+}
+
+function updateSetupNotification() {
+    const reqs = getPendingRequests();
+    const count = reqs.length;
+    const setupBtn = document.querySelector('.tab-btn[data-target="setup-view"]');
+    if (!setupBtn) return;
+
+    // Remove existing badge if any
+    const existingBadge = setupBtn.querySelector('.notif-badge');
+    if (existingBadge) existingBadge.remove();
+
+    if (count > 0) {
+        // Add new badge
+        const badge = document.createElement('span');
+        badge.className = 'notif-badge';
+        badge.style.cssText = 'background: #ef4444; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 999px; margin-left: 8px; vertical-align: middle; font-weight: bold;';
+        badge.innerText = count;
+        setupBtn.appendChild(badge);
+    }
+}
+
+function renderPendingRequestsTable() {
+    const tbody = document.querySelector('#pending-users-table tbody');
+    updateSetupNotification(); // Ensure badge is synced
+
+    if (!tbody) return;
+
+    const reqs = getPendingRequests();
+    tbody.innerHTML = '';
+
+    if (reqs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 1rem;">Nessuna richiesta in attesa.</td></tr>';
+        return;
+    }
+
+    reqs.forEach((r, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${r.email}</td>
+            <td><span class="badge" style="background: var(--border)">${r.role}</span></td>
+            <td style="text-align: right;">
+                <button class="btn success" style="padding: 2px 8px; font-size: 0.7rem; margin-right: 5px;" onclick="approveRequest(${index})">✅</button>
+                <button class="btn danger" style="padding: 2px 8px; font-size: 0.7rem;" onclick="rejectRequest(${index})">❌</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+window.approveRequest = function (index) {
+    const reqs = getPendingRequests();
+    const req = reqs[index];
+    if (!req) return;
+
+    if (!confirm(`Approvare richiesta per ${req.email}?`)) return;
+
+    // Add to users
+    const users = getUsers();
+    if (users.find(u => u.username === req.email)) {
+        alert("Utente già esistente nel sistema.");
+        // Should we delete the request? Yes.
+    } else {
+        users.push({ username: req.email, password: req.password, role: req.role });
+        saveUsers(users);
+    }
+
+    // Remove from pending
+    reqs.splice(index, 1);
+    savePendingRequests(reqs);
+};
+
+window.rejectRequest = function (index) {
+    if (!confirm("Rifiutare questa richiesta?")) return;
+    const reqs = getPendingRequests();
+    reqs.splice(index, 1);
+    savePendingRequests(reqs);
+};
+
+
+// --- Access Logs Logic ---
+function logAccessAttempt(section, success, role) {
+    const logs = JSON.parse(localStorage.getItem('accessLogs') || '[]');
+
+    // Detect Device
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const device = isMobile ? 'Mobile' : 'Desktop';
+
+    logs.unshift({
+        date: new Date().toISOString(),
+        section: section,
+        success: success,
+        role: role || 'Ospite',
+        device: device
+    });
+    // Keep max 50 logs
+    if (logs.length > 50) logs.pop();
+    localStorage.setItem('accessLogs', JSON.stringify(logs));
+}
+
+function renderAccessLogs() {
+    const tbody = document.querySelector('#access-log-table tbody');
+    if (!tbody) return;
+
+    const logs = JSON.parse(localStorage.getItem('accessLogs') || '[]');
+
+    if (logs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:1rem; color:var(--text-muted);">Nessun accesso registrato.</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = '';
+    logs.forEach(log => {
+        const tr = document.createElement('tr');
+        const d = new Date(log.date);
+        const dateStr = d.toLocaleDateString('it-IT');
+        const timeStr = d.toLocaleTimeString('it-IT');
+
+        tr.innerHTML = `
+            <td>${dateStr}</td>
+            <td>${timeStr}</td>
+            <td><span class="badge" style="background: ${['Staff Tecnico', 'Admin', 'Dirigenza'].includes(log.role) ? 'var(--primary)' : 'var(--border)'}">${log.role}</span></td>
+            <td>${log.device}</td>
+            <td><span class="badge" style="font-weight:normal;">${log.section.replace('-view', '').toUpperCase()}</span></td>
+            <td>
+                <span class="badge ${log.success ? 'text-success' : 'text-danger'}" style="border: 1px solid currentColor;">
+                    ${log.success ? '✅ OK' : '❌ NO'}
+                </span>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+window.clearAccessLogs = function () {
+    if (confirm("Sei sicuro di voler cancellare il registro accessi?")) {
+        localStorage.removeItem('accessLogs');
+        renderAccessLogs();
+    }
+}
+
+// --- Login Modal Logic ---
+function showLoginModal(onSuccess, onFail) {
+    const modal = document.getElementById('login-modal');
+    const userIn = document.getElementById('login-username');
+    const passIn = document.getElementById('login-password');
+    const btnConfirm = document.getElementById('login-confirm');
+    const btnCancel = document.getElementById('login-cancel');
+
+    if (!modal) return;
+
+    // Reset
+    userIn.value = '';
+    passIn.value = '';
+    passIn.type = 'password';
+    const showPassChk = document.getElementById('show-password-chk');
+    if (showPassChk) showPassChk.checked = false;
+
+    modal.style.display = 'flex';
+    userIn.focus();
+
+    const handleLogin = () => {
+        const username = userIn.value.trim();
+        const password = passIn.value.trim();
+
+        const users = getUsers();
+        const user = users.find(u => u.username === username && u.password === password);
+
+        if (user) {
+            modal.style.display = 'none';
+            cleanup();
+            onSuccess(user.role, user.username);
+        } else {
+            alert("Credenziali non valide!");
+            // Optional: onFail('Sconosciuto'); but we let them retry or cancel
+        }
+    };
+
+    const handleCancel = () => {
+        modal.style.display = 'none';
+        cleanup();
+        if (onFail) onFail();
+    };
+
+    // Simple event handlers that we remove later to avoid dupes?
+    // Actually, cloning node is safer or just use 'onclick'
+    btnConfirm.onclick = handleLogin;
+    btnCancel.onclick = handleCancel;
+
+    // Enter key
+    const handleKey = (e) => { if (e.key === 'Enter') handleLogin(); };
+    passIn.onkeyup = handleKey;
+
+    function cleanup() {
+        btnConfirm.onclick = null;
+        btnCancel.onclick = null;
+        passIn.onkeyup = null;
+    }
+}
+
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Tabs
-    const protectedViews = ['files-view', 'debug-view'];
-    const STAFF_PASSWORD = 'valli2025';
+    initUsers();
 
+    // Registration Modal Logic
+    const regLink = document.getElementById('open-register-link');
+    const regModal = document.getElementById('register-modal');
+    const loginModal = document.getElementById('login-modal');
+
+    // Check initial notification
+    updateSetupNotification();
+
+    // Show Password Toggle
+    const showPassChk = document.getElementById('show-password-chk');
+    if (showPassChk) {
+        showPassChk.addEventListener('change', (e) => {
+            const passInput = document.getElementById('login-password');
+            if (passInput) {
+                passInput.type = e.target.checked ? 'text' : 'password';
+            }
+        });
+    }
+
+    if (regLink && regModal) {
+        regLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (loginModal) loginModal.style.display = 'none';
+            regModal.style.display = 'flex';
+        });
+
+        document.getElementById('reg-cancel').addEventListener('click', () => {
+            regModal.style.display = 'none';
+            // Return to login if needed, or just close
+            if (loginModal) loginModal.style.display = 'flex';
+        });
+
+        document.getElementById('reg-confirm').addEventListener('click', () => {
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value.trim();
+            const role = document.getElementById('reg-role').value;
+
+            if (!email || !password) { alert("Compila tutti i campi."); return; }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Email non valida.");
+                return;
+            }
+
+            // Check if user already exists
+            const users = getUsers();
+            if (users.find(u => u.username === email)) {
+                alert("Utente già registrato!");
+                return;
+            }
+
+            // Check if pending exists
+            const pending = getPendingRequests();
+            if (pending.find(p => p.email === email)) {
+                alert("Hai già una richiesta in attesa!");
+                return;
+            }
+
+            // Add to pending
+            pending.push({ email, password, role, date: new Date().toISOString() });
+            savePendingRequests(pending);
+
+            alert("Richiesta inviata! Attendi l'approvazione dell'Admin.");
+            regModal.style.display = 'none';
+            document.getElementById('reg-email').value = '';
+            document.getElementById('reg-password').value = '';
+
+            if (loginModal) loginModal.style.display = 'flex';
+        });
+    }
+
+    let CURRENT_USER = null;
+
+    // Permissions Logic
+    function canAccess(viewId, role) {
+        const restricted = ['setup-view', 'relazioni-view'];
+        if (!restricted.includes(viewId)) return true; // Public views
+        if (role === 'Admin' || role === 'Staff Tecnico' || role === 'Dirigenza') return true; // Privileged roles
+        return false; // Others blocked
+    }
+
+    // MANDATORY STARTUP LOGIN
+    function enforceLogin() {
+        // Hide cancel button for initial login
+        const cancelBtn = document.getElementById('login-cancel');
+        if (cancelBtn) cancelBtn.style.display = 'none';
+
+        showLoginModal(
+            (role, username) => {
+                // Success
+                CURRENT_USER = { role, username };
+                logAccessAttempt('APP_START', true, `${username} (${role})`);
+
+                // Show cancel button again for future use
+                if (cancelBtn) cancelBtn.style.display = 'inline-block';
+
+                // Default view
+                document.querySelector('.tab-btn[data-target="home-view"]').click();
+            },
+            () => {
+                // Should not happen if cancel is hidden, but just in case
+                location.reload();
+            }
+        );
+    }
+
+    // Start !
+    setTimeout(enforceLogin, 100);
+
+    // Tabs
     document.querySelectorAll('.tab-btn').forEach(t => t.addEventListener('click', () => {
         const targetId = t.dataset.target;
-        if (protectedViews.includes(targetId)) {
-            const pass = prompt("Area Riservata allo Staff. Inserisci la password:");
-            if (pass !== STAFF_PASSWORD) { alert("Password errata. Accesso negato."); return; }
+
+        if (!CURRENT_USER) {
+            // Should not happen technically if login is enforced, but safe check
+            enforceLogin();
+            return;
         }
-        document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
-        document.querySelectorAll('.view-content').forEach(x => x.classList.remove('active'));
-        t.classList.add('active');
-        const tg = document.getElementById(targetId);
-        if (tg) tg.classList.add('active');
+
+        if (canAccess(targetId, CURRENT_USER.role)) {
+            logAccessAttempt(targetId, true, CURRENT_USER.username);
+            activateView(targetId, t);
+
+            if (targetId === 'relazioni-view') renderRelazioniList();
+            if (targetId === 'setup-view') renderUsersTable();
+        } else {
+            logAccessAttempt(targetId, false, `${CURRENT_USER.username} (N/A)`);
+            alert("Accesso Negato: Non hai i permessi per questa sezione.");
+        }
     }));
 
+    function activateView(targetId, btn) {
+        document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
+        document.querySelectorAll('.view-content').forEach(x => x.classList.remove('active'));
+        btn.classList.add('active');
+        const tg = document.getElementById(targetId);
+        if (tg) tg.classList.add('active');
+    }
+
     document.querySelectorAll('.sub-tab-btn').forEach(t => t.addEventListener('click', () => {
-        document.querySelectorAll('.sub-tab-btn').forEach(x => x.classList.remove('active'));
-        document.querySelectorAll('.sub-view').forEach(x => x.classList.remove('active'));
+        const targetId = t.dataset.subtarget;
+
+        if (targetId === 'accessi-subview') {
+            renderAccessLogs();
+            renderUsersTable();
+        }
+
+        const parent = t.closest('.view-content') || document;
+        parent.querySelectorAll('.sub-tab-btn').forEach(x => x.classList.remove('active'));
+        parent.querySelectorAll('.sub-view').forEach(x => x.classList.remove('active'));
         t.classList.add('active');
-        const tg = document.getElementById(t.dataset.subtarget);
+        const tg = document.getElementById(targetId);
         if (tg) tg.classList.add('active');
     }));
 
@@ -479,7 +1201,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const subTab = document.querySelector(`[data-subtarget="${targetView}"]`);
         if (subTab) {
             const statTab = document.querySelector('[data-target="stats-container-view"]');
-            if (statTab) statTab.click();
+            if (statTab) {
+                statTab.click();
+            }
             subTab.click();
         }
     }
