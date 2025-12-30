@@ -870,11 +870,24 @@ function renderPendingRequestsTable() {
         return;
     }
 
+    const availableRoles = [
+        "Admin", "Atleta +18", "Atleta -18",
+        "Dirigenza", "Genitore", "Ospite", "Staff Tecnico"
+    ];
+
     reqs.forEach((r, index) => {
+        let options = availableRoles.map(role =>
+            `<option value="${role}" ${r.role === role ? 'selected' : ''}>${role}</option>`
+        ).join('');
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${r.email}</td>
-            <td><span class="badge" style="background: var(--border)">${r.role}</span></td>
+            <td>
+                <select id="pending-role-${index}" style="padding: 2px; border-radius: 4px; background: #1e293b; color: white; border: 1px solid #334155;">
+                    ${options}
+                </select>
+            </td>
             <td style="text-align: right;">
                 <button class="btn success" style="padding: 2px 8px; font-size: 0.7rem; margin-right: 5px;" onclick="approveRequest(${index})">✅</button>
                 <button class="btn danger" style="padding: 2px 8px; font-size: 0.7rem;" onclick="rejectRequest(${index})">❌</button>
@@ -889,7 +902,11 @@ window.approveRequest = function (index) {
     const req = reqs[index];
     if (!req) return;
 
-    if (!confirm(`Approvare richiesta per ${req.email}?`)) return;
+    // Get selected role
+    const roleSelect = document.getElementById(`pending-role-${index}`);
+    const selectedRole = roleSelect ? roleSelect.value : req.role;
+
+    if (!confirm(`Approvare richiesta per ${req.email} con ruolo ${selectedRole}?`)) return;
 
     // Add to users
     const users = getUsers();
@@ -897,7 +914,7 @@ window.approveRequest = function (index) {
         alert("Utente già esistente nel sistema.");
         // Should we delete the request? Yes.
     } else {
-        users.push({ username: req.email, password: req.password, role: req.role });
+        users.push({ username: req.email, password: req.password, role: selectedRole });
         saveUsers(users);
     }
 
