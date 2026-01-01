@@ -44,17 +44,11 @@ function renderTabsWithLocks() {
         const text = btn.textContent.replace(' 🔒', '').trim();
         let label = text;
         const keyMap = {
-            "Home": "Home",
-            "Rosa": "Rosa",
-            "Staff": "Staff",
-            "Statistiche": "Statistiche",
-            "Calendario": "Calendario",
-            "Classifica": "Classifica",
-            "Schemi": "Schemi",
-            "Relazioni": "Relazioni",
-            "Setup": "Setup"
+            "HOME": "Home", "ROSA": "Rosa", "STAFF": "Staff",
+            "STATISTICHE": "Statistiche", "CALENDARIO": "Calendario", "CLASSIFICA": "Classifica",
+            "SCHEMI": "Schemi", "RELAZIONI": "Relazioni", "SETUP": "Setup"
         };
-        const permKey = keyMap[label] || label;
+        const permKey = keyMap[label.toUpperCase()] || label;
 
         let allowed = false;
         if (rolePerms) {
@@ -64,8 +58,8 @@ function renderTabsWithLocks() {
             }
         }
 
-        // Safety: Admin is always allowed
-        if (userRole === 'Admin') allowed = true;
+        // Safety: Admin is always allowed (case-insensitive)
+        if (String(userRole).toUpperCase() === 'ADMIN') allowed = true;
 
         if (!allowed) {
             btn.textContent = label + ' 🔒';
