@@ -632,25 +632,33 @@ function renderPresenzeTable() {
 }
 
 function renderRelazioniList() {
-    const list = document.getElementById('relazioni-list');
-    if (!list) return;
+    const container = document.getElementById('relazioni-list'); // Keeping ID but treating as container
+    if (!container) return;
 
-    list.innerHTML = '';
+    container.innerHTML = '';
+    // Use grid class
+    container.className = 'relazioni-grid';
+    container.style.listStyle = 'none'; // Ensure no bullets if it's still ul/li in HTML (it is)
+    container.style.padding = '0';
 
     if (!PRELOADED_DATABASE.relazioni_files || PRELOADED_DATABASE.relazioni_files.length === 0) {
-        list.innerHTML = '<li style="padding: 1rem; color: var(--text-muted); text-align: center;">Nessuna relazione disponibile.</li>';
+        container.innerHTML = '<div style="grid-column: 1/-1; padding: 2rem; color: var(--text-muted); text-align: center;">Nessuna relazione disponibile.</div>';
         return;
     }
 
     PRELOADED_DATABASE.relazioni_files.forEach(file => {
-        const li = document.createElement('li');
-        li.style.margin = '0.5rem 0';
-        li.innerHTML = `
-            <a href="DB/Relazioni/${file}" target="_blank" class="highlight-link" style="display: block; text-align: left;">
-                📄 ${file}
+        // Create a card-like element
+        const item = document.createElement('li'); // Keep li since parent is ul
+        item.className = 'relazioni-item';
+
+        item.innerHTML = `
+            <a href="DB/Relazioni/${file}" target="_blank" class="relazioni-card">
+                <div class="rel-icon">📄</div>
+                <div class="rel-name">${file}</div>
+                <div class="rel-action">Apri PDF</div>
             </a>
         `;
-        list.appendChild(li);
+        container.appendChild(item);
     });
 }
 
