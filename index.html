@@ -261,6 +261,7 @@
                     <button class="sub-tab-btn active" data-subtarget="players-view">Giocatori</button>
                     <button class="sub-tab-btn" data-subtarget="quartets-view">Quartetti</button>
                     <button class="sub-tab-btn" data-subtarget="goalkeepers-view">Portieri</button>
+                    <button class="sub-tab-btn" data-subtarget="performance-view">Performance</button>
                     <button class="sub-tab-btn" data-subtarget="charts-view">Grafici</button>
                 </div>
 
@@ -348,6 +349,20 @@
                         </div>
                     </div>
                 </div>
+                <!-- Performance Sub-View -->
+                <div id="performance-view" class="sub-view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>VALUTAZIONI PERFORMANCE</h2>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div class="performance-table-container">
+                                <!-- Generato da JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Charts Sub-View -->
                 <div id="charts-view" class="sub-view">
                     <div class="charts-container">
@@ -496,14 +511,8 @@
         </div>
     </div>
 
-    <!-- Relazioni View -->
     <div id="relazioni-view" class="view-content">
-        <div class="sub-tabs layout-compact" style="margin-bottom: 1.5rem;">
-            <button class="sub-tab-btn active" data-subtarget="relazioni-content-view">Relazioni</button>
-            <button class="sub-tab-btn" data-subtarget="presenze-view">Performance</button>
-        </div>
-
-        <div class="layout-compact">
+        <div class="layout-compact" style="margin-top: 1.5rem;">
             <!-- Relazioni Sub-View -->
             <div id="relazioni-content-view" class="sub-view active">
                 <div class="card">
@@ -512,22 +521,6 @@
                     </div>
                     <div class="card-body">
                         <ul id="relazioni-list" style="list-style: none; padding: 0;"></ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Presenze Sub-View -->
-            <div id="presenze-view" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>PERFORMANCE</h2>
-                    </div>
-                    <div class="card-body" style="padding: 0;">
-                        <div class="table-responsive">
-                            <table class="styled-table" id="presenze-table" style="font-size: 0.85rem;">
-                                <tbody></tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
