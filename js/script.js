@@ -56,9 +56,12 @@ function renderTabsWithLocks() {
         };
         const permKey = keyMap[label] || label;
 
-        let allowed = true;
-        if (rolePerms && (rolePerms[permKey] === false || rolePerms[permKey] === 0 || String(rolePerms[permKey]).toLowerCase() === 'false')) {
-            allowed = false;
+        let allowed = false;
+        if (rolePerms) {
+            const v = rolePerms[permKey];
+            if (v === true || v === 1 || String(v).toLowerCase() === 'true') {
+                allowed = true;
+            }
         }
 
         if (!allowed) {
