@@ -507,16 +507,13 @@ function renderPresenzeTable() {
             .replace(/\s+/g, ' ')
             .trim();
 
-        // Specific overrides
-        if (sName.includes('riki') || sName.includes('riccardo')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('veneziani riccardo') || playersList[k].toLowerCase().includes('riccardo'));
+        // Specific overrides with HARDCODED IDs for fail-safety
+        if (sName.includes('riki') || sName.includes('riccardo')) return "11";
 
         // Distinguish Niccolò Mantovan vs Nicola Veneziani
-        if (sName.includes('mantovan') || sName.includes('nicolo m') || sName.includes('niccolo m')) {
-            return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('mantovan'));
-        }
-        if (sName.includes('nicola v') || sName.includes('veneziani nicola')) {
-            return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('veneziani nicola'));
-        }
+        if (sName.includes('mantovan') || sName.includes('nicolo m') || sName.includes('niccolo m')) return "9";
+
+        if (sName.includes('nicola v') || sName.includes('veneziani nicola')) return "10";
 
         // Fallback for just "Nicola" or "Nicolo" if ambiguous, default to one or check more
         if (sName.includes('nicol') || sName.includes('nicola')) {
