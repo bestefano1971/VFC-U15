@@ -500,11 +500,26 @@ function renderPresenzeTable() {
 
     // Helper to fuzzy find player ID
     const findPlayerId = (sheetName) => {
-        const sName = sheetName.toLowerCase().replace('.', '').trim();
+        const sName = sheetName.toLowerCase().replace('.', ' ').trim(); // Replace dot with space for "Nicolo M." -> "Nicolo M "
 
         // Specific overrides
         if (sName.includes('riki') || sName.includes('riccardo')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('veneziani riccardo') || playersList[k].toLowerCase().includes('riccardo'));
-        if (sName.includes('nicol') || sName.includes('nicola')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('veneziani nicola') || playersList[k].toLowerCase().includes('nicola') || playersList[k].toLowerCase().includes('nicolo'));
+
+        // Distinguish Niccolò Mantovan vs Nicola Veneziani
+        if (sName.includes('mantovan') || sName.includes('nicolo m') || sName.includes('niccolo m')) {
+            return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('mantovan'));
+        }
+        if (sName.includes('nicola v') || sName.includes('veneziani nicola')) {
+            return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('veneziani nicola'));
+        }
+
+        // Fallback for just "Nicola" or "Nicolo" if ambiguous, default to one or check more
+        if (sName.includes('nicol') || sName.includes('nicola')) {
+            // Try to match specific surname if present in DB
+            let match = Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('veneziani nicola'));
+            if (match) return match;
+            return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('nicola') || playersList[k].toLowerCase().includes('nicolo'));
+        }
 
         if (sName.includes('rayenne') || sName.includes('rayane')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('rayane') || playersList[k].toLowerCase().includes('daifi'));
         if (sName.includes('yousef')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('youssef'));
@@ -518,17 +533,17 @@ function renderPresenzeTable() {
             if (fName.includes(mainName)) {
                 // If there's an initial in sheetName "Mattia D.", check if full name has "De" or surname match
                 if (parts.length > 1) {
-                    // This is a bit weak but works for now. 
-                    // Refinement: if multiple Mattia, we need more logic. 
-                    // "Mattia A." (Avella) vs "Mattia D." (De Antoni)
-                    if (sName.includes('mattia a') && fName.includes('avella')) return id;
-                    if (sName.includes('mattia d') && fName.includes('antoni')) return id;
+                    // Check if second part (initial) matches start of any subsequent name part
+                    const initial = parts[1].charAt(0);
+                    if (fName.split(' ').some((p, idx) => idx > 0 && p.startsWith(initial))) {
+                        return id;
+                    }
                 } else {
                     return id;
                 }
             }
         }
-        // Fallback: try finding exact match of main name in any part of full name
+        // Fallback
         return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes(mainName));
     };
 
