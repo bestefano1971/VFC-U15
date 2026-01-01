@@ -47,7 +47,7 @@
                 <button class="tab-btn" data-target="classifica-view">Classifica</button>
                 <button class="tab-btn" data-target="schemi-view">Schemi</button>
                 <button class="tab-btn" data-target="relazioni-view">Relazioni 🔒</button>
-                <button class="tab-btn" data-target="setup-view">Setup 🔒</button>
+                <button class="tab-btn" data-target="setup-view">SETUP 🔒</button>
             </div>
 
             <!-- Home View -->
@@ -512,107 +512,124 @@
         </div>
 
         <!-- Accessi Sub-View -->
-        <div id="accessi-subview" class="sub-view active">
-            <!-- Gestione Utenti -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <div class="card-header">
-                    <h2>Gestione Utenti</h2>
-                </div>
-                <div class="card-body">
-                    <div class="add-user-form"
-                        style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-end; flex-wrap: wrap;">
-                        <div style="flex: 1; min-width: 150px;">
-                            <label
-                                style="font-size: 0.8rem; color: #94a3b8; display: block; margin-bottom: 0.25rem;">Email</label>
-                            <input type="email" id="new-username" placeholder="email@esempio.com"
-                                style="width: 100%; padding: 0.5rem; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+        <div id="accessi-subview" class="sub-view active" style="font-size: 0.85rem;">
+            <!-- Main Content Wrapper -->
+            <div style="max-width: 850px; margin: 0 auto;">
+
+                <!-- Gestione Utenti & Pending Requests -->
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+
+                    <!-- Gestione Utenti -->
+                    <div class="card" style="flex: 2; min-width: 350px; margin-bottom: 0;">
+                        <div class="card-header" style="padding: 0.5rem 0.75rem;">
+                            <h2 style="font-size: 1rem; margin: 0;">Gestione Utenti</h2>
                         </div>
-                        <div style="flex: 1; min-width: 150px;">
-                            <label
-                                style="font-size: 0.8rem; color: #94a3b8; display: block; margin-bottom: 0.25rem;">Password</label>
-                            <input type="text" id="new-password"
-                                style="width: 100%; padding: 0.5rem; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+                        <div class="card-body" style="padding: 0.5rem;">
+                            <!-- Add Form -->
+                            <div class="add-user-form"
+                                style="display: flex; gap: 0.25rem; margin-bottom: 0.5rem; align-items: center;">
+                                <div style="flex: 1.5;">
+                                    <input type="email" id="new-username" placeholder="Email"
+                                        style="width: 100%; padding: 0.25rem; font-size: 0.8rem; border-radius: 4px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <input type="text" id="new-password" placeholder="Pass"
+                                        style="width: 100%; padding: 0.25rem; font-size: 0.8rem; border-radius: 4px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+                                </div>
+                                <div style="flex: 0 0 85px;">
+                                    <select id="new-role"
+                                        style="width: 100%; padding: 0.25rem; font-size: 0.8rem; border-radius: 4px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+                                        <option value="Admin">Admin</option>
+                                        <option value="Atleta +18">Atleta+18</option>
+                                        <option value="Atleta -18">Atleta-18</option>
+                                        <option value="Dirigenza">Dirigenza</option>
+                                        <option value="Genitore">Genitore</option>
+                                        <option value="Ospite">Ospite</option>
+                                        <option value="Staff Tecnico">Staff</option>
+                                    </select>
+                                </div>
+                                <button class="btn primary" onclick="addUser()"
+                                    style="height: 26px; padding: 0 6px; font-size: 0.75rem;">➕</button>
+                            </div>
+
+                            <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
+                                <table class="compact-table" id="users-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 45%;">Email</th>
+                                            <th style="width: 25%;">Ruolo</th>
+                                            <th style="width: 20%;">Pwd</th>
+                                            <th style="text-align: right; width: 10%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="white-space: nowrap;"></tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div style="flex: 0 0 120px;">
-                            <label
-                                style="font-size: 0.8rem; color: #94a3b8; display: block; margin-bottom: 0.25rem;">Ruolo</label>
-                            <select id="new-role"
-                                style="width: 100%; padding: 0.5rem; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff;">
-                                <option value="Admin">Admin</option>
-                                <option value="Atleta +18">Atleta +18</option>
-                                <option value="Atleta -18">Atleta -18</option>
-                                <option value="Dirigenza">Dirigenza</option>
-                                <option value="Genitore">Genitore</option>
-                                <option value="Ospite">Ospite</option>
-                                <option value="Staff Tecnico">Staff Tecnico</option>
-                            </select>
-                        </div>
-                        <button class="btn primary" onclick="addUser()" style="height: 38px;">➕ Aggiungi</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="styled-table" id="users-table">
-                            <thead>
-                                <tr>
-                                    <th>Email</th>
-                                    <th>Ruolo</th>
-                                    <th>Password</th>
-                                    <th style="text-align: right;">Azioni</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
                     </div>
 
-                    <!-- Pending Requests Table -->
-                    <div class="table-responsive" style="margin-top: 2rem;">
-                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #fbbf24;">⏳ Richieste in Attesa</h3>
-                        <table class="styled-table" id="pending-users-table">
+                    <!-- Pending Requests -->
+                    <div class="card" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+                        <div class="card-header" style="padding: 0.5rem 0.75rem; background: rgba(251, 191, 36, 0.1);">
+                            <h2 style="font-size: 1rem; margin: 0; color: #fbbf24;">⏳ Pending</h2>
+                        </div>
+                        <div class="card-body" style="padding: 0.5rem;">
+                            <div class="table-responsive" style="max-height: 235px; overflow-y: auto;">
+                                <table class="compact-table" id="pending-users-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 55%;">Email</th>
+                                            <th style="width: 30%;">Ruolo</th>
+                                            <th style="text-align: right; width: 15%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="white-space: nowrap;">
+                                        <tr>
+                                            <td colspan="3" style="text-align:center; color: var(--text-muted);">-
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registro Accessi -->
+                <div class="card">
+                    <div class="card-header"
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem;">
+                        <h2 style="font-size: 1rem; margin: 0;">Registro Accessi</h2>
+                        <div>
+                            <button class="btn primary" onclick="exportBackup()"
+                                style="font-size: 0.7rem; padding: 2px 6px; margin-right: 0.25rem; background-color: #6366f1;">💾
+                                Salva</button>
+                            <button class="btn secondary" onclick="clearAccessLogs()"
+                                style="font-size: 0.7rem; padding: 2px 6px; background-color: #ef4444; color: white;">🗑️
+                                Reset</button>
+                            <input type="file" id="log-upload" style="display: none;" accept=".txt">
+                            <button class="btn secondary" onclick="document.getElementById('log-upload').click()"
+                                style="font-size: 0.7rem; padding: 2px 6px; margin-right: 0.25rem; background-color: #10b981; color: white;">📂
+                                Carica</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                        <table class="compact-table" id="access-log-table">
                             <thead>
                                 <tr>
-                                    <th>Email</th>
-                                    <th>Ruolo Richiesto</th>
-                                    <th style="text-align: right;">Azioni</th>
+                                    <th style="width: 100px;">Data</th>
+                                    <th style="width: 80px;">Orario</th>
+                                    <th style="width: 30%;">Email</th>
+                                    <th style="width: 15%;">Device</th>
+                                    <th style="width: 15%;">Sezione</th>
+                                    <th>Esito</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="3" style="text-align:center; color: var(--text-muted);">Nessuna
-                                        richiesta in attesa.</td>
-                                </tr>
-                            </tbody>
+                            <tbody style="white-space: nowrap;"></tbody>
                         </table>
                     </div>
                 </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h2>Registro Accessi</h2>
-                    <div>
-                        <button class="btn primary" onclick="syncAndSave()"
-                            style="font-size: 0.85rem; margin-right: 0.5rem; background-color: #6366f1;">🔄 Sync &
-                            Salva</button>
-                        <button class="btn secondary" onclick="clearAccessLogs()"
-                            style="font-size: 0.85rem; display: none;">🗑️
-                            Reset</button>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="styled-table" id="access-log-table">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Orario</th>
-                                <th>Email</th>
-                                <th>Device</th>
-                                <th>Sezione</th>
-                                <th>Esito</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
+            </div> <!-- End Main Content Wrapper -->
         </div>
 
         <!-- Files Sub-View -->
