@@ -1068,3 +1068,13 @@ td.highlight-valli {
     font-weight: 600;
     text-transform: uppercase;
 }
+
+/* Performance Table Sticky Column */
+.performance-table th:first-child,
+.performance-table td:first-child {
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.performance-table th {
+    white-space: nowrap;
+}
