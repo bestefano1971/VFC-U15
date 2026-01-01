@@ -149,12 +149,6 @@
                             </div>
                             <div class="player-info">
                                 <div class="player-name">Basso Matteo</div>
-                                <div class="player-stats-mini">
-                                    <div class="stat-mini" style="width:100%">
-                                        <div class="stat-mini-label">Ruolo</div>
-                                        <div class="stat-mini-value">Pres.</div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <!-- DG -->
@@ -167,12 +161,6 @@
                             </div>
                             <div class="player-info">
                                 <div class="player-name">Fasolin Sandro</div>
-                                <div class="player-stats-mini">
-                                    <div class="stat-mini" style="width:100%">
-                                        <div class="stat-mini-label">Ruolo</div>
-                                        <div class="stat-mini-value">D.G.</div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <!-- Resp Tecnico -->
@@ -185,12 +173,6 @@
                             </div>
                             <div class="player-info">
                                 <div class="player-name">Doria Marco</div>
-                                <div class="player-stats-mini">
-                                    <div class="stat-mini" style="width:100%">
-                                        <div class="stat-mini-label">Ruolo</div>
-                                        <div class="stat-mini-value">T.M.</div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <!-- Allenatore -->
@@ -203,12 +185,6 @@
                             </div>
                             <div class="player-info">
                                 <div class="player-name">Benericetti Stefano</div>
-                                <div class="player-stats-mini">
-                                    <div class="stat-mini" style="width:100%">
-                                        <div class="stat-mini-label">Ruolo</div>
-                                        <div class="stat-mini-value">Mister</div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <!-- Prep Atletico -->
@@ -221,12 +197,6 @@
                             </div>
                             <div class="player-info">
                                 <div class="player-name">Naccari Claudia</div>
-                                <div class="player-stats-mini">
-                                    <div class="stat-mini" style="width:100%">
-                                        <div class="stat-mini-label">Ruolo</div>
-                                        <div class="stat-mini-value">Prof.</div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <!-- Prep Portieri -->
@@ -239,12 +209,6 @@
                             </div>
                             <div class="player-info">
                                 <div class="player-name">Duse Devid</div>
-                                <div class="player-stats-mini">
-                                    <div class="stat-mini" style="width:100%">
-                                        <div class="stat-mini-label">Ruolo</div>
-                                        <div class="stat-mini-value">Prep. GK</div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <!-- Dirigente -->
@@ -257,12 +221,6 @@
                             </div>
                             <div class="player-info">
                                 <div class="player-name">Loffreda Johnny</div>
-                                <div class="player-stats-mini">
-                                    <div class="stat-mini" style="width:100%">
-                                        <div class="stat-mini-label">Ruolo</div>
-                                        <div class="stat-mini-value">Accomp.</div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -631,13 +589,11 @@
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <h2>Registro Accessi</h2>
                     <div>
-                        <button class="btn primary" onclick="exportBackup()"
-                            style="font-size: 0.85rem; margin-right: 0.5rem;"
-                            title="Scarica file per aggiornare Excel">💾 Salva</button>
-                        <button class="btn primary" onclick="forceSync()"
-                            style="font-size: 0.85rem; margin-right: 0.5rem; background-color: #f59e0b;">🔄 Sync
-                            Ora</button>
-                        <button class="btn secondary" onclick="clearAccessLogs()" style="font-size: 0.85rem;">🗑️
+                        <button class="btn primary" onclick="syncAndSave()"
+                            style="font-size: 0.85rem; margin-right: 0.5rem; background-color: #6366f1;">🔄 Sync &
+                            Salva</button>
+                        <button class="btn secondary" onclick="clearAccessLogs()"
+                            style="font-size: 0.85rem; display: none;">🗑️
                             Reset</button>
                     </div>
                 </div>
