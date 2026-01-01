@@ -311,6 +311,13 @@ header {
     margin: 0 auto;
 }
 
+/* Ensure sub-tabs inside compact layout fill space nicely */
+.sub-tabs.layout-compact .sub-tab-btn {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+}
+
 /* Debug */
 .debug-panel {
     background: #000;
