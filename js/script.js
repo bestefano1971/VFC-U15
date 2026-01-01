@@ -301,6 +301,52 @@ function updateUI() {
                 const isGk = role === 'PORTIERE' || (APP_STATE.goalkeepers && APP_STATE.goalkeepers[id]);
                 const isCaptain = id === 4; // Biolcati is Captain
 
+                // Attendance Data Extraction (Inner Helper)
+                const getAttendance = () => {
+                    if (typeof PRELOADED_DATABASE === 'undefined' || !PRELOADED_DATABASE.presenze) return 0;
+                    const data = PRELOADED_DATABASE.presenze;
+                    const headerRow = data[0];
+                    const totalRow = data[data.length - 1];
+                    const playersList = PRELOADED_DATABASE.players_list || {};
+
+                    const findPlayerIdHelper = (sheetName) => {
+                        const sName = sheetName.toLowerCase()
+                            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                            .replace(/\./g, ' ')
+                            .replace(/\s+/g, ' ')
+                            .trim();
+                        if (sName.includes('riki') || sName.includes('riccardo')) return "11";
+                        if (sName.includes('mantovan') || sName.includes('nicolo m') || sName.includes('niccolo m')) return "9";
+                        if (sName.includes('nicola v') || sName.includes('veneziani nicola')) return "10";
+                        if (sName.includes('nicol') || sName.includes('nicola')) {
+                            let match = Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('veneziani nicola'));
+                            if (match) return match;
+                            return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('nicola') || playersList[k].toLowerCase().includes('nicolo'));
+                        }
+                        if (sName.includes('rayenne') || sName.includes('rayane')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('rayane') || playersList[k].toLowerCase().includes('daifi'));
+                        if (sName.includes('yousef')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('youssef'));
+                        const parts = sName.split(' ');
+                        const mainName = parts[0];
+                        for (const [pid, fullName] of Object.entries(playersList)) {
+                            const fName = fullName.toLowerCase();
+                            if (fName.includes(mainName)) {
+                                if (parts.length > 1) {
+                                    const initial = parts[1].charAt(0);
+                                    if (fName.split(' ').some((p, idx) => idx > 0 && p.startsWith(initial))) return pid;
+                                } else return pid;
+                            }
+                        }
+                        return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes(mainName));
+                    };
+
+                    for (let i = 1; i < headerRow.length; i++) {
+                        if (findPlayerIdHelper(headerRow[i]) == id) return totalRow[i] || 0;
+                    }
+                    return 0;
+                };
+
+                const presenzeCount = getAttendance();
+
                 const card = document.createElement('div');
                 card.className = 'player-card';
                 card.innerHTML = `
@@ -315,6 +361,7 @@ function updateUI() {
                     <div class="player-stats-mini">
                         <div class="stat-mini"><div class="stat-mini-label">MIN</div><div class="stat-mini-value">${Math.floor(p.minutes || 0)}</div></div>
                         <div class="stat-mini"><div class="stat-mini-label">${isGk ? 'GS' : 'GOAL'}</div><div class="stat-mini-value">${isGk ? (p.gs || 0) : (p.goals || 0)}</div></div>
+                        <div class="stat-mini"><div class="stat-mini-label">PRE</div><div class="stat-mini-value">${presenzeCount}</div></div>
                         <div class="stat-mini">
                             <div class="stat-mini-label">PR-PP</div>
                             <div class="stat-mini-value" style="color: ${(p.pr || 0) - (p.pp || 0) > 0 ? 'var(--success)' : ((p.pr || 0) - (p.pp || 0) < 0 ? 'var(--danger)' : 'var(--text-muted)')}">
