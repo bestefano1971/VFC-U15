@@ -553,14 +553,28 @@ function renderPresenzeTable() {
     const stats = [];
     for (let i = 1; i < headerRow.length; i++) {
         if (!headerRow[i]) continue;
-        const name = headerRow[i];
+        let name = headerRow[i];
         const pid = findPlayerId(name);
+
+        // If ID matches, use the official full name from DB for display
+        if (pid && playersList[pid]) {
+            name = playersList[pid];
+        }
+
         stats.push({
             name: name,
             total: totalRow[i] || 0,
             id: pid
         });
     }
+
+    // DEBUG: Check specific problematic players
+    const problematicIDs = ["9", "10", "11"];
+    stats.forEach(s => {
+        if (s.id && problematicIDs.includes(String(s.id))) {
+            console.log(`[DEBUG PRESENZE] Found problematic ID ${s.id} (${s.name}) with total ${s.total}`);
+        }
+    });
 
     // Sort by Total Descending
     stats.sort((a, b) => b.total - a.total);
