@@ -646,13 +646,14 @@ function renderPresenzeTable() {
 
     let html = styleBlock + '<div class="attendance-grid">';
     stats.forEach(s => {
-        // Photo URL
-        const photoUrl = s.id ? `assets/players/${s.id}.png` : 'assets/staff/placeholder.png'; // Fallback to a generic placeholder if we had one, or handle onerror
+        // Photo URL with cache busting
+        const photoUrl = s.id ? `assets/players/${s.id}.png?v=${new Date().getTime()}` : 'assets/staff/placeholder.png';
 
         html += `
             <div class="attendance-card">
                 <div class="att-photo">
-                    <img src="${photoUrl}" alt="${s.name}" onerror="this.src='https://via.placeholder.com/150?text=USER'">
+                    <img src="${photoUrl}" alt="${s.name}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <div style="display:none; width:100%; height:100%; align-items:center; justify-content:center; background:#334155; border-radius:50%; font-size:2rem;">👤</div>
                 </div>
                 <div class="att-name">${s.name}</div>
                 <div class="att-value">${s.total}</div>
