@@ -500,7 +500,12 @@ function renderPresenzeTable() {
 
     // Helper to fuzzy find player ID
     const findPlayerId = (sheetName) => {
-        const sName = sheetName.toLowerCase().replace('.', ' ').trim(); // Replace dot with space for "Nicolo M." -> "Nicolo M "
+        // Normalize: lowercase, remove accents, remove dots, extra spaces
+        const sName = sheetName.toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/\./g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
 
         // Specific overrides
         if (sName.includes('riki') || sName.includes('riccardo')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('veneziani riccardo') || playersList[k].toLowerCase().includes('riccardo'));
