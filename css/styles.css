@@ -215,6 +215,12 @@ header {
     border-bottom: 2px solid var(--primary);
 }
 
+.tab-btn.locked-tab {
+    color: var(--danger);
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
 /* Cards & Tables */
 .card {
     background: var(--card-bg);
@@ -729,7 +735,7 @@ td.highlight-valli {
 
 .player-stats-mini {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 0.75rem;
 }
 
