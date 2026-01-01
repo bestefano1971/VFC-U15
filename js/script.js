@@ -501,8 +501,11 @@ function renderPresenzeTable() {
     // Helper to fuzzy find player ID
     const findPlayerId = (sheetName) => {
         const sName = sheetName.toLowerCase().replace('.', '').trim();
+
         // Specific overrides
-        if (sName.includes('riki')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('riccardo'));
+        if (sName.includes('riki') || sName.includes('riccardo')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('veneziani riccardo') || playersList[k].toLowerCase().includes('riccardo'));
+        if (sName.includes('nicol') || sName.includes('nicola')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('veneziani nicola') || playersList[k].toLowerCase().includes('nicola') || playersList[k].toLowerCase().includes('nicolo'));
+
         if (sName.includes('rayenne') || sName.includes('rayane')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('rayane') || playersList[k].toLowerCase().includes('daifi'));
         if (sName.includes('yousef')) return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes('youssef'));
 
