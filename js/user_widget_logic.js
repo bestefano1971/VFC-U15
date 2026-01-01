@@ -1,15 +1,15 @@
 
 // --- User Widget Logic ---
 function renderUserHeader() {
-    if (!CURRENT_USER) return;
+    if (!window.CURRENT_USER) return;
     const nameEl = document.getElementById('current-user-name');
     const roleEl = document.getElementById('current-user-role');
     const avatarEl = document.getElementById('current-user-avatar');
 
-    if (nameEl) nameEl.textContent = CURRENT_USER.username.split('@')[0];
-    if (roleEl) roleEl.textContent = CURRENT_USER.role;
+    if (nameEl) nameEl.textContent = window.CURRENT_USER.username.split('@')[0];
+    if (roleEl) roleEl.textContent = window.CURRENT_USER.role;
     if (avatarEl) {
-        const initial = CURRENT_USER.username.charAt(0).toUpperCase();
+        const initial = window.CURRENT_USER.username.charAt(0).toUpperCase();
         avatarEl.textContent = initial;
     }
 }
@@ -58,8 +58,8 @@ function fetchActiveUsers() {
     });
 
     // Ensure Current user is present and up to date
-    if (CURRENT_USER) {
-        const id = `${CURRENT_USER.username} (${CURRENT_USER.role})`;
+    if (window.CURRENT_USER) {
+        const id = `${window.CURRENT_USER.username} (${window.CURRENT_USER.role})`;
         userActivity[id] = new Date();
     }
 
@@ -71,7 +71,7 @@ function fetchActiveUsers() {
     }
 
     sortedUsers.forEach(([name, time]) => {
-        const isMe = CURRENT_USER && name.includes(CURRENT_USER.username);
+        const isMe = window.CURRENT_USER && name.includes(window.CURRENT_USER.username);
 
         // Format time
         const diffMins = Math.floor((now - time) / 60000);
@@ -94,7 +94,7 @@ function fetchActiveUsers() {
 
 window.logout = function () {
     if (confirm("Vuoi disconnetterti?")) {
-        CURRENT_USER = null;
+        window.CURRENT_USER = null;
         localStorage.removeItem('currentUserRole');
         location.reload();
     }

@@ -1207,7 +1207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    let CURRENT_USER = null;
+    window.CURRENT_USER = null;
 
     // Permissions Logic
     function canAccess(viewId, role) {
@@ -1226,7 +1226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showLoginModal(
             (role, username) => {
                 // Success
-                CURRENT_USER = { role, username };
+                window.CURRENT_USER = { role, username };
                 localStorage.setItem('currentUserRole', role);
                 renderTabsWithLocks();
                 renderUserHeader(); // Update Header Widget
@@ -1254,20 +1254,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.tab-btn').forEach(t => t.addEventListener('click', () => {
         const targetId = t.dataset.target;
 
-        if (!CURRENT_USER) {
+        if (!window.CURRENT_USER) {
             enforceLogin();
             return;
         }
 
         if (t.classList.contains('locked-tab') || t.getAttribute('data-locked') === 'true') {
             // Access Denied
-            logAccessAttempt(targetId, false, `${CURRENT_USER.username} (Denied)`);
+            logAccessAttempt(targetId, false, `${window.CURRENT_USER.username} (Denied)`);
             alert("⛔ Sezione bloccata per il tuo ruolo.");
             return;
         }
 
         // Logic from canAccess is now handled by renderTabsWithLocks adding the class
-        logAccessAttempt(targetId, true, CURRENT_USER.username);
+        logAccessAttempt(targetId, true, window.CURRENT_USER.username);
         activateView(targetId, t);
 
         if (targetId === 'relazioni-view') renderRelazioniList();
