@@ -27,7 +27,7 @@ function renderTabsWithLocks() {
     const tabsContainer = document.querySelector('.tabs');
     if (!tabsContainer) return;
 
-    let rolePerms = permissions.find(p => p.Ruolo === userRole);
+    let rolePerms = permissions.find(p => p.Ruolo === userRole || p.Ruolo_Accesso === userRole);
 
     // Default Fallback
     if (!rolePerms) {
