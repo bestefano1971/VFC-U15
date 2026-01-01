@@ -1229,6 +1229,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 CURRENT_USER = { role, username };
                 localStorage.setItem('currentUserRole', role);
                 renderTabsWithLocks();
+                renderUserHeader(); // Update Header Widget
 
                 logAccessAttempt('APP_START', true, `${username} (${role})`);
 
