@@ -305,6 +305,12 @@ header {
     display: block;
 }
 
+/* Compact Layout Utility */
+.layout-compact {
+    max-width: 850px;
+    margin: 0 auto;
+}
+
 /* Debug */
 .debug-panel {
     background: #000;
