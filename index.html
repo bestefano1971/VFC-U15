@@ -7,6 +7,7 @@
     <title>Valli Futsal Chioggia Under 15 - Campionato Regionale - Stagione 2025/2026</title>
     <!-- CSS -->
     <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/user-widget.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Preloaded Database -->
@@ -29,6 +30,26 @@
                     <p class="header-subtitle">Camp. Reg. di Promozione Under 15</p>
                     <div style="display: flex; align-items: center; gap: 1rem;">
                         <p class="header-season">Stagione 2025/2026</p>
+                    </div>
+                </div>
+            </div>
+            <!-- User Widget -->
+            <div class="user-widget-container" id="user-widget">
+                <div class="user-badge" id="user-badge" onclick="toggleUserPanel()">
+                    <div class="user-avatar" id="current-user-avatar">👤</div>
+                    <div class="user-details">
+                        <span class="user-name" id="current-user-name">Ospite</span>
+                        <span class="user-role" id="current-user-role">...</span>
+                    </div>
+                </div>
+                <!-- Dropdown Panel (Hidden by default) -->
+                <div class="user-panel" id="user-panel">
+                    <h3>Utenti Recentemente Attivi</h3>
+                    <ul class="active-users-list" id="active-users-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                    <div class="user-panel-footer">
+                        <button class="btn secondary small" onclick="logout()">Disconnetti</button>
                     </div>
                 </div>
             </div>
@@ -746,6 +767,7 @@
     </div>
 
     <!-- Main Logic Script (No Module) -->
+    <script src="./js/user_widget_logic.js"></script>
     <script src="./js/script.js"></script>
 
 </body>
