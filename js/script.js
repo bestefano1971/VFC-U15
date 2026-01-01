@@ -64,6 +64,9 @@ function renderTabsWithLocks() {
             }
         }
 
+        // Safety: Admin is always allowed
+        if (userRole === 'Admin') allowed = true;
+
         if (!allowed) {
             btn.textContent = label + ' 🔒';
             btn.setAttribute('data-locked', 'true');
