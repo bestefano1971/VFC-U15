@@ -461,7 +461,7 @@ function updateUI() {
         renderPlayersTable(activePlayers);
         renderGoalkeepersTable(activeGoalkeepers);
         renderQuartetsTable();
-        renderPresenzeTable();
+        renderPerformanceTable();
         renderRelazioniList();
         renderFilesTable();
         // Update Tabs Locks
@@ -525,17 +525,108 @@ function renderQuartetsTable() {
     });
 }
 
-function renderPresenzeTable() {
-    const container = document.querySelector('#presenze-view .card-body');
+function renderPerformanceTable() {
+    const container = document.querySelector('#performance-view .performance-table-container');
     if (!container) return;
 
-    // Clear existing content (effectively removing the cards)
-    container.innerHTML = `
-        <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
-            <p>Sezione Performance in allestimento.</p>
+    if (!PRELOADED_DATABASE.valutazione_generale || PRELOADED_DATABASE.valutazione_generale.length < 5) {
+        container.innerHTML = `
+            <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                <p>Nessun dato di valutazione trovato nel database.</p>
+                <div style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.7;">
+                    File: Valutazione giocatori.xlsx > Foglio: VALUTAZIONE GENERALE
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    const data = PRELOADED_DATABASE.valutazione_generale;
+    const namesRow = data[1] || [];
+
+    // Identified player columns (exclude "COGNOME E NOME" and empty cells)
+    const playerCols = [];
+    for (let j = 1; j < namesRow.length; j++) {
+        const cellValue = String(namesRow[j] || "").toUpperCase().trim();
+        if (cellValue !== "" && cellValue !== "COGNOME E NOME") {
+            playerCols.push(j);
+        }
+    }
+
+    if (playerCols.length === 0) {
+        container.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">Struttura dati valutazione non riconosciuta.</div>';
+        return;
+    }
+
+    let html = `
+        <div class="table-responsive">
+            <table class="styled-table performance-table" style="font-size: 0.8rem; border-collapse: separate; border-spacing: 0;">
+                <thead>
+                    <tr>
+                        <th style="position: sticky; left: 0; background: var(--card-bg); z-index: 10; border-right: 2px solid var(--border);">Parametro</th>
+    `;
+
+    // Headers: Player Names
+    playerCols.forEach(j => {
+        html += `<th style="text-align: center; min-width: 100px;">${namesRow[j]}</th>`;
+    });
+
+    html += `
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    // Data Rows (from index 2 onwards)
+    for (let i = 2; i < data.length; i++) {
+        const row = data[i];
+        if (!row || row.length === 0) continue;
+
+        const label = String(row[0] || "").trim();
+        if (!label || label === "" || label.toUpperCase() === "VALUTAZIONE GENERALE" || label.toUpperCase() === "ANNO") continue;
+
+        // Skip decorative rows with no data for players
+        const hasData = playerCols.some(j => row[j] !== undefined && row[j] !== null && row[j] !== "");
+        if (!hasData) continue;
+
+        html += `
+            <tr>
+                <td style="position: sticky; left: 0; background: var(--card-bg); z-index: 5; font-weight: 700; border-right: 2px solid var(--border);">${label}</td>
+        `;
+
+        playerCols.forEach(j => {
+            let val = row[j];
+            let cellStyle = "text-align: center;";
+
+            if (typeof val === 'number') {
+                if (val > 0 && val < 50) val = val.toFixed(1);
+                else if (val >= 50) val = Math.round(val);
+
+                if (val >= 75) cellStyle += "color: var(--success); font-weight: bold;";
+                else if (val > 0 && val < 60) cellStyle += "color: var(--danger);";
+            } else if (typeof val === 'string') {
+                if (val.includes('T00:00:00')) val = val.split('T')[0];
+                if (val.toUpperCase() === 'DX') cellStyle += "color: #ffaa00;";
+                if (val.toUpperCase() === 'SX') cellStyle += "color: #0088ff;";
+            }
+
+            html += `<td style="${cellStyle}">${val === 0 ? '-' : (val || '-')}</td>`;
+        });
+
+        html += `</tr>`;
+    }
+
+    html += `
+                </tbody>
+            </table>
+        </div>
+        <div style="padding: 1rem; font-size: 0.75rem; color: var(--text-muted); text-align: right;">
+            * Valutazioni rilevate automaticamente
         </div>
     `;
+
+    container.innerHTML = html;
 }
 
 function renderRelazioniList() {
