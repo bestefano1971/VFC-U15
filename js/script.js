@@ -177,24 +177,24 @@ function processTimelineSheet(rows, sheetName) {
         addStat(APP_STATE.quartets, quartetKey, 'minutes', duration, { members: qMembers });
 
         const scorerId = row[IDX.GF];
-        if (hasValue(scorerId)) {
+        if (hasValue(scorerId) && scorerId != 0) {
             APP_STATE.totalGF++;
             addStat(APP_STATE.players, scorerId, 'goals', 1);
             qMembers.forEach(pid => addStat(APP_STATE.players, pid, 'plusMinus', 1));
             addStat(APP_STATE.quartets, quartetKey, 'gf', 1);
         }
-        if (hasValue(row[IDX.GS])) {
+        if (hasValue(row[IDX.GS]) && row[IDX.GS] != 0) {
             APP_STATE.totalGS++;
             qMembers.forEach(pid => { addStat(APP_STATE.players, pid, 'gs', 1); addStat(APP_STATE.players, pid, 'plusMinus', -1); });
             addStat(APP_STATE.quartets, quartetKey, 'gs', 1);
         }
-        if (hasValue(row[IDX.TF])) { addStat(APP_STATE.players, row[IDX.TF], 'shotsOn', 1); addStat(APP_STATE.quartets, quartetKey, 'shotsOn', 1); }
-        if (hasValue(row[IDX.TO])) { addStat(APP_STATE.players, row[IDX.TO], 'shotsOff', 1); addStat(APP_STATE.quartets, quartetKey, 'shotsOff', 1); }
-        if (hasValue(row[IDX.GS])) addStat(APP_STATE.quartets, quartetKey, 'shotsAgainst', 1);
-        if (hasValue(row[IDX.PP])) { addStat(APP_STATE.players, row[IDX.PP], 'pp', 1); addStat(APP_STATE.quartets, quartetKey, 'pp', 1); }
-        if (hasValue(row[IDX.PR])) { addStat(APP_STATE.players, row[IDX.PR], 'pr', 1); addStat(APP_STATE.quartets, quartetKey, 'pr', 1); }
-        if (hasValue(row[IDX.FF])) addStat(APP_STATE.players, row[IDX.FF], 'ff', 1);
-        if (hasValue(row[IDX.FS])) addStat(APP_STATE.players, row[IDX.FS], 'fs', 1);
+        if (hasValue(row[IDX.TF]) && row[IDX.TF] != 0) { addStat(APP_STATE.players, row[IDX.TF], 'shotsOn', 1); addStat(APP_STATE.quartets, quartetKey, 'shotsOn', 1); }
+        if (hasValue(row[IDX.TO]) && row[IDX.TO] != 0) { addStat(APP_STATE.players, row[IDX.TO], 'shotsOff', 1); addStat(APP_STATE.quartets, quartetKey, 'shotsOff', 1); }
+        if (hasValue(row[IDX.GS]) && row[IDX.GS] != 0) addStat(APP_STATE.quartets, quartetKey, 'shotsAgainst', 1);
+        if (hasValue(row[IDX.PP]) && row[IDX.PP] != 0) { addStat(APP_STATE.players, row[IDX.PP], 'pp', 1); addStat(APP_STATE.quartets, quartetKey, 'pp', 1); }
+        if (hasValue(row[IDX.PR]) && row[IDX.PR] != 0) { addStat(APP_STATE.players, row[IDX.PR], 'pr', 1); addStat(APP_STATE.quartets, quartetKey, 'pr', 1); }
+        if (hasValue(row[IDX.FF]) && row[IDX.FF] != 0) addStat(APP_STATE.players, row[IDX.FF], 'ff', 1);
+        if (hasValue(row[IDX.FS]) && row[IDX.FS] != 0) addStat(APP_STATE.players, row[IDX.FS], 'fs', 1);
     }
 }
 
@@ -272,9 +272,10 @@ function updateUI() {
         }
 
         // Goal Calculation Logic (Max of Sync Files and Classifica)
-        const finalGF = Math.max(APP_STATE.totalGF || 0, classGF);
-        const finalGS = Math.max(APP_STATE.totalGS || 0, classGS);
-        const finalPG = Math.max((APP_STATE.processedFiles || []).length, classPG);
+        // Goal Calculation Logic (Strictly from processed files for consistency)
+        const finalGF = APP_STATE.totalGF || 0;
+        const finalGS = APP_STATE.totalGS || 0;
+        const finalPG = (APP_STATE.processedFiles || []).length; // Use loaded files count for consistency
 
         const matchesEl = document.getElementById('home-matches');
         const gfEl = document.getElementById('home-gf');
@@ -805,7 +806,7 @@ window.exportBackup = function () {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    alert("File 'backup_data.json' scaricato!\n\nSalvalo nella cartella dell'app e poi premi 'Sincronizza ora' per aggiornare il file Excel LEGENDA.");
+    alert("File di backup scaricato.\n\nSe 'sync_data.py' è in esecuzione (monitoraggio), l'aggiornamento sarà automatico.\nAltrimenti avvia lo script per completare la registrazione.");
 };
 
 window.forceSync = function () {
@@ -976,6 +977,15 @@ window.approveRequest = function (index) {
     } else {
         users.push({ username: req.email, password: req.password, role: selectedRole });
         saveUsers(users);
+
+        // Notify User via Email (Client-side trigger)
+        const subject = encodeURIComponent('Richiesta Accesso App Approvata');
+        const body = encodeURIComponent(`Ciao,\n\nLa tua richiesta di accesso è stata approvata.\n\nUsername: ${req.email}\nPassword: ${req.password}\nRuolo: ${selectedRole}\n\nPuoi ora effettuare il login.`);
+        // Note: Opening multiple mailto links rapidly might be blocked by browsers, but for single approval it's fine.
+        // We use setTimeout to ensure UI updates aren't blocked.
+        setTimeout(() => {
+            window.open(`mailto:${req.email}?subject=${subject}&body=${body}`);
+        }, 500);
     }
 
     // Remove from pending
@@ -1046,15 +1056,7 @@ function renderAccessLogs() {
 }
 
 
-window.syncAndSave = function () {
-    // 1. Export Data (Save)
-    exportBackup();
 
-    // 2. Force Sync after a short delay to allow file download to start
-    setTimeout(() => {
-        forceSync();
-    }, 1000);
-}
 
 window.clearAccessLogs = function () {
     if (confirm("Sei sicuro di voler cancellare il registro accessi?")) {
@@ -1190,7 +1192,13 @@ document.addEventListener('DOMContentLoaded', () => {
             pending.push({ email, password, role, date: new Date().toISOString() });
             savePendingRequests(pending);
 
-            alert("Richiesta inviata! Attendi l'approvazione dell'Admin.");
+            // Email Notification to Admin
+            const adminEmail = 'be.stefano1971@gmail.com'; // Default admin email
+            const subject = encodeURIComponent('Nuova Richiesta Registrazione App');
+            const body = encodeURIComponent(`Un nuovo utente ha richiesto l'accesso:\n\nEmail: ${email}\nRuolo: ${role}\n\nAccedi all'app per approvare.`);
+            window.open(`mailto:${adminEmail}?subject=${subject}&body=${body}`);
+
+            alert("Richiesta inviata! Si aprirà il tuo client di posta per notificare l'amministratore.");
             regModal.style.display = 'none';
             document.getElementById('reg-email').value = '';
             document.getElementById('reg-password').value = '';
@@ -1331,5 +1339,131 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     loadDB();
 
-});
+    // --- Log Upload Logic ---
+    const logUpload = document.getElementById('log-upload');
+    if (logUpload) {
+        logUpload.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
 
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const text = e.target.result;
+                parseAndRestoreLog(text);
+            };
+            reader.readAsText(file);
+            // Reset input so same file can be selected again
+            e.target.value = '';
+        });
+    }
+
+    function parseAndRestoreLog(text) {
+        try {
+            const lines = text.split('\n');
+            let usersCount = 0;
+            let logsCount = 0;
+
+            const usersMap = {};
+            const newLogs = [];
+            const logSignatures = new Set();
+
+            // Simple state machine parser
+            let currentSection = null; // 'USERS', 'LOGS'
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line || line.startsWith('=')) return;
+
+                if (line.includes('[UTENTI -')) {
+                    currentSection = 'USERS';
+                    return;
+                }
+                if (line.includes('[ACCESS LOGS -')) {
+                    currentSection = 'LOGS';
+                    return;
+                }
+
+                if (currentSection === 'USERS' && line.startsWith('User:')) {
+                    // Parse: User: admin | Role: Admin | Pwd: ...
+                    try {
+                        const parts = line.split('|').map(s => s.trim());
+                        const username = parts[0].split(':')[1].trim();
+                        const role = parts[1].split(':')[1].trim();
+                        const pwd = parts[2].split(':')[1].trim();
+
+                        if (username) {
+                            usersMap[username] = { username, role, password: pwd };
+                        }
+                    } catch (e) {
+                        console.warn("Skipping malformed user line:", line);
+                    }
+                } else if (currentSection === 'LOGS') {
+                    // Parse: 01/01/2026 10:00:00 | Admin | Setup | OK: true
+                    // OR ISO format in older logs
+                    try {
+                        const parts = line.split('|').map(s => s.trim());
+                        if (parts.length >= 4) {
+                            let dateStr = parts[0];
+                            const role = parts[1];
+                            const section = parts[2];
+                            const successStr = parts[3].split(':')[1].trim(); // OK: true -> true
+
+                            // Convert italian date format back to ISO for storage if needed, 
+                            // or keep as is. Our renderAccessLogs expects ISO for 'new Date()'.
+                            // If it's DD/MM/YYYY HH:MM:SS, we need to convert.
+                            if (dateStr.includes('/')) {
+                                const [dPart, tPart] = dateStr.split(' ');
+                                const [day, month, year] = dPart.split('/');
+                                // Reformat to YYYY-MM-DDTHH:MM:SS for Date constructor consistency
+                                dateStr = `${year}-${month}-${day}T${tPart}`;
+                            }
+
+                            const logObj = {
+                                date: dateStr,
+                                role: role,
+                                section: section,
+                                success: successStr === 'true' || successStr === 'True' || successStr === '1',
+                                device: 'Restored'
+                            };
+
+                            // Deduplication logic
+                            const signature = `${logObj.date}|${logObj.role}|${logObj.section}|${logObj.success}`;
+                            if (!logSignatures.has(signature)) {
+                                logSignatures.add(signature);
+                                newLogs.push(logObj);
+                                logsCount++;
+                            }
+                        }
+                    } catch (e) {
+                        console.warn("Skipping malformed log line:", line);
+                    }
+                }
+            });
+
+            const newUsers = Object.values(usersMap);
+            usersCount = newUsers.length;
+
+            if (newUsers.length > 0) {
+                saveUsers(newUsers);
+                initUsers(); // Refresh global user state
+            }
+
+            if (newLogs.length > 0) {
+                // Merge or replace? Let's prepend distinct ones or just replace to be safe as a "Restore".
+                // User asked to "Carica" (Load). Usually implies adding or restoring state.
+                // Given the sync log accumulates history, we can just save it.
+                // Sort descending by date (newest first)
+                newLogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+                localStorage.setItem('accessLogs', JSON.stringify(newLogs)); // Save sorted logs
+                renderAccessLogs();
+            }
+
+            alert(`Ripristino Completato!\n\nUtenti caricati: ${usersCount}\nLog caricati: ${logsCount}`);
+
+        } catch (e) {
+            console.error(e);
+            alert("Errore durante il parsing del file di log. Assicurati che sia un file 'sync_log.txt' valido.");
+        }
+    }
+
+});
