@@ -1062,6 +1062,10 @@ td.highlight-valli {
 
 .modal-input:focus {
     outline: none;
+    white-space: nowrap;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-bottom: 1px solid var(--border);
     border-color: #6366f1 !important;
     box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
@@ -1069,7 +1073,7 @@ td.highlight-valli {
 /* Compact Table for Setup */
 .compact-table {
     width: 100%;
-    table-layout: fixed;
+    /* table-layout: fixed; Removed to allow tables to expand naturally */
     border-collapse: collapse;
 }
 
@@ -1077,10 +1081,6 @@ td.highlight-valli {
 .compact-table td {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
-    border-bottom: 1px solid var(--border);
 }
 
 .compact-table th {
@@ -1150,4 +1150,41 @@ td.highlight-valli {
     color: var(--primary);
     text-transform: uppercase;
     font-weight: 700;
+}
+
+/* Added by Agent to ensure visibility */
+.sub-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+}
+
+.sub-tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.sub-tab-btn.active {
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+}
+
+.sub-view {
+    display: none;
+}
+
+.sub-view.active {
+    display: block;
+}
+
+.layout-compact {
+    max-width: 900px;
+    margin: 0 auto;
 }
