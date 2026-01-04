@@ -643,27 +643,43 @@
                             <div class="card-header">
                                 <h2>TABELLA PERMESSI E PRIVACY</h2>
                             </div>
-                            <div class="table-responsive">
-                                <table class="styled-table" id="privacy-table">
+                            <div class="card-body" style="padding: 1.5rem;">
+                                <div
+                                    style="margin-bottom: 1.5rem; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; border-left: 3px solid var(--primary); padding-left: 1rem; background: rgba(99, 102, 241, 0.05); padding: 1rem;">
+                                    <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--text);">Motivazioni e
+                                        Gestione Privacy</h3>
+                                    <p style="margin-bottom: 0;">
+                                        La corretta gestione dei permessi è essenziale per garantire la
+                                        <strong>riservatezza dei dati sensibili</strong> e l'integrità delle
+                                        informazioni tecniche.
+                                        L'accesso alle diverse sezioni dell'applicazione è regolato in base al ruolo
+                                        ricoperto, secondo il principio del <em>privilegio minimo necessario</em>.
+                                        Ciò assicura che gli atleti e i genitori possano consultare le informazioni di
+                                        loro competenza (calendario, convocazioni) senza accedere a dati riservati di
+                                        gestione o valutazioni tecniche di altri tesserati.
+                                    </p>
+                                </div>
+
+                                <table class="compact-table" id="privacy-table" style="text-align: center;">
                                     <thead>
                                         <tr>
-                                            <th>Ruolo</th>
+                                            <th style="text-align: left; width: 120px;">Ruolo</th>
                                             <th>Home</th>
                                             <th>Rosa</th>
                                             <th>Staff</th>
-                                            <th>Statistiche</th>
-                                            <th>Calendario</th>
-                                            <th>Classifica</th>
+                                            <th>Stats</th>
+                                            <th>Cal.</th>
+                                            <th>Class.</th>
                                             <th>Schemi</th>
-                                            <th>Relazioni</th>
+                                            <th>Rel.</th>
                                             <th>Setup</th>
-                                            <th>Performance</th>
+                                            <th>Perf.</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Data populated directly or via JS (using static for now based on request) -->
                                         <tr>
-                                            <td>Admin</td>
+                                            <td style="text-align: left; font-weight: 600; color: var(--text);">Admin
+                                            </td>
                                             <td>✅</td>
                                             <td>✅</td>
                                             <td>✅</td>
@@ -676,7 +692,8 @@
                                             <td>✅</td>
                                         </tr>
                                         <tr>
-                                            <td>Dirigenza</td>
+                                            <td style="text-align: left; font-weight: 600; color: var(--text);">
+                                                Dirigenza</td>
                                             <td>✅</td>
                                             <td>✅</td>
                                             <td>✅</td>
@@ -689,7 +706,8 @@
                                             <td>✅</td>
                                         </tr>
                                         <tr>
-                                            <td>Staff Tecnico</td>
+                                            <td style="text-align: left; font-weight: 600; color: var(--text);">Staff
+                                                Tecnico</td>
                                             <td>✅</td>
                                             <td>✅</td>
                                             <td>✅</td>
@@ -702,7 +720,8 @@
                                             <td>✅</td>
                                         </tr>
                                         <tr>
-                                            <td>Genitore</td>
+                                            <td style="text-align: left; font-weight: 600; color: var(--text);">Genitore
+                                            </td>
                                             <td>✅</td>
                                             <td>✅</td>
                                             <td>✅</td>
@@ -715,7 +734,8 @@
                                             <td>🚫</td>
                                         </tr>
                                         <tr>
-                                            <td>Atleta -18</td>
+                                            <td style="text-align: left; font-weight: 600; color: var(--text);">Atleta
+                                                -18</td>
                                             <td>✅</td>
                                             <td>✅</td>
                                             <td>✅</td>
@@ -728,7 +748,8 @@
                                             <td>🚫</td>
                                         </tr>
                                         <tr>
-                                            <td>Atleta +18</td>
+                                            <td style="text-align: left; font-weight: 600; color: var(--text);">Atleta
+                                                +18</td>
                                             <td>✅</td>
                                             <td>✅</td>
                                             <td>✅</td>
@@ -741,7 +762,8 @@
                                             <td>🚫</td>
                                         </tr>
                                         <tr>
-                                            <td>Ospite</td>
+                                            <td style="text-align: left; font-weight: 600; color: var(--text);">Ospite
+                                            </td>
                                             <td>✅</td>
                                             <td>✅</td>
                                             <td>✅</td>
