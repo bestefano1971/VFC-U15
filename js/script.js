@@ -84,6 +84,7 @@ const MIN_PER_DAY = 24 * 60;
 // --- STATE ---
 let PLAYER_NAMES = {};
 let PLAYER_ROLES = {};
+let PLAYER_BIRTHYEARS = {};
 let TOTAL_MINUTES_PROCESSED = 0;
 let APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: [], totalGF: 0, totalGS: 0 };
 
@@ -117,7 +118,8 @@ function processTimelineSheet(rows, sheetName) {
         PARATE: findIdx(["PARATE"]),
         PP: findIdx(["PALLE PERSE", "P.P.", "PP"]),
         PR: findIdx(["PALLE RECUPERATE", "P.R.", "PR"]),
-        FF: findIdx(["FALLI FATTI"]), FS: findIdx(["FALLI SUBITI"])
+        FF: findIdx(["FALLI FATTI"]), FS: findIdx(["FALLI SUBITI"]),
+        TM: findIdx(["TIRI MURATI", "T.M.", "TM"])
     };
     if (IDX.TIMING === -1 || IDX.Q1 === -1) return;
 
@@ -149,14 +151,14 @@ function processTimelineSheet(rows, sheetName) {
         const gkId = row[IDX.PORTIERI];
         if (hasValue(gkId)) {
             addStat(APP_STATE.goalkeepers, gkId, 'minutes', duration);
-            if (hasValue(row[IDX.PARATE])) {
+            if (hasValue(row[IDX.PARATE]) && row[IDX.PARATE] != 0) {
                 addStat(APP_STATE.goalkeepers, gkId, 'saves', 1);
                 const s = String(row[IDX.PARATE]).toUpperCase();
                 if (s.includes("SX")) addStat(APP_STATE.goalkeepers, gkId, 'savesSX', 1);
                 else if (s.includes("DX")) addStat(APP_STATE.goalkeepers, gkId, 'savesDX', 1);
                 else addStat(APP_STATE.goalkeepers, gkId, 'savesCT', 1);
             }
-            if (hasValue(row[IDX.GS])) {
+            if (hasValue(row[IDX.GS]) && row[IDX.GS] != 0) {
                 addStat(APP_STATE.goalkeepers, gkId, 'gs', 1);
                 const s = String(row[IDX.GS]).toUpperCase();
                 if (s.includes("SX")) addStat(APP_STATE.goalkeepers, gkId, 'goalsSX', 1);
@@ -195,6 +197,7 @@ function processTimelineSheet(rows, sheetName) {
         if (hasValue(row[IDX.PR]) && row[IDX.PR] != 0) { addStat(APP_STATE.players, row[IDX.PR], 'pr', 1); addStat(APP_STATE.quartets, quartetKey, 'pr', 1); }
         if (hasValue(row[IDX.FF]) && row[IDX.FF] != 0) addStat(APP_STATE.players, row[IDX.FF], 'ff', 1);
         if (hasValue(row[IDX.FS]) && row[IDX.FS] != 0) addStat(APP_STATE.players, row[IDX.FS], 'fs', 1);
+        if (hasValue(row[IDX.TM]) && row[IDX.TM] != 0) { addStat(APP_STATE.players, row[IDX.TM], 'tm', 1); }
     }
 }
 
@@ -205,11 +208,27 @@ function addStat(store, id, prop, val, metadata = {}) {
     if (!store[cleanId][prop]) store[cleanId][prop] = 0;
     store[cleanId][prop] += val;
 }
-function hasValue(val) { return val !== undefined && val !== null && String(val).trim() !== ""; }
+function hasValue(val) {
+    if (val === undefined || val === null) return false;
+    const s = String(val).trim().toLowerCase();
+    return s !== "" && s !== "nan" && s !== "null" && s !== "0" && s !== "0.0";
+}
 function formatTime(m) {
     if (!m || isNaN(m)) return "0:00";
     const mm = Math.floor(m), ss = Math.round((m - mm) * 60);
     return `${mm}:${ss.toString().padStart(2, '0')}`;
+}
+
+function formatChartName(fullName) {
+    if (!fullName) return "";
+    const parts = String(fullName).trim().split(/\s+/);
+    if (parts.length <= 1) return parts[0];
+    const first = parts[0].toUpperCase();
+    const prefixes = ["DE", "DI", "DA", "DEL", "DELLA", "DALLA", "LO", "LE", "LA"];
+    if (prefixes.includes(first) && parts.length > 1) {
+        return parts[0] + " " + parts[1];
+    }
+    return parts[0];
 }
 
 // --- UI LOGIC ---
@@ -242,7 +261,7 @@ function updateUI() {
                 const gState = (APP_STATE.goalkeepers && APP_STATE.goalkeepers[id]) || { id: id, minutes: 0, gs: 0, goalsSX: 0, goalsCT: 0, goalsDX: 0, saves: 0, savesSX: 0, savesCT: 0, savesDX: 0 };
                 activeGoalkeepers.push(gState);
             } else {
-                const pState = (APP_STATE.players && APP_STATE.players[id]) || { id: id, minutes: 0, goals: 0, gs: 0, pr: 0, pp: 0, shotsOn: 0, shotsOff: 0, ff: 0, fs: 0, plusMinus: 0 };
+                const pState = (APP_STATE.players && APP_STATE.players[id]) || { id: id, minutes: 0, goals: 0, gs: 0, pr: 0, pp: 0, shotsOn: 0, shotsOff: 0, tm: 0, ff: 0, fs: 0, plusMinus: 0 };
                 activePlayers.push(pState);
             }
         });
@@ -292,13 +311,20 @@ function updateUI() {
             const allIds = Object.keys(PLAYER_NAMES).map(k => parseInt(k)).sort((a, b) => a - b);
 
             allIds.forEach(id => {
-                const pState = (APP_STATE.players && APP_STATE.players[id]) || (APP_STATE.goalkeepers && APP_STATE.goalkeepers[id]);
-                // Default object if no stats
-                const p = pState || { id: id, minutes: 0, goals: 0, gs: 0, pr: 0, pp: 0 };
+                const role = PLAYER_ROLES[id];
+                const birthYear = PLAYER_BIRTHYEARS[id];
+                const isGk = role === 'PORTIERE' || (APP_STATE.goalkeepers && APP_STATE.goalkeepers[id]);
+
+                // Prioritize GK stats for GKs, otherwise player stats
+                const pState = isGk
+                    ? ((APP_STATE.goalkeepers && APP_STATE.goalkeepers[id]) || (APP_STATE.players && APP_STATE.players[id]))
+                    : ((APP_STATE.players && APP_STATE.players[id]) || (APP_STATE.goalkeepers && APP_STATE.goalkeepers[id]));
+
+                // Default object with all necessary properties
+                const p = pState || { id: id, minutes: 0, goals: 0, gs: 0, pr: 0, pp: 0, saves: 0 };
+                if (p.saves === undefined) p.saves = 0; // Ensure saves exists if we got a state that didn't have it
 
                 let fullName = PLAYER_NAMES[id] || `ID: ${id}`;
-                const role = PLAYER_ROLES[id];
-                const isGk = role === 'PORTIERE' || (APP_STATE.goalkeepers && APP_STATE.goalkeepers[id]);
                 const isCaptain = id === 4; // Biolcati is Captain
 
                 // Attendance Data Extraction (Inner Helper)
@@ -306,7 +332,6 @@ function updateUI() {
                     if (typeof PRELOADED_DATABASE === 'undefined' || !PRELOADED_DATABASE.presenze) return 0;
                     const data = PRELOADED_DATABASE.presenze;
                     const headerRow = data[0];
-                    const totalRow = data[data.length - 1];
                     const playersList = PRELOADED_DATABASE.players_list || {};
 
                     const findPlayerIdHelper = (sheetName) => {
@@ -332,42 +357,71 @@ function updateUI() {
                             if (fName.includes(mainName)) {
                                 if (parts.length > 1) {
                                     const initial = parts[1].charAt(0);
-                                    if (fName.split(' ').some((p, idx) => idx > 0 && p.startsWith(initial))) return pid;
+                                    if (fName.split(' ').some(p => p.startsWith(initial))) return pid;
                                 } else return pid;
                             }
                         }
                         return Object.keys(playersList).find(k => playersList[k].toLowerCase().includes(mainName));
                     };
 
+                    // Find correct column index
+                    let colIdx = -1;
                     for (let i = 1; i < headerRow.length; i++) {
-                        if (findPlayerIdHelper(headerRow[i]) == id) return totalRow[i] || 0;
+                        if (findPlayerIdHelper(headerRow[i]) == id) {
+                            colIdx = i;
+                            break;
+                        }
                     }
-                    return 0;
+
+                    if (colIdx === -1) return 0;
+
+                    // Sum occurrences of X or R in that column
+                    let count = 0;
+                    for (let r = 1; r < data.length; r++) {
+                        const row = data[r];
+                        if (row && row[0] && String(row[0]).toUpperCase().includes("TOTALE")) continue;
+                        const val = String(row[colIdx] || "").toUpperCase();
+                        if (val === 'X' || val === 'R') count++;
+                    }
+                    return count;
                 };
 
                 const presenzeCount = getAttendance();
 
                 const card = document.createElement('div');
                 card.className = 'player-card';
+                const userRole = window.CURRENT_USER ? window.CURRENT_USER.role : 'Ospite';
+                const hasPerfAccess = ['Admin', 'Staff Tecnico', 'Dirigenza'].includes(userRole);
+
                 card.innerHTML = `
                 <div class="player-photo-container">
-                    <img src="assets/players/${id}.png" class="player-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                    <img src="assets/players/${id}.png?v=${Date.now()}" class="player-photo" 
+                        onerror="if(!this.src.includes('.jpg')){this.src='assets/players/${id}.jpg?v=${Date.now()}'}else{this.style.display='none';this.nextElementSibling.style.display='block'}">
                     <div class="player-placeholder" style="display:none;font-size:4rem;">👤</div>
                     <div class="player-number-badge">${id}</div>
-                    ${isGk ? '<div class="player-role-badge">PORTIERE</div>' : (role ? `<div class="player-role-badge role-field">${role}</div>` : '')}
+                    ${isGk ? '<div class="player-role-badge">PORTIERE</div>' : (role ? `<div class="player-role-badge">${role}</div>` : '')}
                 </div>
                 <div class="player-info">
-                    <div class="player-name">${fullName} ${isCaptain ? '<span style="color:var(--primary); font-weight:bold; margin-left:5px;" title="Capitano">©</span>' : ''}</div>
+                    <div class="player-name">
+                        ${fullName} ${birthYear ? `<span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400; margin-left: 4px;">(${birthYear})</span>` : ''}
+                        ${isCaptain ? '<span style="color:var(--primary); font-weight:bold; margin-left:5px;" title="Capitano">©</span>' : ''}
+                    </div>
                     <div class="player-stats-mini">
                         <div class="stat-mini"><div class="stat-mini-label">MIN</div><div class="stat-mini-value">${Math.floor(p.minutes || 0)}</div></div>
                         <div class="stat-mini"><div class="stat-mini-label">${isGk ? 'GS' : 'GOAL'}</div><div class="stat-mini-value">${isGk ? (p.gs || 0) : (p.goals || 0)}</div></div>
                         <div class="stat-mini"><div class="stat-mini-label">PRE</div><div class="stat-mini-value">${presenzeCount}</div></div>
                         <div class="stat-mini">
-                            <div class="stat-mini-label">PR-PP</div>
-                            <div class="stat-mini-value" style="color: ${(p.pr || 0) - (p.pp || 0) > 0 ? 'var(--success)' : ((p.pr || 0) - (p.pp || 0) < 0 ? 'var(--danger)' : 'var(--text-muted)')}">
-                                ${(p.pr || 0) - (p.pp || 0) > 0 ? '+' : ''}${(p.pr || 0) - (p.pp || 0)}
+                            <div class="stat-mini-label">${isGk ? 'PAR' : 'PR-PP'}</div>
+                            <div class="stat-mini-value" style="color: ${isGk ? 'var(--success)' : ((p.pr || 0) - (p.pp || 0) > 0 ? 'var(--success)' : ((p.pr || 0) - (p.pp || 0) < 0 ? 'var(--danger)' : 'var(--text-muted)'))}">
+                                ${isGk ? (p.saves || 0) : ((p.pr || 0) - (p.pp || 0) > 0 ? '+' : '') + ((p.pr || 0) - (p.pp || 0))}
                             </div>
                         </div>
+                    </div>
+                    <div style="margin-top: 1.25rem;">
+                        <button class="btn btn-ap" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 700; font-size: 0.8rem; ${!hasPerfAccess ? 'opacity: 0.8; filter: grayscale(0.5);' : ''}" 
+                            onclick="${hasPerfAccess ? `openPlayerPerformance('${fullName.replace(/'/g, "\\'")}')` : "alert('⛔ Accesso riservato allo Staff Tecnico e Dirigenza.')"}">
+                            ${hasPerfAccess ? '' : '🔒 '}Autovalutazione della Performance
+                        </button>
                     </div>
                 </div>`;
                 rosterGrid.appendChild(card);
@@ -453,16 +507,16 @@ function updateUI() {
         }
 
         // Render Charts
-        if (activePlayers.length > 0 && typeof Chart !== 'undefined') {
-            try { renderCharts(activePlayers); } catch (e) { console.error("Chart Error:", e); }
+        if (typeof Chart !== 'undefined') {
+            try { renderCharts(activePlayers, activeGoalkeepers); } catch (e) { console.error("Chart Error:", e); }
         }
 
         // Render Stats Tables
         renderPlayersTable(activePlayers);
         renderGoalkeepersTable(activeGoalkeepers);
         renderQuartetsTable();
-        renderPerformanceTable();
         renderRelazioniList();
+        renderSchemiVideos();
         renderFilesTable();
         // Update Tabs Locks
         renderTabsWithLocks();
@@ -525,110 +579,6 @@ function renderQuartetsTable() {
     });
 }
 
-function renderPerformanceTable() {
-    const container = document.querySelector('#performance-view .performance-table-container');
-    if (!container) return;
-
-    if (!PRELOADED_DATABASE.valutazione_generale || PRELOADED_DATABASE.valutazione_generale.length < 5) {
-        container.innerHTML = `
-            <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
-                <p>Nessun dato di valutazione trovato nel database.</p>
-                <div style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.7;">
-                    File: Valutazione giocatori.xlsx > Foglio: VALUTAZIONE GENERALE
-                </div>
-            </div>
-        `;
-        return;
-    }
-
-    const data = PRELOADED_DATABASE.valutazione_generale;
-    const namesRow = data[1] || [];
-
-    // Identified player columns (exclude "COGNOME E NOME" and empty cells)
-    const playerCols = [];
-    for (let j = 1; j < namesRow.length; j++) {
-        const cellValue = String(namesRow[j] || "").toUpperCase().trim();
-        if (cellValue !== "" && cellValue !== "COGNOME E NOME") {
-            playerCols.push(j);
-        }
-    }
-
-    if (playerCols.length === 0) {
-        container.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">Struttura dati valutazione non riconosciuta.</div>';
-        return;
-    }
-
-    let html = `
-        <div class="table-responsive">
-            <table class="styled-table performance-table" style="font-size: 0.8rem; border-collapse: separate; border-spacing: 0;">
-                <thead>
-                    <tr>
-                        <th style="position: sticky; left: 0; background: var(--card-bg); z-index: 10; border-right: 2px solid var(--border);">Parametro</th>
-    `;
-
-    // Headers: Player Names
-    playerCols.forEach(j => {
-        html += `<th style="text-align: center; min-width: 100px;">${namesRow[j]}</th>`;
-    });
-
-    html += `
-                    </tr>
-                </thead>
-                <tbody>
-    `;
-
-    // Data Rows (from index 2 onwards)
-    for (let i = 2; i < data.length; i++) {
-        const row = data[i];
-        if (!row || row.length === 0) continue;
-
-        const label = String(row[0] || "").trim();
-        if (!label || label === "" || label.toUpperCase() === "VALUTAZIONE GENERALE" || label.toUpperCase() === "ANNO") continue;
-
-        // Skip decorative rows with no data for players
-        const hasData = playerCols.some(j => row[j] !== undefined && row[j] !== null && row[j] !== "");
-        if (!hasData) continue;
-
-        html += `
-            <tr>
-                <td style="position: sticky; left: 0; background: var(--card-bg); z-index: 5; font-weight: 700; border-right: 2px solid var(--border);">${label}</td>
-        `;
-
-        playerCols.forEach(j => {
-            let val = row[j];
-            let cellStyle = "text-align: center;";
-
-            if (typeof val === 'number') {
-                if (val > 0 && val < 50) val = val.toFixed(1);
-                else if (val >= 50) val = Math.round(val);
-
-                if (val >= 75) cellStyle += "color: var(--success); font-weight: bold;";
-                else if (val > 0 && val < 60) cellStyle += "color: var(--danger);";
-            } else if (typeof val === 'string') {
-                if (val.includes('T00:00:00')) val = val.split('T')[0];
-                if (val.toUpperCase() === 'DX') cellStyle += "color: #ffaa00;";
-                if (val.toUpperCase() === 'SX') cellStyle += "color: #0088ff;";
-            }
-
-            html += `<td style="${cellStyle}">${val === 0 ? '-' : (val || '-')}</td>`;
-        });
-
-        html += `</tr>`;
-    }
-
-    html += `
-                </tbody>
-            </table>
-        </div>
-        <div style="padding: 1rem; font-size: 0.75rem; color: var(--text-muted); text-align: right;">
-            * Valutazioni rilevate automaticamente
-        </div>
-    `;
-
-    container.innerHTML = html;
-}
-
 function renderRelazioniList() {
     const container = document.getElementById('relazioni-list'); // Keeping ID but treating as container
     if (!container) return;
@@ -645,15 +595,21 @@ function renderRelazioniList() {
     }
 
     PRELOADED_DATABASE.relazioni_files.forEach(file => {
+        // FILTER: Do not show individual player performance in the general list
+        if (file.toLowerCase().startsWith('performance/')) return;
+
         // Create a card-like element
         const item = document.createElement('li'); // Keep li since parent is ul
         item.className = 'relazioni-item';
 
+        // Clean name for display: remove extension and folder path
+        const displayName = file.split('/').pop().replace(/\.(pdf|docx|doc)$/i, '');
+
         item.innerHTML = `
             <a href="DB/Relazioni/${file}" target="_blank" class="relazioni-card">
-                <div class="rel-icon">📄</div>
-                <div class="rel-name">${file}</div>
-                <div class="rel-action">Apri PDF</div>
+                <div class="rel-icon">${file.toLowerCase().endsWith('.pdf') ? '📄' : '📝'}</div>
+                <div class="rel-name">${displayName}</div>
+                <div class="rel-action">Apri Documento</div>
             </a>
         `;
         container.appendChild(item);
@@ -671,8 +627,59 @@ function renderFilesTable() {
     });
 }
 
+function renderSchemiVideos() {
+    if (typeof PRELOADED_DATABASE === 'undefined' || !PRELOADED_DATABASE.schemi_videos) return;
+
+    const grids = {
+        angoli: document.getElementById('grid-angoli'),
+        punizioni: document.getElementById('grid-punizioni'),
+        rimesse: document.getElementById('grid-rimesse'),
+        inizio: document.getElementById('grid-inizio'),
+        altro: document.getElementById('grid-40') // Fallback for now or generic
+    };
+
+    // Clear all grids
+    Object.values(grids).forEach(g => { if (g) g.innerHTML = ''; });
+
+    PRELOADED_DATABASE.schemi_videos.forEach(video => {
+        const grid = grids[video.category] || grids.altro;
+        if (!grid) return;
+
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+            <div class="video-player-container">
+                <video controls preload="metadata">
+                    <source src="${video.path}" type="video/mp4">
+                    Il tuo browser non supporta il video player.
+                </video>
+            </div>
+            <div class="video-info">
+                <div class="video-title">${video.name.replace(/\.[^/.]+$/, "")}</div>
+                <div class="video-type">${video.category}</div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+
+    // Check if grids are empty and show message
+    Object.entries(grids).forEach(([cat, grid]) => {
+        if (grid && grid.children.length === 0) {
+            grid.innerHTML = `<div style="grid-column: 1/-1; padding: 2rem; color: var(--text-muted); text-align: center;">Nessun video caricato per questa categoria.</div>`;
+        }
+    });
+}
+
 let chartInstances = {};
-function renderCharts(players) {
+
+// Set global defaults for Chart.js
+if (typeof Chart !== 'undefined') {
+    Chart.defaults.color = '#ffffff';
+    Chart.defaults.font.weight = 'bold';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+}
+
+function renderCharts(players, gks) {
     if (chartInstances.goals) chartInstances.goals.destroy();
     const ctxGoals = document.getElementById('playersGoalsChart');
     if (ctxGoals) {
@@ -680,7 +687,7 @@ function renderCharts(players) {
         chartInstances.goals = new Chart(ctxGoals.getContext('2d'), {
             type: 'bar',
             data: {
-                labels: top.map(p => String(PLAYER_NAMES[p.id] || p.id).split(' ')[0]),
+                labels: top.map(p => formatChartName(PLAYER_NAMES[p.id] || p.id)),
                 datasets: [{ label: 'Goal', data: top.map(p => p.goals || 0), backgroundColor: '#6366f1' }]
             },
             options: { responsive: true, maintainAspectRatio: false }
@@ -694,8 +701,56 @@ function renderCharts(players) {
         chartInstances.quartets = new Chart(ctxQ.getContext('2d'), {
             type: 'bar',
             data: {
-                labels: topQ.map(q => q.members.map(id => String(PLAYER_NAMES[id] || id).split(' ')[0]).join('-')),
+                labels: topQ.map(q => q.members.map(id => formatChartName(PLAYER_NAMES[id] || id)).join('-')),
                 datasets: [{ label: 'GF', data: topQ.map(q => q.gf || 0), backgroundColor: '#22c55e' }, { label: 'GS', data: topQ.map(q => q.gs || 0), backgroundColor: '#ef4444' }]
+            },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
+        });
+    }
+
+    if (chartInstances.qShots) chartInstances.qShots.destroy();
+    const ctxQS = document.getElementById('quartetsShotsChart');
+    if (ctxQS) {
+        const topQS = Object.values(APP_STATE.quartets).sort((a, b) => (b.shotsOn || 0) - (a.shotsOn || 0)).slice(0, 6);
+        chartInstances.qShots = new Chart(ctxQS.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: topQS.map(q => q.members.map(id => formatChartName(PLAYER_NAMES[id] || id)).join('-')),
+                datasets: [
+                    { label: 'Tiri Fatti', data: topQS.map(q => q.shotsOn || 0), backgroundColor: '#22c55e' },
+                    { label: 'Tiri Subiti', data: topQS.map(q => q.shotsAgainst || 0), backgroundColor: '#ef4444' }
+                ]
+            },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
+        });
+    }
+
+    if (chartInstances.qPRPP) chartInstances.qPRPP.destroy();
+    const ctxQPR = document.getElementById('quartetsPRPPChart');
+    if (ctxQPR) {
+        const topQPR = Object.values(APP_STATE.quartets).sort((a, b) => (b.pr || 0) - (a.pr || 0)).slice(0, 6);
+        chartInstances.qPRPP = new Chart(ctxQPR.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: topQPR.map(q => q.members.map(id => formatChartName(PLAYER_NAMES[id] || id)).join('-')),
+                datasets: [
+                    { label: 'Recuperate', data: topQPR.map(q => q.pr || 0), backgroundColor: '#22c55e' },
+                    { label: 'Perse', data: topQPR.map(q => q.pp || 0), backgroundColor: '#ef4444' }
+                ]
+            },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
+        });
+    }
+
+    if (chartInstances.qTiming) chartInstances.qTiming.destroy();
+    const ctxQT = document.getElementById('quartetsTimingChart');
+    if (ctxQT) {
+        const topQT = Object.values(APP_STATE.quartets).sort((a, b) => (b.minutes || 0) - (a.minutes || 0)).slice(0, 6);
+        chartInstances.qTiming = new Chart(ctxQT.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: topQT.map(q => q.members.map(id => formatChartName(PLAYER_NAMES[id] || id)).join('-')),
+                datasets: [{ label: 'Minuti', data: topQT.map(q => Math.floor(q.minutes || 0)), backgroundColor: '#06b6d4' }]
             },
             options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
         });
@@ -703,15 +758,122 @@ function renderCharts(players) {
 
     if (chartInstances.goalkeepers) chartInstances.goalkeepers.destroy();
     const ctxGK = document.getElementById('goalkeepersChart');
-    if (ctxGK) {
-        const gks = Object.values(APP_STATE.goalkeepers).sort((a, b) => b.minutes - a.minutes);
+    if (ctxGK && gks) {
+        const sortedGks = [...gks].sort((a, b) => (b.saves || 0) - (a.saves || 0));
         chartInstances.goalkeepers = new Chart(ctxGK.getContext('2d'), {
             type: 'bar',
             data: {
-                labels: gks.map(g => String(PLAYER_NAMES[g.id] || g.id).split(' ')[0]),
-                datasets: [{ label: 'Parate', data: gks.map(g => g.saves || 0), backgroundColor: '#22c55e' }, { label: 'GS', data: gks.map(g => -(g.gs || 0)), backgroundColor: '#ef4444' }]
+                labels: sortedGks.map(g => formatChartName(PLAYER_NAMES[g.id] || g.id)),
+                datasets: [
+                    { label: 'Parate SX', data: sortedGks.map(g => g.savesSX || 0), backgroundColor: '#16a34a', stack: 'Parate' },
+                    { label: 'Parate CT', data: sortedGks.map(g => g.savesCT || 0), backgroundColor: '#22c55e', stack: 'Parate' },
+                    { label: 'Parate DX', data: sortedGks.map(g => g.savesDX || 0), backgroundColor: '#86efac', stack: 'Parate' },
+                    { label: 'GS SX', data: sortedGks.map(g => -(g.goalsSX || 0)), backgroundColor: '#991b1b', stack: 'GS' },
+                    { label: 'GS CT', data: sortedGks.map(g => -(g.goalsCT || 0)), backgroundColor: '#ef4444', stack: 'GS' },
+                    { label: 'GS DX', data: sortedGks.map(g => -(g.goalsDX || 0)), backgroundColor: '#fca5a5', stack: 'GS' }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            callback: function (value) { return Math.abs(value); }
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: {
+                            padding: 10
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                label += Math.abs(context.parsed.x);
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    if (chartInstances.gkTiming) chartInstances.gkTiming.destroy();
+    const ctxGKT = document.getElementById('goalkeepersTimingChart');
+    if (ctxGKT && gks) {
+        const sortedGksT = [...gks].sort((a, b) => (b.minutes || 0) - (a.minutes || 0));
+        chartInstances.gkTiming = new Chart(ctxGKT.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: sortedGksT.map(g => formatChartName(PLAYER_NAMES[g.id] || g.id)),
+                datasets: [{ label: 'Minuti Totali', data: sortedGksT.map(g => Math.floor(g.minutes || 0)), backgroundColor: '#06b6d4' }]
             },
             options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
+        });
+    }
+
+    if (chartInstances.prpp) chartInstances.prpp.destroy();
+    const ctxPRPP = document.getElementById('playersPRPPChart');
+    if (ctxPRPP) {
+        const topPRPP = [...players].sort((a, b) => (b.pr || 0) - (a.pr || 0)).slice(0, 10);
+        chartInstances.prpp = new Chart(ctxPRPP.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: topPRPP.map(p => formatChartName(PLAYER_NAMES[p.id] || p.id)),
+                datasets: [
+                    { label: 'Recuperate (PR)', data: topPRPP.map(p => p.pr || 0), backgroundColor: '#22c55e' },
+                    { label: 'Perse (PP)', data: topPRPP.map(p => p.pp || 0), backgroundColor: '#ef4444' }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { stacked: false },
+                    y: { stacked: false }
+                }
+            }
+        });
+    }
+
+    if (chartInstances.shots) chartInstances.shots.destroy();
+    const ctxShots = document.getElementById('playerShotsChart');
+    if (ctxShots) {
+        const topShots = [...players].sort((a, b) => ((b.shotsOn || 0) + (b.shotsOff || 0) + (b.tm || 0)) - ((a.shotsOn || 0) + (a.shotsOff || 0) + (a.tm || 0))).slice(0, 10);
+        chartInstances.shots = new Chart(ctxShots.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: topShots.map(p => formatChartName(PLAYER_NAMES[p.id] || p.id)),
+                datasets: [
+                    { label: 'In Porta', data: topShots.map(p => p.shotsOn || 0), backgroundColor: '#22c55e' },
+                    { label: 'Fuori', data: topShots.map(p => p.shotsOff || 0), backgroundColor: '#eab308' },
+                    { label: 'Murati', data: topShots.map(p => p.tm || 0), backgroundColor: '#ef4444' }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }
+        });
+    }
+
+    if (chartInstances.timing) chartInstances.timing.destroy();
+    const ctxTiming = document.getElementById('playersTimingChart');
+    if (ctxTiming) {
+        const topTiming = [...players].sort((a, b) => (b.minutes || 0) - (a.minutes || 0)).slice(0, 10);
+        chartInstances.timing = new Chart(ctxTiming.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: topTiming.map(p => formatChartName(PLAYER_NAMES[p.id] || p.id)),
+                datasets: [{ label: 'Minuti Totali', data: topTiming.map(p => Math.floor(p.minutes || 0)), backgroundColor: '#06b6d4' }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
         });
     }
 }
@@ -769,7 +931,7 @@ window.clearAccessLogs = function () {
 }
 
 // --- User Management Logic ---
-function initUsers() {
+window.initUsers = function () {
     // 1. Try to load from Preloaded DB (Source of Truth from Excel)
     if (typeof PRELOADED_DATABASE !== 'undefined') {
         if (PRELOADED_DATABASE.users_data && PRELOADED_DATABASE.users_data.length > 0) {
@@ -781,7 +943,10 @@ function initUsers() {
     }
 
     // 2. Fallback / Ensure Admin
-    let users = JSON.parse(localStorage.getItem('appUsers') || '[]');
+    let users = [];
+    try {
+        users = JSON.parse(localStorage.getItem('appUsers') || '[]');
+    } catch (e) { users = []; }
 
     // Ensure default admin exists
     const defaultAdminEmail = 'be.stefano1971';
@@ -823,8 +988,10 @@ window.forceSync = function () {
     }
 };
 
-function getUsers() {
-    return JSON.parse(localStorage.getItem('appUsers') || '[]');
+window.getUsers = function () {
+    try {
+        return JSON.parse(localStorage.getItem('appUsers') || '[]');
+    } catch (e) { return []; }
 }
 
 function saveUsers(users) {
@@ -832,7 +999,7 @@ function saveUsers(users) {
     renderUsersTable();
 }
 
-function addUser() {
+window.addUser = function () {
     const userIn = document.getElementById('new-username');
     const passIn = document.getElementById('new-password');
     const roleIn = document.getElementById('new-role');
@@ -868,7 +1035,7 @@ window.deleteUser = function (username) {
     saveUsers(users);
 }
 
-function renderUsersTable() {
+window.renderUsersTable = function () {
     const tbody = document.querySelector('#users-table tbody');
     if (!tbody) return;
 
@@ -893,8 +1060,10 @@ function renderUsersTable() {
 }
 
 // --- Pending Requests Logic ---
-function getPendingRequests() {
-    return JSON.parse(localStorage.getItem('pendingRegistrations') || '[]');
+window.getPendingRequests = function () {
+    try {
+        return JSON.parse(localStorage.getItem('pendingRegistrations') || '[]');
+    } catch (e) { return []; }
 }
 
 function savePendingRequests(reqs) {
@@ -923,7 +1092,7 @@ function updateSetupNotification() {
     }
 }
 
-function renderPendingRequestsTable() {
+window.renderPendingRequestsTable = function () {
     const tbody = document.querySelector('#pending-users-table tbody');
     updateSetupNotification(); // Ensure badge is synced
 
@@ -1027,7 +1196,7 @@ function logAccessAttempt(section, success, role) {
     localStorage.setItem('accessLogs', JSON.stringify(logs));
 }
 
-function renderAccessLogs() {
+window.renderAccessLogs = function () {
     const tbody = document.querySelector('#access-log-table tbody');
     if (!tbody) return;
 
@@ -1236,6 +1405,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('currentUserRole', role);
                 renderTabsWithLocks();
                 renderUserHeader(); // Update Header Widget
+                updateUI(); // Refresh UI to update permissions on buttons
 
                 logAccessAttempt('APP_START', true, `${username} (${role})`);
 
@@ -1277,7 +1447,11 @@ document.addEventListener('DOMContentLoaded', () => {
         activateView(targetId, t);
 
         if (targetId === 'relazioni-view') renderRelazioniList();
-        if (targetId === 'setup-view') renderUsersTable();
+        if (targetId === 'setup-view') {
+            renderUsersTable();
+            renderAccessLogs();
+        }
+        if (targetId === 'schemi-view') renderSchemiVideos();
     }));
 
     function activateView(targetId, btn) {
@@ -1305,15 +1479,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
 
     function navigateTo(targetView) {
+        if (targetView && targetView.toLowerCase().endsWith('.pdf')) {
+            window.open(targetView, '_blank');
+            return;
+        }
         const mainTab = document.querySelector(`[data-target="${targetView}"]`);
         if (mainTab) { mainTab.click(); return; }
+
         const subTab = document.querySelector(`[data-subtarget="${targetView}"]`);
         if (subTab) {
             const statTab = document.querySelector('[data-target="stats-container-view"]');
-            if (statTab) {
-                statTab.click();
-            }
+            if (statTab) statTab.click();
             subTab.click();
+            return;
+        }
+
+        // Check if it's a specific element ID (e.g., charts section)
+        const element = document.getElementById(targetView);
+        if (element) {
+            const parentView = element.closest('.view-content');
+            const parentSubView = element.closest('.sub-view');
+
+            if (parentView) {
+                const tab = document.querySelector(`[data-target="${parentView.id}"]`);
+                if (tab) tab.click();
+            }
+
+            if (parentSubView) {
+                const subTabBtn = document.querySelector(`[data-subtarget="${parentSubView.id}"]`);
+                if (subTabBtn) subTabBtn.click();
+            }
+
+            setTimeout(() => {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
         }
     }
 
@@ -1333,6 +1532,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (PRELOADED_DATABASE.players_list) PLAYER_NAMES = PRELOADED_DATABASE.players_list;
         if (PRELOADED_DATABASE.players_roles) PLAYER_ROLES = PRELOADED_DATABASE.players_roles;
+        if (PRELOADED_DATABASE.players_birthyears) PLAYER_BIRTHYEARS = PRELOADED_DATABASE.players_birthyears;
 
         if (PRELOADED_DATABASE.matches) {
             PRELOADED_DATABASE.matches.forEach(m => {
@@ -1472,5 +1672,98 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Errore durante il parsing del file di log. Assicurati che sia un file 'sync_log.txt' valido.");
         }
     }
+
+    window.openPlayerPerformance = function (fullName) {
+        if (typeof PRELOADED_DATABASE === 'undefined') return;
+
+        // Double check permissions
+        const userRole = window.CURRENT_USER ? window.CURRENT_USER.role : 'Ospite';
+        if (!['Admin', 'Staff Tecnico', 'Dirigenza'].includes(userRole)) {
+            alert("⛔ Accesso riservato allo Staff Tecnico e Dirigenza.");
+            return;
+        }
+
+        const perfNames = PRELOADED_DATABASE.performance_names || [];
+        const relFiles = PRELOADED_DATABASE.relazioni_files || [];
+
+        // Advanced Normalization: lowercase, no accents, only letters and numbers
+        const normalize = (s) => String(s).toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9\s]/g, '') // Keep spaces for word split
+            .trim();
+
+        const getWords = (s) => normalize(s).split(/\s+/).filter(w => w.length > 1);
+
+        const targetWords = getWords(fullName);
+
+        logDebug(`Matching performance for: ${fullName}`, { targetWords });
+
+        // 1. Find the best match in performance_names (from Excel)
+        let bestMatchedName = null;
+        let maxOverlap = 0;
+
+        perfNames.forEach(pn => {
+            const pnWords = getWords(pn);
+            // Count how many words overlap
+            const overlap = pnWords.filter(w => targetWords.includes(w)).length;
+
+            // Check for near-misses (typos like DAIDI vs DAIFI)
+            // If No direct overlap, check if words are very similar
+            let fuzzyOverlap = overlap;
+            if (overlap === 0) {
+                pnWords.forEach(pw => {
+                    targetWords.forEach(tw => {
+                        if (pw.length > 3 && tw.length > 3) {
+                            if (pw.includes(tw) || tw.includes(pw)) fuzzyOverlap += 0.8;
+                        }
+                    });
+                });
+            }
+
+            if (fuzzyOverlap > maxOverlap) {
+                maxOverlap = fuzzyOverlap;
+                bestMatchedName = pn;
+            }
+        });
+
+        // Threshold for a valid match
+        if (!bestMatchedName || maxOverlap < 1) {
+            alert(`Nessuna valutazione trovata per ${fullName} nel file Excel.`);
+            return;
+        }
+
+        logDebug(`Matched to Excel name: ${bestMatchedName} (score: ${maxOverlap})`);
+
+        // 2. Look for best matching file in relazioni_files
+        // We use the same word-based logic to match the filename
+        let bestFile = null;
+        let maxFileOverlap = 0;
+
+        relFiles.forEach(f => {
+            if (!f.toLowerCase().endsWith('.pdf')) return;
+
+            // Extract filename without path and extension
+            const fileNameOnly = f.split('/').pop().replace(/\.pdf$/i, '');
+            const fileWords = getWords(fileNameOnly);
+
+            // We match against BOTH the target name AND the matched Excel name
+            const overlapTarget = fileWords.filter(w => targetWords.includes(w)).length;
+            const overlapExcel = fileWords.filter(w => getWords(bestMatchedName).includes(w)).length;
+
+            const totalOverlap = Math.max(overlapTarget, overlapExcel);
+
+            if (totalOverlap > maxFileOverlap) {
+                maxFileOverlap = totalOverlap;
+                bestFile = f;
+            }
+        });
+
+        if (bestFile && maxFileOverlap >= 1) {
+            logDebug(`Opening PDF: ${bestFile} (score: ${maxFileOverlap})`);
+            window.open(`DB/Relazioni/${encodeURIComponent(bestFile).replace(/%2F/g, '/')}`, '_blank');
+        } else {
+            alert(`Fascicolo PDF non trovato per "${bestMatchedName}".\n\nAssicurati che il file PDF sia stato caricato nella cartella DB/Relazioni/Performance con un nome simile al giocatore.`);
+        }
+    };
 
 });
