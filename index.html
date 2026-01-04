@@ -12,7 +12,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Preloaded Database -->
-    <script id="db-sync-script" src="./js/database.js?v=20260101_1945"></script>
+    <script id="db-sync-script" src="./js/database.js?v=20260102_0658"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -125,23 +125,23 @@
                 </div>
 
                 <div class="quick-links">
-                    <h3>Accesso Rapido Statistiche</h3>
+                    <h3>Accesso rapido</h3>
                     <div class="links-grid">
-                        <button class="quick-link-btn" data-goto="players-view">
-                            <span class="link-icon">📊</span>
-                            <span class="link-text">Giocatori</span>
-                        </button>
-                        <button class="quick-link-btn" data-goto="quartets-view">
-                            <span class="link-icon">👥</span>
-                            <span class="link-text">Quartetti</span>
-                        </button>
-                        <button class="quick-link-btn" data-goto="goalkeepers-view">
-                            <span class="link-icon">🧤</span>
-                            <span class="link-text">Portieri</span>
-                        </button>
-                        <button class="quick-link-btn" data-goto="charts-view">
+                        <button class="quick-link-btn" data-goto="players-charts-section">
                             <span class="link-icon">📈</span>
-                            <span class="link-text">Grafici</span>
+                            <span class="link-text">Grafici Giocatori</span>
+                        </button>
+                        <button class="quick-link-btn" data-goto="goalkeepers-charts-section">
+                            <span class="link-icon">🧤</span>
+                            <span class="link-text">Grafici Portieri</span>
+                        </button>
+                        <button class="quick-link-btn" data-goto="quartets-charts-section">
+                            <span class="link-icon">👥</span>
+                            <span class="link-text">Grafici Quartetti</span>
+                        </button>
+                        <button class="quick-link-btn" data-goto="DB/Relazioni/Regolamento di spogliatoio.pdf">
+                            <span class="link-icon">📄</span>
+                            <span class="link-text">Regolamento Spogliatoio</span>
                         </button>
                     </div>
                 </div>
@@ -161,93 +161,160 @@
 
             <!-- Staff View -->
             <div id="staff-view" class="view-content">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Staff Tecnico e Dirigenziale</h2>
+                <div class="sub-tabs">
+                    <button class="sub-tab-btn active" data-subtarget="staff-tecnico-subview">Staff Tecnico</button>
+                    <button class="sub-tab-btn" data-subtarget="staff-dirigenziale-subview">Dirigenza</button>
+                </div>
+
+                <!-- Staff Tecnico Sub-View -->
+                <div id="staff-tecnico-subview" class="sub-view active">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Staff Tecnico</h2>
+                        </div>
+                        <div class="roster-grid">
+                            <!-- Allenatore -->
+                            <div class="player-card">
+                                <div class="player-photo-container">
+                                    <img src="assets/staff/Mr. Benericetti.jpg?v=20260102" class="player-photo"
+                                        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                                    <div class="player-placeholder" style="display:none;font-size:4rem;">👔</div>
+                                    <div class="player-role-badge">ALLENATORE</div>
+                                </div>
+                                <div class="player-info">
+                                    <div class="player-name">Benericetti Stefano</div>
+                                    <div class="staff-cv"
+                                        style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
+                                        <h4
+                                            style="font-size: 0.8rem; color: var(--primary); margin-bottom: 5px; text-transform: uppercase;">
+                                            Curriculum Sportivo</h4>
+                                        <p
+                                            style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; font-style: italic;">
+                                            Conseguito qualifica di Tecnico di C5 nel 2009; esperienza di 15 anni in
+                                            prima squadra C1 e C2; 5 anni nel Settore Giovanile; partecipato a numerosi
+                                            Clinic di aggiornamento. Nominato Vice CT della Rappresentativa Veneta per
+                                            il T.D.R. 2026.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Prep Atletico -->
+                            <div class="player-card">
+                                <div class="player-photo-container">
+                                    <img src="assets/staff/Prep. Atletico Claudia Naccari.jpg?v=20260102"
+                                        class="player-photo"
+                                        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                                    <div class="player-placeholder" style="display:none;font-size:4rem;">⏱️</div>
+                                    <div class="player-role-badge">PREP. ATLETICA</div>
+                                </div>
+                                <div class="player-info">
+                                    <div class="player-name">Naccari Claudia</div>
+                                    <div class="staff-cv"
+                                        style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
+                                        <h4
+                                            style="font-size: 0.8rem; color: var(--primary); margin-bottom: 5px; text-transform: uppercase;">
+                                            Curriculum Sportivo</h4>
+                                        <p
+                                            style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; font-style: italic;">
+                                            [Dati curriculum da inserire...]</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Prep Portieri -->
+                            <div class="player-card">
+                                <div class="player-photo-container">
+                                    <img src="assets/staff/Prep. Portieri Duse Devid.jpg?v=20260102"
+                                        class="player-photo"
+                                        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                                    <div class="player-placeholder" style="display:none;font-size:4rem;">�</div>
+                                    <div class="player-role-badge">PREP. PORTIERI</div>
+                                </div>
+                                <div class="player-info">
+                                    <div class="player-name">Duse Devid</div>
+                                    <div class="staff-cv"
+                                        style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
+                                        <h4
+                                            style="font-size: 0.8rem; color: var(--primary); margin-bottom: 5px; text-transform: uppercase;">
+                                            Curriculum Sportivo</h4>
+                                        <p
+                                            style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; font-style: italic;">
+                                            [Dati curriculum da inserire...]</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="roster-grid">
-                        <!-- Presidente -->
-                        <div class="player-card">
-                            <div class="player-photo-container">
-                                <img src="assets/staff/Pres. Matteo Basso.jpg" class="player-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <div class="player-placeholder" style="display:none;font-size:4rem;">🏛️</div>
-                                <div class="player-role-badge">PRESIDENTE</div>
-                            </div>
-                            <div class="player-info">
-                                <div class="player-name">Basso Matteo</div>
-                            </div>
+                </div>
+
+                <!-- Staff Dirigenziale Sub-View -->
+                <div id="staff-dirigenziale-subview" class="sub-view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Dirigenza</h2>
                         </div>
-                        <!-- DG -->
-                        <div class="player-card">
-                            <div class="player-photo-container">
-                                <img src="assets/staff/D.S. Fasolin Sandro.jpg" class="player-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <div class="player-placeholder" style="display:none;font-size:4rem;">💼</div>
-                                <div class="player-role-badge">DIRETTORE GEN.</div>
+                        <div class="roster-grid">
+                            <!-- Level 1: Presidente -->
+                            <div class="player-card">
+                                <div class="player-photo-container">
+                                    <img src="assets/staff/Pres. Matteo Basso.jpg?v=20260102" class="player-photo"
+                                        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                                    <div class="player-placeholder" style="display:none;font-size:4rem;">🏛️</div>
+                                    <div class="player-role-badge">PRESIDENTE</div>
+                                </div>
+                                <div class="player-info">
+                                    <div class="player-name">Basso Matteo</div>
+                                </div>
                             </div>
-                            <div class="player-info">
-                                <div class="player-name">Fasolin Sandro</div>
+
+                            <!-- Level 2: Direzione -->
+                            <!-- DG -->
+                            <div class="player-card">
+                                <div class="player-photo-container">
+                                    <img src="assets/staff/D.S. Fasolin Sandro.jpg?v=20260102" class="player-photo"
+                                        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                                    <div class="player-placeholder" style="display:none;font-size:4rem;">💼</div>
+                                    <div class="player-role-badge">DIRETTORE GEN.</div>
+                                </div>
+                                <div class="player-info">
+                                    <div class="player-name">Fasolin Sandro</div>
+                                </div>
                             </div>
-                        </div>
-                        <!-- Resp Tecnico -->
-                        <div class="player-card">
-                            <div class="player-photo-container">
-                                <img src="assets/staff/T.M. Doria Marco.jpg" class="player-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <div class="player-placeholder" style="display:none;font-size:4rem;">🧠</div>
-                                <div class="player-role-badge">TEAM MANAGER</div>
+                            <!-- DS -->
+                            <div class="player-card">
+                                <div class="player-photo-container">
+                                    <img src="assets/staff/D.S. Boscolo Emanuele.jpg?v=20260102" class="player-photo"
+                                        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                                    <div class="player-placeholder" style="display:none;font-size:4rem;">⚽</div>
+                                    <div class="player-role-badge">DIRETTORE SP.</div>
+                                </div>
+                                <div class="player-info">
+                                    <div class="player-name">Boscolo Emanuele</div>
+                                </div>
                             </div>
-                            <div class="player-info">
-                                <div class="player-name">Doria Marco</div>
+
+                            <!-- Level 3: Operativi -->
+                            <!-- Resp Tecnico -->
+                            <div class="player-card">
+                                <div class="player-photo-container">
+                                    <img src="assets/staff/T.M. Doria Marco.jpg?v=20260102" class="player-photo"
+                                        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                                    <div class="player-placeholder" style="display:none;font-size:4rem;">🧠</div>
+                                    <div class="player-role-badge">TEAM MANAGER</div>
+                                </div>
+                                <div class="player-info">
+                                    <div class="player-name">Doria Marco</div>
+                                </div>
                             </div>
-                        </div>
-                        <!-- Allenatore -->
-                        <div class="player-card">
-                            <div class="player-photo-container">
-                                <img src="assets/staff/Mr. Benericetti.jpg" class="player-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <div class="player-placeholder" style="display:none;font-size:4rem;">👔</div>
-                                <div class="player-role-badge">ALLENATORE</div>
-                            </div>
-                            <div class="player-info">
-                                <div class="player-name">Benericetti Stefano</div>
-                            </div>
-                        </div>
-                        <!-- Prep Atletico -->
-                        <div class="player-card">
-                            <div class="player-photo-container">
-                                <img src="assets/staff/Prep. Atletico Claudia Naccari.jpg" class="player-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <div class="player-placeholder" style="display:none;font-size:4rem;">⏱️</div>
-                                <div class="player-role-badge">PREP. ATLETICA</div>
-                            </div>
-                            <div class="player-info">
-                                <div class="player-name">Naccari Claudia</div>
-                            </div>
-                        </div>
-                        <!-- Prep Portieri -->
-                        <div class="player-card">
-                            <div class="player-photo-container">
-                                <img src="assets/staff/Prep. Portieri Duse Devid.jpg" class="player-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <div class="player-placeholder" style="display:none;font-size:4rem;">🧤</div>
-                                <div class="player-role-badge">PREP. PORTIERI</div>
-                            </div>
-                            <div class="player-info">
-                                <div class="player-name">Duse Devid</div>
-                            </div>
-                        </div>
-                        <!-- Dirigente -->
-                        <div class="player-card">
-                            <div class="player-photo-container">
-                                <img src="assets/staff/Dir. Loffreda Jonny.jpg" class="player-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <div class="player-placeholder" style="display:none;font-size:4rem;">📋</div>
-                                <div class="player-role-badge">DIRIGENTE</div>
-                            </div>
-                            <div class="player-info">
-                                <div class="player-name">Loffreda Johnny</div>
+                            <!-- Dirigente -->
+                            <div class="player-card">
+                                <div class="player-photo-container">
+                                    <img src="assets/staff/Dir. Loffreda Jonny.jpg?v=20260102" class="player-photo"
+                                        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                                    <div class="player-placeholder" style="display:none;font-size:4rem;">📋</div>
+                                    <div class="player-role-badge">DIRIGENTE</div>
+                                </div>
+                                <div class="player-info">
+                                    <div class="player-name">Loffreda Jonny</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -261,8 +328,6 @@
                     <button class="sub-tab-btn active" data-subtarget="players-view">Giocatori</button>
                     <button class="sub-tab-btn" data-subtarget="quartets-view">Quartetti</button>
                     <button class="sub-tab-btn" data-subtarget="goalkeepers-view">Portieri</button>
-                    <button class="sub-tab-btn" data-subtarget="performance-view">Performance</button>
-                    <button class="sub-tab-btn" data-subtarget="charts-view">Grafici</button>
                 </div>
 
                 <!-- Players Sub-View -->
@@ -290,6 +355,32 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div id="players-charts-section" class="charts-container">
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h3>GOAL REALIZZATI</h3>
+                            </div>
+                            <div class="chart-wrapper"><canvas id="playersGoalsChart"></canvas></div>
+                        </div>
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h3>VOLUME DI TIRO (IN/OUT/MURATI)</h3>
+                            </div>
+                            <div class="chart-wrapper"><canvas id="playerShotsChart"></canvas></div>
+                        </div>
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h3>Palle Recuperate vs Perse</h3>
+                            </div>
+                            <div class="chart-wrapper"><canvas id="playersPRPPChart"></canvas></div>
+                        </div>
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h3>TIMING GIOCATORI (MINUTI)</h3>
+                            </div>
+                            <div class="chart-wrapper"><canvas id="playersTimingChart"></canvas></div>
                         </div>
                     </div>
                 </div>
@@ -320,6 +411,19 @@
                             </table>
                         </div>
                     </div>
+                    <!-- Goalkeepers Chart moved here -->
+                    <div id="goalkeepers-charts-section" class="card chart-card">
+                        <div class="card-header">
+                            <h3>Rendimento Portieri (Dettaglio)</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="goalkeepersChart"></canvas></div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>TIMING PORTIERI (MINUTI)</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="goalkeepersTimingChart"></canvas></div>
+                    </div>
                 </div>
 
                 <!-- Quartets Sub-View -->
@@ -348,46 +452,44 @@
                             </table>
                         </div>
                     </div>
-                </div>
-                <!-- Performance Sub-View -->
-                <div id="performance-view" class="sub-view">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2>VALUTAZIONI PERFORMANCE</h2>
-                        </div>
-                        <div class="card-body" style="padding: 0;">
-                            <div class="performance-table-container">
-                                <!-- Generato da JS -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Charts Sub-View -->
-                <div id="charts-view" class="sub-view">
-                    <div class="charts-container">
+                    <div id="quartets-charts-section" class="charts-container">
                         <div class="card chart-card">
                             <div class="card-header">
-                                <h3>Rendimento giocatori di movimento</h3>
-                            </div>
-                            <div class="chart-wrapper"><canvas id="playersGoalsChart"></canvas></div>
-                        </div>
-                        <div class="card chart-card">
-                            <div class="card-header">
-                                <h3>Rendimento quartetti</h3>
+                                <h3>VOLUME GF/GS</h3>
                             </div>
                             <div class="chart-wrapper"><canvas id="quartetsPerformanceChart"></canvas></div>
                         </div>
                         <div class="card chart-card">
                             <div class="card-header">
-                                <h3>Rendimento portieri</h3>
+                                <h3>TIRI FATTI VS SUBITI</h3>
                             </div>
-                            <div class="chart-wrapper"><canvas id="goalkeepersChart"></canvas></div>
+                            <div class="chart-wrapper"><canvas id="quartetsShotsChart"></canvas></div>
+                        </div>
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h3>PALLE RECUPERATE VS PERSE</h3>
+                            </div>
+                            <div class="chart-wrapper"><canvas id="quartetsPRPPChart"></canvas></div>
+                        </div>
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h3>TIMING QUARTETTI (MINUTI)</h3>
+                            </div>
+                            <div class="chart-wrapper"><canvas id="quartetsTimingChart"></canvas></div>
                         </div>
                     </div>
                 </div>
 
             </div> <!-- End Stats Container -->
+
+
+
+
+
+
+
+
+
 
             <!-- Calendario View -->
             <div id="calendario-view" class="view-content">
@@ -417,291 +519,299 @@
                 </div>
             </div>
 
-    </div>
-
-    <!-- Schemi View -->
-    <div id="schemi-view" class="view-content">
-        <div class="sub-tabs layout-compact" style="margin-bottom: 1.5rem;">
-            <button class="sub-tab-btn active" data-subtarget="schemi-angoli">Angoli</button>
-            <button class="sub-tab-btn" data-subtarget="schemi-punizioni">Punizioni</button>
-            <button class="sub-tab-btn" data-subtarget="schemi-rimesse">Rimesse</button>
-            <button class="sub-tab-btn" data-subtarget="schemi-inizio">Calcio d'inizio</button>
-            <button class="sub-tab-btn" data-subtarget="schemi-40">4-0</button>
-            <button class="sub-tab-btn" data-subtarget="schemi-31">3-1</button>
-        </div>
-
-        <div class="layout-compact">
-            <!-- Angoli -->
-            <div id="schemi-angoli" class="sub-view active">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>ANGOLI</h2>
-                    </div>
-                    <div class="card-body" style="padding: 2rem; text-align: center; color: var(--text-muted);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">🚩</div>
-                        <p>Schemi su Calcio d'Angolo in allestimento.</p>
-                    </div>
+            <!-- Schemi View -->
+            <div id="schemi-view" class="view-content">
+                <div class="sub-tabs layout-compact" style="margin-bottom: 1.5rem;">
+                    <button class="sub-tab-btn active" data-subtarget="schemi-angoli">Angoli</button>
+                    <button class="sub-tab-btn" data-subtarget="schemi-punizioni">Punizioni</button>
+                    <button class="sub-tab-btn" data-subtarget="schemi-rimesse">Rimesse</button>
+                    <button class="sub-tab-btn" data-subtarget="schemi-inizio">Calcio d'inizio</button>
+                    <button class="sub-tab-btn" data-subtarget="schemi-40">4-0</button>
+                    <button class="sub-tab-btn" data-subtarget="schemi-31">3-1</button>
                 </div>
-            </div>
 
-            <!-- Punizioni -->
-            <div id="schemi-punizioni" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>PUNIZIONI</h2>
-                    </div>
-                    <div class="card-body" style="padding: 2rem; text-align: center; color: var(--text-muted);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">🧱</div>
-                        <p>Schemi su Calcio di Punizione in allestimento.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rimesse -->
-            <div id="schemi-rimesse" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>RIMESSE</h2>
-                    </div>
-                    <div class="card-body" style="padding: 2rem; text-align: center; color: var(--text-muted);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">🏐</div>
-                        <p>Schemi su Rimessa Laterale in allestimento.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Calcio d'inizio -->
-            <div id="schemi-inizio" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>CALCIO D'INIZIO</h2>
-                    </div>
-                    <div class="card-body" style="padding: 2rem; text-align: center; color: var(--text-muted);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">🏁</div>
-                        <p>Schemi su Calcio d'Inizio in allestimento.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4-0 -->
-            <div id="schemi-40" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>SCHEMA 4-0</h2>
-                    </div>
-                    <div class="card-body" style="padding: 2rem; text-align: center; color: var(--text-muted);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">4️⃣-0️⃣</div>
-                        <p>Rotazioni e movimenti sistema 4-0 in allestimento.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3-1 -->
-            <div id="schemi-31" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>SCHEMA 3-1</h2>
-                    </div>
-                    <div class="card-body" style="padding: 2rem; text-align: center; color: var(--text-muted);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">3️⃣-1️⃣</div>
-                        <p>Rotazioni e movimenti sistema 3-1 in allestimento.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="relazioni-view" class="view-content">
-        <div class="layout-compact" style="margin-top: 1.5rem;">
-            <!-- Relazioni Sub-View -->
-            <div id="relazioni-content-view" class="sub-view active">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>RELAZIONI</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul id="relazioni-list" style="list-style: none; padding: 0;"></ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Setup View -->
-    <div id="setup-view" class="view-content">
-        <div class="sub-tabs">
-            <button class="sub-tab-btn active" data-subtarget="accessi-subview">Accessi</button>
-            <button class="sub-tab-btn" data-subtarget="files-subview">File Elaborati</button>
-            <button class="sub-tab-btn" data-subtarget="debug-subview">Debug</button>
-        </div>
-
-        <!-- Accessi Sub-View -->
-        <div id="accessi-subview" class="sub-view active" style="font-size: 0.85rem;">
-            <!-- Main Content Wrapper -->
-            <div style="max-width: 850px; margin: 0 auto;">
-
-                <!-- Gestione Utenti & Pending Requests -->
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
-
-                    <!-- Gestione Utenti -->
-                    <div class="card" style="flex: 2; min-width: 350px; margin-bottom: 0;">
-                        <div class="card-header" style="padding: 0.5rem 0.75rem;">
-                            <h2 style="font-size: 1rem; margin: 0;">Gestione Utenti</h2>
+                <div class="layout-compact">
+                    <!-- Angoli -->
+                    <div id="schemi-angoli" class="sub-view active">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>ANGOLI</h2>
+                            </div>
+                            <div class="card-body" style="padding: 1.5rem;">
+                                <div class="schemi-video-grid" id="grid-angoli">
+                                    <!-- Videos will be injected here -->
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body" style="padding: 0.5rem;">
-                            <!-- Add Form -->
-                            <div class="add-user-form"
-                                style="display: flex; gap: 0.25rem; margin-bottom: 0.5rem; align-items: center;">
-                                <div style="flex: 1.5;">
-                                    <input type="email" id="new-username" placeholder="Email"
-                                        style="width: 100%; padding: 0.25rem; font-size: 0.8rem; border-radius: 4px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+                    </div>
+
+                    <!-- Punizioni -->
+                    <div id="schemi-punizioni" class="sub-view">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>PUNIZIONI</h2>
+                            </div>
+                            <div class="card-body" style="padding: 1.5rem;">
+                                <div class="schemi-video-grid" id="grid-punizioni">
+                                    <!-- Videos will be injected here -->
                                 </div>
-                                <div style="flex: 1;">
-                                    <input type="text" id="new-password" placeholder="Pass"
-                                        style="width: 100%; padding: 0.25rem; font-size: 0.8rem; border-radius: 4px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rimesse -->
+                    <div id="schemi-rimesse" class="sub-view">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>RIMESSE</h2>
+                            </div>
+                            <div class="card-body" style="padding: 1.5rem;">
+                                <div class="schemi-video-grid" id="grid-rimesse">
+                                    <!-- Videos will be injected here -->
                                 </div>
-                                <div style="flex: 0 0 85px;">
-                                    <select id="new-role"
-                                        style="width: 100%; padding: 0.25rem; font-size: 0.8rem; border-radius: 4px; border: 1px solid #334155; background: #0f172a; color: #fff;">
-                                        <option value="Admin">Admin</option>
-                                        <option value="Atleta +18">Atleta+18</option>
-                                        <option value="Atleta -18">Atleta-18</option>
-                                        <option value="Dirigenza">Dirigenza</option>
-                                        <option value="Genitore">Genitore</option>
-                                        <option value="Ospite">Ospite</option>
-                                        <option value="Staff Tecnico">Staff</option>
-                                    </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calcio d'inizio -->
+                    <div id="schemi-inizio" class="sub-view">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>CALCIO D'INIZIO</h2>
+                            </div>
+                            <div class="card-body" style="padding: 1.5rem;">
+                                <div class="schemi-video-grid" id="grid-inizio">
+                                    <!-- Videos will be injected here -->
                                 </div>
-                                <button class="btn primary" onclick="addUser()"
-                                    style="height: 26px; padding: 0 6px; font-size: 0.75rem;">➕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4-0 -->
+                    <div id="schemi-40" class="sub-view">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>SCHEMA 4-0</h2>
+                            </div>
+                            <div class="card-body" style="padding: 1.5rem;">
+                                <div class="schemi-video-grid" id="grid-40">
+                                    <!-- Videos will be injected here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3-1 -->
+                    <div id="schemi-31" class="sub-view">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>SCHEMA 3-1</h2>
+                            </div>
+                            <div class="card-body" style="padding: 1.5rem;">
+                                <div class="schemi-video-grid" id="grid-31">
+                                    <!-- Videos will be injected here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relazioni View -->
+            <div id="relazioni-view" class="view-content">
+                <div class="layout-compact" style="margin-top: 1.5rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>RELAZIONI</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul id="relazioni-list" style="list-style: none; padding: 0;"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="setup-view" class="view-content">
+                <div class="card" style="max-width: 950px; margin: 0 auto;">
+                    <div class="card-header">
+                        <h2>Setup & Gestione</h2>
+                    </div>
+                    <div class="sub-tabs"
+                        style="background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; margin-bottom: 0;">
+                        <button class="sub-tab-btn active" data-subtarget="accessi-subview">Accessi</button>
+                        <button class="sub-tab-btn" data-subtarget="files-subview">File Elaborati</button>
+                        <button class="sub-tab-btn" data-subtarget="debug-subview">Debug</button>
+                    </div>
+                    <div class="card-body" style="padding: 1.25rem;">
+                        <div id="accessi-subview" class="sub-view active" style="font-size: 0.9rem;">
+
+                            <!-- Gestione Utenti & Pending Requests -->
+                            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+
+                                <!-- Richieste di accesso -->
+                                <div class="card" style="margin-bottom: 0;">
+                                    <div class="card-header" style="background: rgba(251, 191, 36, 0.1);">
+                                        <h3 style="color: #fbbf24;">⏳ Richieste di accesso</h3>
+                                    </div>
+                                    <div class="card-body" style="padding: 0.5rem;">
+                                        <div class="table-responsive" style="max-height: 235px; overflow-y: auto;">
+                                            <table class="compact-table" id="pending-users-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 55%;">Email</th>
+                                                        <th style="width: 30%;">Ruolo</th>
+                                                        <th style="text-align: right; width: 15%;"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="white-space: nowrap;">
+                                                    <tr>
+                                                        <td colspan="3"
+                                                            style="text-align:center; color: var(--text-muted);">-
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Gestione Utenti -->
+                                <div class="card" style="margin-bottom: 0;">
+                                    <div class="card-header">
+                                        <h3>Gestione Utenti</h3>
+                                    </div>
+                                    <div class="card-body" style="padding: 0.5rem;">
+                                        <!-- Add Form -->
+                                        <div class="add-user-form"
+                                            style="display: flex; gap: 0.25rem; margin-bottom: 0.5rem; align-items: center;">
+                                            <div style="flex: 1.5;">
+                                                <input type="email" id="new-username" placeholder="Email"
+                                                    style="width: 100%; padding: 0.25rem; font-size: 0.8rem; border-radius: 4px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+                                            </div>
+                                            <div style="flex: 1;">
+                                                <input type="text" id="new-password" placeholder="Pass"
+                                                    style="width: 100%; padding: 0.25rem; font-size: 0.8rem; border-radius: 4px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+                                            </div>
+                                            <div style="flex: 0 0 85px;">
+                                                <select id="new-role"
+                                                    style="width: 100%; padding: 0.25rem; font-size: 0.8rem; border-radius: 4px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+                                                    <option value="Admin">Admin</option>
+                                                    <option value="Atleta +18">Atleta+18</option>
+                                                    <option value="Atleta -18">Atleta-18</option>
+                                                    <option value="Dirigenza">Dirigenza</option>
+                                                    <option value="Genitore">Genitore</option>
+                                                    <option value="Ospite">Ospite</option>
+                                                    <option value="Staff Tecnico">Staff</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn primary" onclick="addUser()"
+                                                style="height: 26px; padding: 0 6px; font-size: 0.75rem;">➕</button>
+                                        </div>
+
+                                        <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
+                                            <table class="compact-table" id="users-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 45%;">Email</th>
+                                                        <th style="width: 25%;">Ruolo</th>
+                                                        <th style="width: 20%;">Pwd</th>
+                                                        <th style="text-align: right; width: 10%;"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="white-space: nowrap;"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
-                            <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
-                                <table class="compact-table" id="users-table">
+                            <!-- Registro Accessi -->
+                            <div class="card">
+                                <div class="card-header"
+                                    style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h3>Registro Accessi</h3>
+                                    <div>
+                                        <button class="btn primary" onclick="exportBackup()"
+                                            style="font-size: 0.7rem; padding: 2px 6px; margin-right: 0.25rem; background-color: #6366f1;">💾
+                                            Salva</button>
+                                        <button class="btn secondary" onclick="clearAccessLogs()"
+                                            style="font-size: 0.7rem; padding: 2px 6px; background-color: #ef4444; color: white;">🗑️
+                                            Reset</button>
+                                        <input type="file" id="log-upload" style="display: none;" accept=".txt">
+                                        <button class="btn secondary"
+                                            onclick="document.getElementById('log-upload').click()"
+                                            style="font-size: 0.7rem; padding: 2px 6px; margin-right: 0.25rem; background-color: #10b981; color: white;">📂
+                                            Carica</button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                                    <table class="compact-table" id="access-log-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 100px;">Data</th>
+                                                <th style="width: 80px;">Orario</th>
+                                                <th style="width: 30%;">Email</th>
+                                                <th style="width: 15%;">Device</th>
+                                                <th style="width: 15%;">Sezione</th>
+                                                <th>Esito</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="white-space: nowrap;"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div> <!-- End Main Content Wrapper -->
+                    </div>
+
+                    <div id="files-subview" class="sub-view">
+                        <div class="card">
+                            <div class="card-header"
+                                style="display: flex; justify-content: space-between; align-items: center;">
+                                <h3>Elenco File Elaborati</h3>
+                                <div class="sync-controls">
+                                    <span class="stat-item"
+                                        style="margin-right: 20px; color: #94a3b8; font-size: 0.9rem;">
+                                        Tempo Totale: <strong id="total-match-time"
+                                            style="color: #6366f1;">0:00</strong>
+                                    </span>
+                                    <button class="btn primary" onclick="forceSync()"
+                                        style="padding: 10px 20px; font-size: 0.9rem;">
+                                        🔄 Sincronizza ora
+                                    </button>
+                                    <div id="file-list" class="file-list"
+                                        style="display: inline-block; margin-left: 15px; font-size: 0.8rem;"></div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="styled-table" id="files-table">
                                     <thead>
                                         <tr>
-                                            <th style="width: 45%;">Email</th>
-                                            <th style="width: 25%;">Ruolo</th>
-                                            <th style="width: 20%;">Pwd</th>
-                                            <th style="text-align: right; width: 10%;"></th>
+                                            <th>#</th>
+                                            <th>Nome File</th>
+                                            <th>Stato</th>
                                         </tr>
                                     </thead>
-                                    <tbody style="white-space: nowrap;"></tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Pending Requests -->
-                    <div class="card" style="flex: 1; min-width: 200px; margin-bottom: 0;">
-                        <div class="card-header" style="padding: 0.5rem 0.75rem; background: rgba(251, 191, 36, 0.1);">
-                            <h2 style="font-size: 1rem; margin: 0; color: #fbbf24;">⏳ Pending</h2>
-                        </div>
-                        <div class="card-body" style="padding: 0.5rem;">
-                            <div class="table-responsive" style="max-height: 235px; overflow-y: auto;">
-                                <table class="compact-table" id="pending-users-table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 55%;">Email</th>
-                                            <th style="width: 30%;">Ruolo</th>
-                                            <th style="text-align: right; width: 15%;"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style="white-space: nowrap;">
-                                        <tr>
-                                            <td colspan="3" style="text-align:center; color: var(--text-muted);">-
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <!-- Debug Sub-View -->
+                    <div id="debug-subview" class="sub-view">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Console di Debug</h3>
+                            </div>
+                            <div class="card-body" style="padding: 1.5rem;">
+                                <pre id="debug-output"
+                                    style="background: #000; color: #0f0; padding: 1.5rem; border-radius: 0.5rem; font-family: monospace; font-size: 0.85rem; max-height: 600px; overflow-y: auto; white-space: pre-wrap;">In attesa di dati...</pre>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Registro Accessi -->
-                <div class="card">
-                    <div class="card-header"
-                        style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem;">
-                        <h2 style="font-size: 1rem; margin: 0;">Registro Accessi</h2>
-                        <div>
-                            <button class="btn primary" onclick="exportBackup()"
-                                style="font-size: 0.7rem; padding: 2px 6px; margin-right: 0.25rem; background-color: #6366f1;">💾
-                                Salva</button>
-                            <button class="btn secondary" onclick="clearAccessLogs()"
-                                style="font-size: 0.7rem; padding: 2px 6px; background-color: #ef4444; color: white;">🗑️
-                                Reset</button>
-                            <input type="file" id="log-upload" style="display: none;" accept=".txt">
-                            <button class="btn secondary" onclick="document.getElementById('log-upload').click()"
-                                style="font-size: 0.7rem; padding: 2px 6px; margin-right: 0.25rem; background-color: #10b981; color: white;">📂
-                                Carica</button>
-                        </div>
-                    </div>
-                    <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
-                        <table class="compact-table" id="access-log-table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 100px;">Data</th>
-                                    <th style="width: 80px;">Orario</th>
-                                    <th style="width: 30%;">Email</th>
-                                    <th style="width: 15%;">Device</th>
-                                    <th style="width: 15%;">Sezione</th>
-                                    <th>Esito</th>
-                                </tr>
-                            </thead>
-                            <tbody style="white-space: nowrap;"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div> <!-- End Main Content Wrapper -->
-        </div>
-
-        <!-- Files Sub-View -->
-        <div id="files-subview" class="sub-view">
-            <div class="card">
-                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h2>Elenco File Excel Elaborati</h2>
-                    <div class="sync-controls">
-                        <span class="stat-item" style="margin-right: 20px; color: #94a3b8; font-size: 0.9rem;">
-                            Tempo Totale: <strong id="total-match-time" style="color: #6366f1;">0:00</strong>
-                        </span>
-                        <button class="btn primary" onclick="forceSync()"
-                            style="padding: 10px 20px; font-size: 0.9rem;">
-                            🔄 Sincronizza ora
-                        </button>
-                        <div id="file-list" class="file-list"
-                            style="display: inline-block; margin-left: 15px; font-size: 0.8rem;"></div>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="styled-table" id="files-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nome File</th>
-                                <th>Stato</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
             </div>
-        </div>
-
-        <!-- Debug Sub-View -->
-        <div id="debug-subview" class="sub-view">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Console di Debug</h2>
-                </div>
-                <div class="card-body" style="padding: 1.5rem;">
-                    <pre id="debug-output"
-                        style="background: #000; color: #0f0; padding: 1.5rem; border-radius: 0.5rem; font-family: monospace; font-size: 0.85rem; max-height: 600px; overflow-y: auto; white-space: pre-wrap;">In attesa di dati...</pre>
-                </div>
-            </div>
-        </div>
-    </div>
-    </main>
     </div>
 
     <!-- Login Modal -->
@@ -771,7 +881,7 @@
 
     <!-- Main Logic Script (No Module) -->
     <script src="./js/user_widget_logic.js"></script>
-    <script src="./js/script.js"></script>
+    <script src="./js/script.js?v=20260102_0658"></script>
 
 </body>
 
