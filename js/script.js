@@ -635,7 +635,9 @@ function renderSchemiVideos() {
         punizioni: document.getElementById('grid-punizioni'),
         rimesse: document.getElementById('grid-rimesse'),
         inizio: document.getElementById('grid-inizio'),
-        altro: document.getElementById('grid-40') // Fallback for now or generic
+        "4-0": document.getElementById('grid-40'),
+        "3-1": document.getElementById('grid-31'),
+        altro: document.getElementById('grid-40') // Fallback
     };
 
     // Clear all grids
