@@ -1076,17 +1076,40 @@ window.renderUsersTable = function () {
     const tbody = document.querySelector('#users-table tbody');
     if (!tbody) return;
 
+    // Update Header if needed (Quick check to ensure 'Stato' column exists)
+    const thead = document.querySelector('#users-table thead tr');
+    if (thead && !thead.innerHTML.includes('Stato')) {
+        // Rebuild header to include Stato
+        thead.innerHTML = `
+            <th style="width: 35%;">Email</th>
+            <th style="width: 15%;">Stato</th>
+            <th style="width: 20%;">Ruolo</th>
+            <th style="width: 20%;">Pwd</th>
+            <th style="text-align: right; width: 10%;"></th>
+        `;
+    }
+
     const users = getUsers();
     tbody.innerHTML = '';
 
+    const currentUser = window.CURRENT_USER ? window.CURRENT_USER.username : null;
+
     users.forEach(u => {
+        const isOnline = u.username === currentUser;
         const tr = document.createElement('tr');
+        if (isOnline) tr.style.background = 'rgba(34, 197, 94, 0.1)'; // Light green highlight
+
         tr.innerHTML = `
             <td>${u.username}</td>
+             <td>
+                ${isOnline
+                ? '<span class="badge" style="background: var(--success); color: white; display: inline-flex; align-items: center; gap: 4px;">🟢 Online</span>'
+                : '<span style="color: var(--text-muted); font-size: 0.8rem;">-</span>'}
+            </td>
             <td><span class="badge" style="background: ${['Admin', 'Staff Tecnico', 'Dirigenza'].includes(u.role) ? 'var(--primary)' : 'var(--border)'}">${u.role}</span></td>
             <td style="font-family: monospace;">${u.password}</td>
             <td style="text-align: right;">
-                <button class="btn danger" style="padding: 2px 8px; font-size: 0.7rem;" onclick="deleteUser('${u.username}')">🗑️</button>
+                ${!isOnline ? `<button class="btn danger" style="padding: 2px 8px; font-size: 0.7rem;" onclick="deleteUser('${u.username}')">🗑️</button>` : ''}
             </td>
         `;
         tbody.appendChild(tr);
