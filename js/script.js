@@ -396,7 +396,7 @@ function updateUI() {
                 card.innerHTML = `
                 <div class="player-photo-container">
                     <img src="assets/players/${id}.png?v=${Date.now()}" class="player-photo" 
-                        onerror="if(!this.src.includes('.jpg')){this.src='assets/players/${id}.jpg?v=${Date.now()}'}else{this.style.display='none';this.nextElementSibling.style.display='block'}">
+                        onerror="if(!this.src.includes('.jpg')){this.src='assets/players/${id}.jpg?v=' + Date.now()}else{this.style.display='none';this.nextElementSibling.style.display='block'}">
                     <div class="player-placeholder" style="display:none;font-size:4rem;">👤</div>
                     <div class="player-number-badge">${id}</div>
                     ${isGk ? '<div class="player-role-badge">PORTIERE</div>' : (role ? `<div class="player-role-badge">${role}</div>` : '')}
@@ -939,12 +939,42 @@ window.clearAccessLogs = function () {
 
 // --- User Management Logic ---
 window.initUsers = function () {
-    // 1. Try to load from Preloaded DB (Source of Truth from Excel)
+    // 1. Try to load from Preloaded DB (Source of Truth from Excel + Persistent JSON)
     if (typeof PRELOADED_DATABASE !== 'undefined') {
         if (PRELOADED_DATABASE.users_data && PRELOADED_DATABASE.users_data.length > 0) {
-            localStorage.setItem('appUsers', JSON.stringify(PRELOADED_DATABASE.users_data));
+            // MERGE Logic: Don't just overwrite, as we might have unsynced local users.
+            let localUsers = [];
+            try {
+                localUsers = JSON.parse(localStorage.getItem('appUsers') || '[]');
+            } catch (e) { localUsers = []; }
+
+            const dbUsers = PRELOADED_DATABASE.users_data;
+            const userMap = {};
+
+            // 1. Add DB Users first (Baseline)
+            dbUsers.forEach(u => { if (u.username) userMap[u.username] = u; });
+
+            // 2. Add Local Users (Preserve unsynced changes)
+            //    Note: If a user was deleted in DB but still in Local, it reappears. 
+            //    This is acceptable given we want to avoid "disappearing new users".
+            localUsers.forEach(u => {
+                if (u.username) {
+                    // Only overwrite if deemed "newer" or simply trust local for now?
+                    // Let's trust local presence for new users. 
+                    // For existing users, if password changed locally, we want that.
+                    userMap[u.username] = u;
+                }
+            });
+
+            const mergedUsers = Object.values(userMap);
+            localStorage.setItem('appUsers', JSON.stringify(mergedUsers));
         }
+
         if (PRELOADED_DATABASE.access_logs && PRELOADED_DATABASE.access_logs.length > 0) {
+            // Similar merge logic for logs could be useful, but let's stick to users for now as per request.
+            // For logs, we usually want to append.
+            // But existing logic was overwrite. Let's keep overwrite for logs to avoid duplication complexity for now
+            // unless requested.
             localStorage.setItem('accessLogs', JSON.stringify(PRELOADED_DATABASE.access_logs));
         }
     }
