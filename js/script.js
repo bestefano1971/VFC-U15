@@ -1863,21 +1863,57 @@ document.addEventListener('DOMContentLoaded', () => {
             // Construct full URL (Relative).
             // User requested lowercase 'relazioni'. Remove ./ to be standard relative.
             const url = `DB/relazioni/${encodedPath}`;
+            logDebug(`Target URL (default): ${url}`);
 
-            logDebug(`Target URL: ${url}`);
+            // Helper to try opening
+            const tryOpen = (validUrl) => {
+                const newWindow = window.open(validUrl, '_blank');
+                if (!newWindow) {
+                    window.location.href = validUrl;
+                }
+            };
 
-            // Try open
-            const newWindow = window.open(url, '_blank');
-            if (!newWindow) {
-                // If popup blocked or failed
-                window.location.href = url; // Fallback: navigate current tab
-            }
+            // CHECK EXISTENCE (HEAD request) to handle Case Sensitivity (relazioni vs Relazioni)
+            fetch(url, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        tryOpen(url);
+                    } else {
+                        // Try Capitalized 'Relazioni'
+                        const altUrl = `DB/Relazioni/${encodedPath}`;
+                        logDebug(`Default path failed, trying: ${altUrl}`);
+                        fetch(altUrl, { method: 'HEAD' })
+                            .then(res2 => {
+                                if (res2.ok) {
+                                    tryOpen(altUrl);
+                                } else {
+                                    // Both failed
+                                    throw new Error("404 Not Found");
+                                }
+                            })
+                            .catch(() => {
+                                // Show specific error
+                                const diagInfo = `
+Path 1 (low): ${url}
+Path 2 (Cap): DB/Relazioni/${encodedPath}
+Nome: ${bestMatchedName}
+Risposta Server: File non trovato (404)
+`;
+                                alert(`IMPOSSIBILE APRIRE IL PDF.\n\nIl file non è stato trovato sul server.\n${diagInfo}\nVerifica di aver caricato (Push) la cartella DB/relazioni su GitHub.`);
+                            });
+                    }
+                })
+                .catch(err => {
+                    // Network error or offline
+                    console.warn("Fetch error, trying default open anyway:", err);
+                    tryOpen(url);
+                });
 
         } else {
             // Construct theoretical URL for debug
             const theoreticalUrl = bestFile ? `DB/relazioni/${bestFile.split('/').map(p => encodeURIComponent(p)).join('/')}` : 'N/A';
             const diagInfo = `
-File DB: ${theoreticalUrl}
+File DB: DB/relazioni/Performance/...
 Nome Cercato (Excel): ${bestMatchedName}
 Score Match: ${maxFileOverlap}
 File Trovati in DB: ${relFiles.length}
