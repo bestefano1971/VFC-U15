@@ -611,7 +611,7 @@ function renderRelazioniList() {
         const validPath = file.split('/').map(part => encodeURIComponent(part)).join('/');
 
         item.innerHTML = `
-            <a href="DB/Relazioni/${validPath}" target="_blank" class="relazioni-card">
+            <a href="DB/relazioni/${validPath}" target="_blank" class="relazioni-card">
                 <div class="rel-icon">${file.toLowerCase().endsWith('.pdf') ? '📄' : '📝'}</div>
                 <div class="rel-name">${displayName}</div>
                 <div class="rel-action">Apri Documento</div>
@@ -1861,7 +1861,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const encodedPath = parts.map(p => encodeURIComponent(p)).join('/');
 
             // Construct full URL (Relative). Use explicit current dir ./ just in case
-            const url = `./DB/Relazioni/${encodedPath}`;
+            // User requested lowercase 'relazioni'
+            const url = `./DB/relazioni/${encodedPath}`;
 
             logDebug(`Target URL: ${url}`);
 
