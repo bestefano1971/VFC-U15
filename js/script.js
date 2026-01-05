@@ -1860,8 +1860,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const parts = bestFile.split('/');
             const encodedPath = parts.map(p => encodeURIComponent(p)).join('/');
 
-            // Construct full URL (Relative)
-            const url = `DB/Relazioni/${encodedPath}`;
+            // Construct full URL (Relative). Use explicit current dir ./ just in case
+            const url = `./DB/Relazioni/${encodedPath}`;
+
+            logDebug(`Target URL: ${url}`);
 
             // Try to open
             const newWindow = window.open(url, '_blank');
