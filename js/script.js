@@ -1874,13 +1874,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         } else {
+            // Construct theoretical URL for debug
+            const theoreticalUrl = bestFile ? `DB/relazioni/${bestFile.split('/').map(p => encodeURIComponent(p)).join('/')}` : 'N/A';
             const diagInfo = `
-File DB: DB/relazioni/Performance/...
+File DB: ${theoreticalUrl}
 Nome Cercato (Excel): ${bestMatchedName}
 Score Match: ${maxFileOverlap}
 File Trovati in DB: ${relFiles.length}
+Base URL: ${document.baseURI}
 `;
-            alert(`PDF non trovato.\n${diagInfo}\nControlla che il file esista nella cartella "DB/relazioni/Performance".`);
+            alert(`PDF non trovato nel DB (match logico fallito).\n${diagInfo}\nControlla che il file esista e sia indicizzato.`);
         }
     };
 
