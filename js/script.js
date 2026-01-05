@@ -1779,6 +1779,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const perfNames = PRELOADED_DATABASE.performance_names || [];
         const relFiles = PRELOADED_DATABASE.relazioni_files || [];
 
+        // Check if DB says there are any files
+        if (relFiles.length === 0) {
+            alert("Nessun file trovato nel database (relazioni_files vuoto).");
+            return;
+        }
+
         // Advanced Normalization: lowercase, no accents, only letters and numbers
         const normalize = (s) => String(s).toLowerCase()
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -1797,11 +1803,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         perfNames.forEach(pn => {
             const pnWords = getWords(pn);
-            // Count how many words overlap
             const overlap = pnWords.filter(w => targetWords.includes(w)).length;
-
-            // Check for near-misses (typos like DAIDI vs DAIFI)
-            // If No direct overlap, check if words are very similar
             let fuzzyOverlap = overlap;
             if (overlap === 0) {
                 pnWords.forEach(pw => {
@@ -1828,18 +1830,18 @@ document.addEventListener('DOMContentLoaded', () => {
         logDebug(`Matched to Excel name: ${bestMatchedName} (score: ${maxOverlap})`);
 
         // 2. Look for best matching file in relazioni_files
-        // We use the same word-based logic to match the filename
         let bestFile = null;
         let maxFileOverlap = 0;
 
         relFiles.forEach(f => {
             if (!f.toLowerCase().endsWith('.pdf')) return;
+            // Only look in Performance folder if distinct? OR just match all PDF
+            // We want specific player performance files. Ideally they are in Performance/ folder.
+            // But let's trust the name match.
 
-            // Extract filename without path and extension
             const fileNameOnly = f.split('/').pop().replace(/\.pdf$/i, '');
             const fileWords = getWords(fileNameOnly);
 
-            // We match against BOTH the target name AND the matched Excel name
             const overlapTarget = fileWords.filter(w => targetWords.includes(w)).length;
             const overlapExcel = fileWords.filter(w => getWords(bestMatchedName).includes(w)).length;
 
@@ -1853,9 +1855,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (bestFile && maxFileOverlap >= 1) {
             logDebug(`Opening PDF: ${bestFile} (score: ${maxFileOverlap})`);
-            window.open(`DB/Relazioni/${encodeURIComponent(bestFile).replace(/%2F/g, '/')}`, '_blank');
+
+            // Robust encoding: split by / and encode each part to avoid encoding the separators
+            const parts = bestFile.split('/');
+            const encodedPath = parts.map(p => encodeURIComponent(p)).join('/');
+
+            // Construct full URL (Relative)
+            const url = `DB/Relazioni/${encodedPath}`;
+
+            // Try to open
+            const newWindow = window.open(url, '_blank');
+            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                alert(`Il browser ha bloccato l'apertura del PDF.\n\nLink diretto: ${url}\n\nProva a disabilitare il blocco popup.`);
+            }
         } else {
-            alert(`Fascicolo PDF non trovato per "${bestMatchedName}".\n\nAssicurati che il file PDF sia stato caricato nella cartella DB/Relazioni/Performance con un nome simile al giocatore.`);
+            alert(`Fascicolo PDF non trovato per "${bestMatchedName}".\n\nAssicurati che il file PDF sia stato caricato nella cartella DB/Relazioni/Performance.`);
         }
     };
 
