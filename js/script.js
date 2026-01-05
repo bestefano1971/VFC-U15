@@ -1860,17 +1860,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const parts = bestFile.split('/');
             const encodedPath = parts.map(p => encodeURIComponent(p)).join('/');
 
-            // Construct full URL (Relative). Use explicit current dir ./ just in case
-            // User requested lowercase 'relazioni'
-            const url = `./DB/relazioni/${encodedPath}`;
+            // Construct full URL (Relative).
+            // User requested lowercase 'relazioni'. Remove ./ to be standard relative.
+            const url = `DB/relazioni/${encodedPath}`;
 
             logDebug(`Target URL: ${url}`);
 
-            // Try to open
-            const newWindow = window.open(url, '_blank');
-            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                alert(`Il browser ha bloccato l'apertura del PDF.\n\nLink diretto: ${url}\n\nProva a disabilitare il blocco popup.`);
-            }
+            // Try to open using Anchor Tag (better for downloads/files)
+            const link = document.createElement('a');
+            link.href = url;
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Fallback alert not easy to trigger on anchor click failure, 
+            // but anchor is less likely to fail if file exists.
         } else {
             alert(`Fascicolo PDF non trovato per "${bestMatchedName}".\n\nAssicurati che il file PDF sia stato caricato nella cartella DB/Relazioni/Performance.`);
         }
