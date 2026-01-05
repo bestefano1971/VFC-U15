@@ -667,15 +667,7 @@ function renderSchemiVideos() {
         card.innerHTML = `
             <div class="video-player-container">
                 <video controls preload="metadata">
-                    <!-- Standard Path (Capitalized Schemi as on disk) -->
-                    <source src="./${video.path}" type="video/mp4">
-                    <!-- Fallback 1: Lowercase schemi -->
-                    <source src="./${video.path.replace('Schemi', 'schemi')}" type="video/mp4">
-                    <!-- Fallback 2: Lowercase assets (if needed) -->
-                    <source src="./${video.path.replace('assets', 'assets').replace('Schemi', 'schemi')}" type="video/mp4">
-                    <!-- Fallback 3: Fully lowercase -->
-                    <source src="./${video.path.toLowerCase()}" type="video/mp4">
-                    
+                    <source src="${video.path}" type="video/mp4">
                     Il tuo browser non supporta il video player.
                 </video>
             </div>
@@ -1880,8 +1872,9 @@ document.addEventListener('DOMContentLoaded', () => {
             logDebug(`Match found in DB. Opening file...`);
 
             // Standard Path Construction
-            // We assume standard structure: DB/relazioni/Performance/FileName.pdf
-            const url = `DB/relazioni/${encodedPath}`;
+            // We assume standard structure: DB/Relazioni/Performance/FileName.pdf
+            // NOTE: Changed to Capitalized 'Relazioni' as this is likely the folder name on server.
+            const url = `DB/Relazioni/${encodedPath}`;
 
             logDebug(`Target URL: ${url}`);
 
