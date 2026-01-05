@@ -480,7 +480,17 @@ function updateUI() {
                         linkCells.forEach(cell => {
                             const td = document.createElement('td'); td.className = 'cal-link';
                             const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
-                            td.innerHTML = `<a href="${cell.url}" target="_blank" class="highlight-link">${icon} ${cell.text}</a>`;
+
+                            // Cleanup URL for web
+                            let cleanUrl = cell.url.replace(/\\/g, '/');
+                            if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
+                            if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
+
+                            // Ensure it points to assets properly (relative to index.html)
+                            // If it starts with 'assets', it's good. 
+                            // If user is online, check case sensitivity.
+
+                            td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link">${icon} ${cell.text}</a>`;
                             tr.appendChild(td);
                         });
                     } else if (!isHeader) {
@@ -657,7 +667,15 @@ function renderSchemiVideos() {
         card.innerHTML = `
             <div class="video-player-container">
                 <video controls preload="metadata">
-                    <source src="${video.path}" type="video/mp4">
+                    <!-- Standard Path (Capitalized Schemi as on disk) -->
+                    <source src="./${video.path}" type="video/mp4">
+                    <!-- Fallback 1: Lowercase schemi -->
+                    <source src="./${video.path.replace('Schemi', 'schemi')}" type="video/mp4">
+                    <!-- Fallback 2: Lowercase assets (if needed) -->
+                    <source src="./${video.path.replace('assets', 'assets').replace('Schemi', 'schemi')}" type="video/mp4">
+                    <!-- Fallback 3: Fully lowercase -->
+                    <source src="./${video.path.toLowerCase()}" type="video/mp4">
+                    
                     Il tuo browser non supporta il video player.
                 </video>
             </div>
@@ -1859,56 +1877,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const parts = bestFile.split('/');
             const encodedPath = parts.map(p => encodeURIComponent(p)).join('/');
 
-            logDebug(`Match found in DB. Trying to locate file on server...`);
+            logDebug(`Match found in DB. Opening file...`);
 
-            // List of potential paths to check (handling case sensitivity mismatches)
-            // baseFile comes from DB (e.g. "Performance/Name.pdf") which matches Windows scan.
-            // standardPath = DB/relazioni/ + baseFile
+            // Standard Path Construction
+            // We assume standard structure: DB/relazioni/Performance/FileName.pdf
+            const url = `DB/relazioni/${encodedPath}`;
 
-            const candidates = [
-                `DB/relazioni/${encodedPath}`,                         // standard lowercase request
-                `DB/Relazioni/${encodedPath}`,                         // Capitalized Folder
-                `DB/relazioni/${encodedPath.replace('Performance', 'performance')}`, // lowercase subfolder
-                `DB/Relazioni/${encodedPath.replace('Performance', 'performance')}`  // Cap Folder + low sub
-            ];
+            logDebug(`Target URL: ${url}`);
 
-            // Recursive function to try candidates one by one
-            const tryNext = (index) => {
-                if (index >= candidates.length) {
-                    // All failed
-                    const diagInfo = candidates.map(c => `- ${c}`).join('\n');
-                    alert(`IMPOSSIBILE TROVARE IL FILE.\n\nHo cercato nei seguenti percorsi sul server:\n${diagInfo}\n\nNessuno di questi ha restituito il file. Verifica di aver caricato (Push) la cartella DB su GitHub e che i nomi coincidano.`);
-                    return;
-                }
+            const newWindow = window.open(url, '_blank');
 
-                const testUrl = candidates[index];
-                fetch(testUrl, { method: 'HEAD' })
-                    .then(res => {
-                        if (res.ok) {
-                            // Found!
-                            logDebug(`Found valid path: ${testUrl}`);
-                            const win = window.open(testUrl, '_blank');
-                            if (!win) window.location.href = testUrl;
-                        } else {
-                            // Try next
-                            tryNext(index + 1);
-                        }
-                    })
-                    .catch(() => {
-                        // Network/CORS error? Try anyway if it's the first candidate as fallback, or just continue?
-                        // If HEAD fails due to network, we might as well just try to open the first one and hope.
-                        if (index === 0) {
-                            console.warn("Fetch failed (network), falling back to blind open.");
-                            const win = window.open(testUrl, '_blank');
-                            if (!win) window.location.href = testUrl;
-                        } else {
-                            tryNext(index + 1);
-                        }
-                    });
-            };
+            // If popup blocker prevents window.open, it returns null. 
+            // In that case, we redirect the current tab.
+            if (!newWindow) {
+                window.location.href = url;
+            }
 
-            // Start check
-            tryNext(0);
+            // Note: If the file is 404, the browser will just show its own 404 page. 
+            // We can't catch that from JS easily across domains/protocols without fetch.
+            // But since fetch is causing issues, we trust the direct link.
 
         } else {
             const diagInfo = `
