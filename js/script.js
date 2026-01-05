@@ -886,12 +886,28 @@ function renderCharts(players, gks) {
 }
 
 // --- Access Logs Logic ---
-function logAccessAttempt(section, success) {
+function logAccessAttempt(section, success, manualUser) {
     const logs = JSON.parse(localStorage.getItem('accessLogs') || '[]');
+
+    // Determine user info
+    let uName = 'Ospite';
+    let uRole = 'Ospite';
+
+    // Prefer passed arg, then global user, then default
+    if (manualUser) {
+        uName = manualUser;
+    } else if (window.CURRENT_USER) {
+        uName = window.CURRENT_USER.username;
+        uRole = window.CURRENT_USER.role;
+    }
+
     logs.unshift({
         date: new Date().toISOString(),
         section: section,
-        success: success
+        success: success,
+        role: uName, // Storing username in 'role' field for backward compat with python script or just use a new field?
+        // Python script looks for l.get('role'). Let's put the identifier there.
+        device: navigator.userAgent // Optional: add device info
     });
     // Keep max 50 logs
     if (logs.length > 50) logs.pop();
