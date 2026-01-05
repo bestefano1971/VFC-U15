@@ -1095,21 +1095,38 @@ window.renderUsersTable = function () {
     const currentUser = window.CURRENT_USER ? window.CURRENT_USER.username : null;
 
     users.forEach(u => {
-        const isOnline = u.username === currentUser;
+        const isSelf = u.username === currentUser;
+
+        let statusHtml = '<span style="color: var(--text-muted); font-size: 0.8rem;">-</span>';
+        let isOnline = isSelf;
+
+        if (isSelf) {
+            statusHtml = '<span class="badge" style="background: var(--success); color: white; display: inline-flex; align-items: center; gap: 4px;">🟢 Online (Tu)</span>';
+        } else if (u.last_seen) {
+            const last = new Date(u.last_seen);
+            const now = new Date();
+            const diffMins = (now - last) / (1000 * 60); // minutes
+
+            if (diffMins < 10) {
+                statusHtml = '<span class="badge" style="background: var(--success); color: white; display: inline-flex; align-items: center; gap: 4px;">🟢 Online</span>';
+                isOnline = true;
+            } else {
+                const dateStr = last.toLocaleDateString('it-IT');
+                const timeStr = last.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+                statusHtml = `<span style="color: var(--text-muted); font-size: 0.75rem;">Ultimo: ${dateStr} ${timeStr}</span>`;
+            }
+        }
+
         const tr = document.createElement('tr');
-        if (isOnline) tr.style.background = 'rgba(34, 197, 94, 0.1)'; // Light green highlight
+        if (isOnline) tr.style.background = 'rgba(34, 197, 94, 0.1)';
 
         tr.innerHTML = `
             <td>${u.username}</td>
-             <td>
-                ${isOnline
-                ? '<span class="badge" style="background: var(--success); color: white; display: inline-flex; align-items: center; gap: 4px;">🟢 Online</span>'
-                : '<span style="color: var(--text-muted); font-size: 0.8rem;">-</span>'}
-            </td>
+             <td>${statusHtml}</td>
             <td><span class="badge" style="background: ${['Admin', 'Staff Tecnico', 'Dirigenza'].includes(u.role) ? 'var(--primary)' : 'var(--border)'}">${u.role}</span></td>
             <td style="font-family: monospace;">${u.password}</td>
             <td style="text-align: right;">
-                ${!isOnline ? `<button class="btn danger" style="padding: 2px 8px; font-size: 0.7rem;" onclick="deleteUser('${u.username}')">🗑️</button>` : ''}
+                ${!isSelf ? `<button class="btn danger" style="padding: 2px 8px; font-size: 0.7rem;" onclick="deleteUser('${u.username}')">🗑️</button>` : ''}
             </td>
         `;
         tbody.appendChild(tr);
