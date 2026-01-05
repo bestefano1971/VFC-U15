@@ -392,7 +392,8 @@ header {
 
 .sub-tab-btn.active {
     background: var(--primary);
-    color: white;
+    color: #ffffff !important;
+    font-weight: 800;
     box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
 }
 
