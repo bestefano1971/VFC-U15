@@ -1855,71 +1855,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (bestFile && maxFileOverlap >= 1) {
             logDebug(`Opening PDF: ${bestFile} (score: ${maxFileOverlap})`);
-
             // Robust encoding: split by / and encode each part to avoid encoding the separators
             const parts = bestFile.split('/');
             const encodedPath = parts.map(p => encodeURIComponent(p)).join('/');
 
-            // Construct full URL (Relative).
-            // User requested lowercase 'relazioni'. Remove ./ to be standard relative.
-            const url = `DB/relazioni/${encodedPath}`;
-            logDebug(`Target URL (default): ${url}`);
+            logDebug(`Match found in DB. Trying to locate file on server...`);
 
-            // Helper to try opening
-            const tryOpen = (validUrl) => {
-                const newWindow = window.open(validUrl, '_blank');
-                if (!newWindow) {
-                    window.location.href = validUrl;
+            // List of potential paths to check (handling case sensitivity mismatches)
+            // baseFile comes from DB (e.g. "Performance/Name.pdf") which matches Windows scan.
+            // standardPath = DB/relazioni/ + baseFile
+
+            const candidates = [
+                `DB/relazioni/${encodedPath}`,                         // standard lowercase request
+                `DB/Relazioni/${encodedPath}`,                         // Capitalized Folder
+                `DB/relazioni/${encodedPath.replace('Performance', 'performance')}`, // lowercase subfolder
+                `DB/Relazioni/${encodedPath.replace('Performance', 'performance')}`  // Cap Folder + low sub
+            ];
+
+            // Recursive function to try candidates one by one
+            const tryNext = (index) => {
+                if (index >= candidates.length) {
+                    // All failed
+                    const diagInfo = candidates.map(c => `- ${c}`).join('\n');
+                    alert(`IMPOSSIBILE TROVARE IL FILE.\n\nHo cercato nei seguenti percorsi sul server:\n${diagInfo}\n\nNessuno di questi ha restituito il file. Verifica di aver caricato (Push) la cartella DB su GitHub e che i nomi coincidano.`);
+                    return;
                 }
+
+                const testUrl = candidates[index];
+                fetch(testUrl, { method: 'HEAD' })
+                    .then(res => {
+                        if (res.ok) {
+                            // Found!
+                            logDebug(`Found valid path: ${testUrl}`);
+                            const win = window.open(testUrl, '_blank');
+                            if (!win) window.location.href = testUrl;
+                        } else {
+                            // Try next
+                            tryNext(index + 1);
+                        }
+                    })
+                    .catch(() => {
+                        // Network/CORS error? Try anyway if it's the first candidate as fallback, or just continue?
+                        // If HEAD fails due to network, we might as well just try to open the first one and hope.
+                        if (index === 0) {
+                            console.warn("Fetch failed (network), falling back to blind open.");
+                            const win = window.open(testUrl, '_blank');
+                            if (!win) window.location.href = testUrl;
+                        } else {
+                            tryNext(index + 1);
+                        }
+                    });
             };
 
-            // CHECK EXISTENCE (HEAD request) to handle Case Sensitivity (relazioni vs Relazioni)
-            fetch(url, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        tryOpen(url);
-                    } else {
-                        // Try Capitalized 'Relazioni'
-                        const altUrl = `DB/Relazioni/${encodedPath}`;
-                        logDebug(`Default path failed, trying: ${altUrl}`);
-                        fetch(altUrl, { method: 'HEAD' })
-                            .then(res2 => {
-                                if (res2.ok) {
-                                    tryOpen(altUrl);
-                                } else {
-                                    // Both failed
-                                    throw new Error("404 Not Found");
-                                }
-                            })
-                            .catch(() => {
-                                // Show specific error
-                                const diagInfo = `
-Path 1 (low): ${url}
-Path 2 (Cap): DB/Relazioni/${encodedPath}
-Nome: ${bestMatchedName}
-Risposta Server: File non trovato (404)
-`;
-                                alert(`IMPOSSIBILE APRIRE IL PDF.\n\nIl file non è stato trovato sul server.\n${diagInfo}\nVerifica di aver caricato (Push) la cartella DB/relazioni su GitHub.`);
-                            });
-                    }
-                })
-                .catch(err => {
-                    // Network error or offline
-                    console.warn("Fetch error, trying default open anyway:", err);
-                    tryOpen(url);
-                });
+            // Start check
+            tryNext(0);
 
         } else {
-            // Construct theoretical URL for debug
-            const theoreticalUrl = bestFile ? `DB/relazioni/${bestFile.split('/').map(p => encodeURIComponent(p)).join('/')}` : 'N/A';
             const diagInfo = `
-File DB: DB/relazioni/Performance/...
 Nome Cercato (Excel): ${bestMatchedName}
 Score Match: ${maxFileOverlap}
 File Trovati in DB: ${relFiles.length}
-Base URL: ${document.baseURI}
 `;
-            alert(`PDF non trovato nel DB (match logico fallito).\n${diagInfo}\nControlla che il file esista e sia indicizzato.`);
+            alert(`PDF non trovato nel DB (nessun match di nome).\n${diagInfo}`);
         }
     };
 
