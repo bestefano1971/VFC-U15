@@ -1866,18 +1866,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
             logDebug(`Target URL: ${url}`);
 
-            // Try to open using Anchor Tag (better for downloads/files)
-            const link = document.createElement('a');
-            link.href = url;
-            link.target = '_blank';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // Try open
+            const newWindow = window.open(url, '_blank');
+            if (!newWindow) {
+                // If popup blocked or failed
+                window.location.href = url; // Fallback: navigate current tab
+            }
 
-            // Fallback alert not easy to trigger on anchor click failure, 
-            // but anchor is less likely to fail if file exists.
         } else {
-            alert(`Fascicolo PDF non trovato per "${bestMatchedName}".\n\nAssicurati che il file PDF sia stato caricato nella cartella DB/Relazioni/Performance.`);
+            const diagInfo = `
+File DB: DB/relazioni/Performance/...
+Nome Cercato (Excel): ${bestMatchedName}
+Score Match: ${maxFileOverlap}
+File Trovati in DB: ${relFiles.length}
+`;
+            alert(`PDF non trovato.\n${diagInfo}\nControlla che il file esista nella cartella "DB/relazioni/Performance".`);
         }
     };
 
