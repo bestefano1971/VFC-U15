@@ -1189,3 +1189,218 @@ td.highlight-valli {
     max-width: 900px;
     margin: 0 auto;
 }
+
+/* Sponsors Section */
+.sponsors-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+.sponsors-section h3 {
+    margin-bottom: 2rem;
+    color: var(--text-muted);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.sponsors-grid {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.sponsor-card {
+    display: block;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.sponsor-card:hover {
+    transform: translateY(-5px);
+}
+
+.sponsor-logo-container {
+    width: 300px;
+    height: 180px;
+    background: #ffffff;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+}
+
+.sponsor-card:hover .sponsor-logo-container {
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+    border-color: var(--primary);
+}
+
+.sponsor-logo-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: none;
+    /* Ensure full color */
+}
+
+/* --- Organigramma Pyramid Styles --- */
+.org-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    padding: 2rem 0;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.org-level {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    width: 100%;
+}
+
+.org-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 260px;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(145deg, var(--surface), rgba(255, 255, 255, 0.02));
+}
+
+.org-node:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: var(--primary);
+}
+
+.org-role {
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.org-name {
+    color: var(--text);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.org-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    display: block;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s;
+}
+
+.org-node:hover .org-icon {
+    filter: none;
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Connectors */
+.org-level:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -3rem;
+    /* extend down to next level */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 3rem;
+    background: var(--border);
+    opacity: 0.5;
+    z-index: 1;
+}
+
+/* Level specifics */
+.level-1 .org-node {
+    border-top: 4px solid var(--primary);
+}
+
+.level-2 .org-node {
+    border-top: 4px solid #10b981;
+    /* Green */
+}
+
+.level-3 .org-node,
+.level-4 .org-node,
+.level-5 .org-node,
+.level-6 .org-node {
+    border-top: 4px solid #f59e0b;
+    /* Amber */
+}
+
+.org-group-title {
+    width: 100%;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.org-group-title::before,
+.org-group-title::after {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--border);
+    vertical-align: middle;
+    margin: 0 10px;
+}
+
+.org-photo-container {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 0.25rem;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--surface);
+    /* Fallback */
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.org-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.org-node .org-icon {
+    font-size: 1rem;
+    line-height: 30px;
+    /* Center vertically if used as placeholder */
+    display: block;
+}
