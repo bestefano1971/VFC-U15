@@ -32,10 +32,10 @@ function renderTabsWithLocks() {
     // Default Fallback
     if (!rolePerms) {
         if (userRole === 'Admin') {
-            rolePerms = { Home: true, Rosa: true, Staff: true, Statistiche: true, Calendario: true, Classifica: true, Schemi: true, Relazioni: true, Setup: true };
+            rolePerms = { Home: true, Rosa: true, Società: true, Statistiche: true, Calendario: true, Classifica: true, Schemi: true, Relazioni: true, Setup: true };
         } else {
             // Default restricted for unknown
-            rolePerms = { Home: true, Rosa: true, Staff: true, Statistiche: true, Calendario: true, Classifica: true, Schemi: false, Relazioni: false, Setup: false };
+            rolePerms = { Home: true, Rosa: true, Società: true, Statistiche: true, Calendario: true, Classifica: true, Schemi: false, Relazioni: false, Setup: false };
         }
     }
 
@@ -44,9 +44,10 @@ function renderTabsWithLocks() {
         const text = btn.textContent.replace(' 🔒', '').trim();
         let label = text;
         const keyMap = {
-            "HOME": "Home", "ROSA": "Rosa", "STAFF": "Staff",
+            "HOME": "Home", "ROSA": "Rosa", "STAFF": "Società", "SOCIETÀ": "Società", "SOCIETA": "Società",
             "STATISTICHE": "Statistiche", "CALENDARIO": "Calendario", "CLASSIFICA": "Classifica",
-            "SCHEMI": "Schemi", "RELAZIONI": "Relazioni", "SETUP": "Setup"
+            "CAMPIONATO": "Calendario",
+            "SCHEMI": "Schemi", "RELAZIONI": "Relazioni", "PRIVACY": "Home", "SPONSOR": "Home", "SETUP": "Setup"
         };
         const permKey = keyMap[label.toUpperCase()] || label;
 
@@ -528,6 +529,7 @@ function updateUI() {
         renderRelazioniList();
         renderSchemiVideos();
         renderFilesTable();
+        renderPrivacyTable(); // Added privacy table rendering
         // Update Tabs Locks
         renderTabsWithLocks();
 
@@ -1901,3 +1903,52 @@ File Trovati in DB: ${relFiles.length}
     };
 
 });
+
+function renderPrivacyTable() {
+    const tbody = document.querySelector('#privacy-table tbody');
+    if (!tbody) return;
+
+    if (typeof PRELOADED_DATABASE === 'undefined' || !PRELOADED_DATABASE.permissions) {
+        return;
+    }
+
+    tbody.innerHTML = '';
+    const permissions = PRELOADED_DATABASE.permissions;
+
+    // Define columns to show (order matters)
+    const columns = [
+        { key: 'Home', label: 'Home' },
+        { key: 'Rosa', label: 'Rosa' },
+        { key: 'Società', label: 'Società' },
+        { key: 'Statistiche', label: 'Stats' },
+        { key: 'Campionato', label: 'Camp.' },
+        { key: 'Schemi', label: 'Schemi' },
+        { key: 'Relazioni', label: 'Rel.' },
+        { key: 'Setup', label: 'Setup' },
+        { key: 'Performance', label: 'Perf.' }
+    ];
+
+    permissions.forEach(p => {
+        const tr = document.createElement('tr');
+
+        // Role Column
+        const tdRole = document.createElement('td');
+        tdRole.style.textAlign = 'left';
+        tdRole.style.fontWeight = '600';
+        tdRole.style.color = 'var(--text)';
+        tdRole.textContent = p.Ruolo_Accesso || p.Ruolo || 'N/A';
+        tr.appendChild(tdRole);
+
+        // Feature Columns
+        columns.forEach(col => {
+            const td = document.createElement('td');
+            const val = p[col.key];
+            // Check for true, 1, or "true" (case insensitive)
+            const isAllowed = val === true || val === 1 || String(val).toLowerCase() === 'true';
+            td.textContent = isAllowed ? '✅' : '🚫';
+            tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+    });
+}
