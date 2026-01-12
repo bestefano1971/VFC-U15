@@ -537,11 +537,11 @@ function renderRelazioniList() {
         // Clean name for display: remove extension and folder path
         const displayName = file.split('/').pop().replace(/\.(pdf|docx|doc)$/i, '');
 
-        // Encode file path properly
-        const validPath = encodeURI(file);
+        // Encode file path properly by encoding each segment (handles spaces, ?, #, etc.)
+        const validPath = file.split('/').map(part => encodeURIComponent(part)).join('/');
 
         item.innerHTML = `
-            <a href="DB/relazioni/${validPath}" target="_blank" class="relazioni-card">
+            <a href="./DB/relazioni/${validPath}" target="_blank" class="relazioni-card">
                 <div class="rel-icon">${file.toLowerCase().endsWith('.pdf') ? '📄' : '📝'}</div>
                 <div class="rel-name">${displayName}</div>
                 <div class="rel-action">Apri Documento</div>
