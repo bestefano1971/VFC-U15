@@ -12,9 +12,38 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Preloaded Database -->
-    <script id="db-sync-script" src="./js/database.js?v=20260105_2058"></script>
+    <script id="db-sync-script" src="./js/database.js?v=20260112_0135"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Image Zoom Modal */
+        .img-zoom-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            cursor: zoom-out;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .img-zoom-modal.active {
+            display: flex;
+        }
+
+        .img-zoom-modal img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,7 +57,6 @@
                 </div>
                 <div class="brand-text">
                     <h1>VALLI FUTSAL CHIOGGIA</h1>
-                    <p class="header-subtitle">Camp. Reg. di Promozione Under 15</p>
                     <div style="display: flex; align-items: center; gap: 1rem;">
                         <p class="header-season">Stagione 2025/2026</p>
                     </div>
@@ -66,87 +94,20 @@
         <main id="dashboard" class="dashboard">
             <!-- Tabs -->
             <div class="tabs">
-                <button class="tab-btn active" data-target="home-view">Home</button>
-                <button class="tab-btn" data-target="staff-view">Società</button>
-                <button class="tab-btn" data-target="roster-view">Rosa</button>
-                <button class="tab-btn" data-target="stats-container-view">Statistiche</button>
-                <button class="tab-btn" data-target="campionato-view">Campionato</button>
-                <button class="tab-btn" data-target="schemi-view">Schemi</button>
+                <button class="tab-btn active" data-target="staff-view">Società</button>
+                <button class="tab-btn" data-target="first-team-view">1^ Squadra</button>
+                <button class="tab-btn" data-target="u19-view">U19</button>
+                <button class="tab-btn" data-target="roster-view">U15</button>
+                <button class="tab-btn" data-target="csi-view">CSI</button>
+                <button class="tab-btn" data-target="femminile-view">Femminile</button>
+                <button class="tab-btn" data-target="sgs-view">SGS</button>
                 <button class="tab-btn" data-target="sponsor-view">Sponsor</button>
-                <button class="tab-btn" data-target="relazioni-view">Relazioni 🔒</button>
                 <button class="tab-btn" data-target="privacy-view">Privacy</button>
                 <button class="tab-btn" data-target="setup-view">SETUP 🔒</button>
             </div>
-
-            <!-- Home View -->
-            <div id="home-view" class="view-content active">
+    </div>
 
 
-                <div class="home-main-layout">
-                    <div class="home-hero">
-                        <div class="hero-team-photo-container" style="min-height: 500px !important;">
-                            <img src="assets/Foto Squadra.jpeg" alt="Foto di Squadra" class="hero-team-photo"
-                                style="max-height: 800px !important; object-fit: cover !important;">
-                        </div>
-                    </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">⚽</div>
-                            <div class="stat-value" id="home-matches">0</div>
-                            <div class="stat-label">Partite Giocate</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon" style="color: var(--success);">📈</div>
-                            <div class="stat-value" id="home-wins">0</div>
-                            <div class="stat-label">Vinte</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon" style="color: var(--text-muted);">🤝</div>
-                            <div class="stat-value" id="home-draws">0</div>
-                            <div class="stat-label">Pareggiate</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon" style="color: var(--danger);">📉</div>
-                            <div class="stat-value" id="home-losses">0</div>
-                            <div class="stat-label">Perse</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">🎯</div>
-                            <div class="stat-value" id="home-gf">0</div>
-                            <div class="stat-label">Goal Fatti</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">🥅</div>
-                            <div class="stat-value" id="home-gs">0</div>
-                            <div class="stat-label">Goal Subiti</div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="quick-links">
-                    <h3>Accesso rapido</h3>
-                    <div class="links-grid">
-                        <button class="quick-link-btn" data-goto="players-charts-section">
-                            <span class="link-icon">📈</span>
-                            <span class="link-text">Grafici Giocatori</span>
-                        </button>
-                        <button class="quick-link-btn" data-goto="goalkeepers-charts-section">
-                            <span class="link-icon">🧤</span>
-                            <span class="link-text">Grafici Portieri</span>
-                        </button>
-                        <button class="quick-link-btn" data-goto="quartets-charts-section">
-                            <span class="link-icon">👥</span>
-                            <span class="link-text">Grafici Quartetti</span>
-                        </button>
-                        <button class="quick-link-btn" data-goto="DB/Relazioni/Regolamento di spogliatoio.pdf">
-                            <span class="link-icon">📄</span>
-                            <span class="link-text">Regolamento Spogliatoio</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
 
 
 
@@ -155,48 +116,76 @@
 
     <!-- Roster View -->
     <div id="roster-view" class="view-content">
-        <div class="card">
-            <div class="card-header">
-                <h2>Rosa Giocatori</h2>
-            </div>
-            <div class="roster-grid" id="roster-grid">
-                <!-- Le card dei giocatori verranno generate dinamicamente -->
-            </div>
-        </div>
-
-        <!-- Sponsors Section -->
-        <div class="sponsors-section">
-            <h3>Partner Ufficiali</h3>
-            <div class="sponsors-grid">
-                <a href="assets/sponsor/sponsor ADM.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento ADM">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor ADM.png" alt="Sponsor ADM" class="sponsor-logo-img">
-                    </div>
-                </a>
-                <a href="assets/sponsor/sponsor COOP.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento COOP">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor COOP.png" alt="Sponsor COOP" class="sponsor-logo-img">
-                    </div>
-                </a>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Staff View -->
-    <div id="staff-view" class="view-content">
         <div class="sub-tabs">
-            <button class="sub-tab-btn active" data-subtarget="staff-tecnico-subview">Staff Tecnico</button>
-            <button class="sub-tab-btn" data-subtarget="staff-organigramma-subview">Organigramma</button>
+            <button class="sub-tab-btn active" data-subtarget="u15-home-subview">Home</button>
+            <button class="sub-tab-btn" data-subtarget="u15-rosa-subview">Giocatori</button>
+            <button class="sub-tab-btn" data-subtarget="u15-staff-subview">Staff</button>
+            <button class="sub-tab-btn" data-subtarget="u15-stats-subview">Statistiche</button>
+            <button class="sub-tab-btn" data-subtarget="u15-calendario-subview">Calendario</button>
+            <button class="sub-tab-btn" data-subtarget="u15-classifica-subview">Classifica</button>
+            <button class="sub-tab-btn" data-subtarget="u15-schemi-subview">Schemi</button>
         </div>
 
-        <!-- Staff Tecnico Sub-View -->
-        <div id="staff-tecnico-subview" class="sub-view active">
+        <!-- Home Sub-View -->
+        <div id="u15-home-subview" class="sub-view active">
+            <div class="home-main-layout layout-compact">
+                <div class="home-hero">
+                    <div class="hero-team-photo-container">
+                        <img src="assets/squadre/2025-26/U15.jpeg" alt="Foto di Squadra Under 15"
+                            class="hero-team-photo">
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <!-- Dynamic stats will be injected here -->
+                </div>
+            </div>
+
+            <div class="quick-links"
+                style="padding: 1rem; border: none; background: transparent; max-width: 900px; margin: 0 auto;">
+                <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Rapido</h3>
+                <div class="links-grid" style="grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+                    <button class="quick-link-btn" data-goto="players-charts-section"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">📈</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Giocatori</span>
+                    </button>
+                    <button class="quick-link-btn" data-goto="goalkeepers-charts-section"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">🧤</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Portieri</span>
+                    </button>
+                    <button class="quick-link-btn" data-goto="quartets-charts-section"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">👥</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Quartetti</span>
+                    </button>
+                    <button class="quick-link-btn" data-goto="DB/Relazioni/Regolamento di spogliatoio.pdf"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">📄</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Regolamento</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rosa Sub-View -->
+        <div id="u15-rosa-subview" class="sub-view">
             <div class="card">
                 <div class="card-header">
-                    <h2>Staff Tecnico</h2>
+                    <h2>Giocatori</h2>
+                </div>
+                <div class="roster-grid" id="roster-grid">
+                    <!-- Le card dei giocatori verranno generate dinamicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Staff Sub-View (Moved from Società) -->
+        <div id="u15-staff-subview" class="sub-view">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Staff U15</h2>
                 </div>
                 <div class="roster-grid">
                     <!-- Allenatore -->
@@ -220,6 +209,27 @@
                                     prima squadra C1 e C2; 5 anni nel Settore Giovanile; partecipato a numerosi
                                     Clinic di aggiornamento. Nominato Vice CT della Rappresentativa Veneta per
                                     il T.D.R. 2026.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Dirigente Accompagnatore -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <img src="assets/staff/Dir. Loffreda Jonny.jpg?v=20260102" class="player-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <div class="player-placeholder" style="display:none;font-size:4rem;">📋</div>
+                            <div class="player-role-badge">DIRIGENTE ACC.</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Loffreda Jonny</div>
+                            <div class="staff-cv"
+                                style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
+                                <h4
+                                    style="font-size: 0.8rem; color: var(--primary); margin-bottom: 5px; text-transform: uppercase;">
+                                    Curriculum Sportivo</h4>
+                                <p
+                                    style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; font-style: italic;">
+                                    [Dati curriculum da inserire...]</p>
                             </div>
                         </div>
                     </div>
@@ -249,7 +259,7 @@
                         <div class="player-photo-container">
                             <img src="assets/staff/Prep. Portieri Duse Devid.jpg?v=20260102" class="player-photo"
                                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                            <div class="player-placeholder" style="display:none;font-size:4rem;">�</div>
+                            <div class="player-placeholder" style="display:none;font-size:4rem;"></div>
                             <div class="player-role-badge">PREP. PORTIERI</div>
                         </div>
                         <div class="player-info">
@@ -270,7 +280,9 @@
                     <!-- Editor Video Analyst -->
                     <div class="player-card">
                         <div class="player-photo-container">
-                            <div class="player-placeholder" style="font-size:4rem;">💻</div>
+                            <img src="assets/staff/DE Antoni Massimo.jpg?v=20260102" class="player-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <div class="player-placeholder" style="display:none;font-size:4rem;">💻</div>
                             <div class="player-role-badge">VIDEO ANALYST</div>
                         </div>
                         <div class="player-info">
@@ -286,100 +298,434 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Dirigente Accompagnatore -->
-                    <div class="player-card">
-                        <div class="player-photo-container">
-                            <img src="assets/staff/Dir. Loffreda Jonny.jpg?v=20260102" class="player-photo"
-                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                            <div class="player-placeholder" style="display:none;font-size:4rem;">📋</div>
-                            <div class="player-role-badge">DIRIGENTE ACC.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Sub-View -->
+        <div id="u15-stats-subview" class="sub-view sub-view-container">
+            <div class="sub-tabs">
+                <button class="sub-tab-btn active" data-subtarget="players-view">Giocatori</button>
+                <button class="sub-tab-btn" data-subtarget="quartets-view">Quartetti</button>
+                <button class="sub-tab-btn" data-subtarget="goalkeepers-view">Portieri</button>
+            </div>
+
+            <!-- Players Sub-View -->
+            <div id="players-view" class="sub-view active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Giocatori</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="styled-table" id="players-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Giocatore</th>
+                                    <th>Min</th>
+                                    <th>GF</th>
+                                    <th>GS</th>
+                                    <th>Tiri</th>
+                                    <th>PR</th>
+                                    <th>PP</th>
+                                    <th>FF</th>
+                                    <th>FS</th>
+                                    <th>IP %</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="players-charts-section" class="charts-container">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>GOAL REALIZZATI</h3>
                         </div>
-                        <div class="player-info">
-                            <div class="player-name">Loffreda Jonny</div>
-                            <div class="staff-cv"
-                                style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
-                                <h4
-                                    style="font-size: 0.8rem; color: var(--primary); margin-bottom: 5px; text-transform: uppercase;">
-                                    Curriculum Sportivo</h4>
-                                <p
-                                    style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; font-style: italic;">
-                                    [Dati curriculum da inserire...]</p>
+                        <div class="chart-wrapper"><canvas id="playersGoalsChart"></canvas></div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>VOLUME DI TIRO (IN/OUT/MURATI)</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="playerShotsChart"></canvas></div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Palle Recuperate vs Perse</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="playersPRPPChart"></canvas></div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>TIMING GIOCATORI (MINUTI)</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="playersTimingChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goalkeepers Sub-View -->
+            <div id="goalkeepers-view" class="sub-view">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Statistiche Portieri</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="styled-table" id="goalkeepers-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Minuti</th>
+                                    <th>GS</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">GS SX</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">GS CT</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">GS DX</th>
+                                    <th>Parate</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">P SX</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">P CT</th>
+                                    <th class="text-muted" style="font-size: 0.7rem;">P DX</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Goalkeepers Chart moved here -->
+                <div id="goalkeepers-charts-section" class="card chart-card">
+                    <div class="card-header">
+                        <h3>Rendimento Portieri (Dettaglio)</h3>
+                    </div>
+                    <div class="chart-wrapper"><canvas id="goalkeepersChart"></canvas></div>
+                </div>
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <h3>TIMING PORTIERI (MINUTI)</h3>
+                    </div>
+                    <div class="chart-wrapper"><canvas id="goalkeepersTimingChart"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Quartets Sub-View -->
+            <div id="quartets-view" class="sub-view">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Performance Quartetti</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="styled-table" id="quartets-table">
+                            <thead>
+                                <tr>
+                                    <th>Membri</th>
+                                    <th>GF</th>
+                                    <th>GS</th>
+                                    <th>TF</th>
+                                    <th>TS</th>
+                                    <th>PR</th>
+                                    <th>PP</th>
+                                    <th>Freq</th>
+                                    <th>IP %</th>
+                                    <th>Min</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="quartets-charts-section" class="charts-container">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>VOLUME GF/GS</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="quartetsPerformanceChart"></canvas></div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>TIRI FATTI VS SUBITI</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="quartetsShotsChart"></canvas></div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>PALLE RECUPERATE VS PERSE</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="quartetsPRPPChart"></canvas></div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>TIMING QUARTETTI (MINUTI)</h3>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="quartetsTimingChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Calendario Sub-View -->
+        <div id="u15-calendario-subview" class="sub-view">
+            <div class="card">
+                <div class="card-header">
+                    <h2>CAMPIONATO REGIONALE DI PROMOZIONE UNDER 15 - CALCIO A 5</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table" id="u15-calendario-table">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Classifica Sub-View -->
+        <div id="u15-classifica-subview" class="sub-view">
+            <div class="card layout-compact">
+                <div class="card-header">
+                    <h2>CLASSIFICA</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table" id="u15-classifica-table">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Schemi Sub-View -->
+        <div id="u15-schemi-subview" class="sub-view sub-view-container">
+            <div class="sub-tabs layout-compact" style="margin-bottom: 1.5rem;">
+                <button class="sub-tab-btn active" data-subtarget="schemi-angoli">Angoli</button>
+                <button class="sub-tab-btn" data-subtarget="schemi-punizioni">Punizioni</button>
+                <button class="sub-tab-btn" data-subtarget="schemi-rimesse">Rimesse</button>
+                <button class="sub-tab-btn" data-subtarget="schemi-inizio">Calcio d'inizio</button>
+                <button class="sub-tab-btn" data-subtarget="schemi-40">4-0</button>
+                <button class="sub-tab-btn" data-subtarget="schemi-31">3-1</button>
+            </div>
+
+            <div class="layout-compact">
+                <!-- Angoli -->
+                <div id="schemi-angoli" class="sub-view active">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>ANGOLI</h2>
+                        </div>
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div class="schemi-video-grid" id="grid-angoli">
+                                <!-- Videos will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Punizioni -->
+                <div id="schemi-punizioni" class="sub-view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>PUNIZIONI</h2>
+                        </div>
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div class="schemi-video-grid" id="grid-punizioni">
+                                <!-- Videos will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rimesse -->
+                <div id="schemi-rimesse" class="sub-view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>RIMESSE</h2>
+                        </div>
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div class="schemi-video-grid" id="grid-rimesse">
+                                <!-- Videos will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calcio d'inizio -->
+                <div id="schemi-inizio" class="sub-view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>CALCIO D'INIZIO</h2>
+                        </div>
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div class="schemi-video-grid" id="grid-inizio">
+                                <!-- Videos will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4-0 -->
+                <div id="schemi-40" class="sub-view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>SCHEMA 4-0</h2>
+                        </div>
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div class="schemi-video-grid" id="grid-40">
+                                <!-- Videos will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3-1 -->
+                <div id="schemi-31" class="sub-view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>SCHEMA 3-1</h2>
+                        </div>
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div class="schemi-video-grid" id="grid-31">
+                                <!-- Videos will be injected here -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
 
-        <!-- Staff Dirigenziale Sub-View -->
-        <div id="staff-dirigenziale-subview" class="sub-view">
+
+
+    </div>
+
+    <!-- Staff View -->
+    <div id="staff-view" class="view-content active">
+        <div class="sub-tabs">
+            <button class="sub-tab-btn active" data-subtarget="staff-home-subview">Home</button>
+            <button class="sub-tab-btn" data-subtarget="staff-organigramma-subview">Organigramma</button>
+            <button class="sub-tab-btn" data-subtarget="staff-logistica-subview">Logistica</button>
+            <button class="sub-tab-btn" data-subtarget="staff-storia-subview">Storia</button>
+            <button class="sub-tab-btn" data-subtarget="staff-relazioni-subview">Relazioni 🔒</button>
+        </div>
+
+        <!-- Home Sub-View -->
+        <div id="staff-home-subview" class="sub-view active">
             <div class="card">
                 <div class="card-header">
-                    <h2>Dirigenza</h2>
+                    <h2>Le Nostre Squadre</h2>
                 </div>
-                <div class="roster-grid">
-                    <!-- Level 1: Presidente -->
-                    <div class="player-card">
-                        <div class="player-photo-container">
-                            <img src="assets/staff/Pres. Matteo Basso.jpg?v=20260102" class="player-photo"
-                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                            <div class="player-placeholder" style="display:none;font-size:4rem;">🏛️</div>
-                            <div class="player-role-badge">PRESIDENTE</div>
+                <div class="card-body" style="padding: 1.5rem;">
+                    <div class="team-gallery-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <!-- 1^ Squadra -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg); cursor: pointer;"
+                            onclick="document.querySelector('button[data-target=\'first-team-view\']').click()">
+                            <div style="height: 250px; overflow: hidden;">
+                                <img src="assets/squadre/2025-26/C2.jpeg" alt="Serie C2"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h3 style="margin: 0; color: var(--primary);">1^ Squadra (Serie C2)</h3>
+                            </div>
                         </div>
-                        <div class="player-info">
-                            <div class="player-name">Basso Matteo</div>
-                        </div>
-                    </div>
 
-                    <!-- Level 2: Direzione -->
-                    <!-- DG -->
-                    <div class="player-card">
-                        <div class="player-photo-container">
-                            <img src="assets/staff/D.G. Fasolin Sandro.jpg?v=20260102" class="player-photo"
-                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                            <div class="player-placeholder" style="display:none;font-size:4rem;">💼</div>
-                            <div class="player-role-badge">DIRETTORE GEN.</div>
+                        <!-- U19 -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg); cursor: pointer;"
+                            onclick="document.querySelector('button[data-target=\'u19-view\']').click()">
+                            <div style="height: 250px; overflow: hidden;">
+                                <img src="assets/squadre/2025-26/U19.jpeg" alt="Under 19"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h3 style="margin: 0; color: var(--primary);">Under 19</h3>
+                            </div>
                         </div>
-                        <div class="player-info">
-                            <div class="player-name">Fasolin Sandro</div>
-                        </div>
-                    </div>
-                    <!-- DS -->
-                    <div class="player-card">
-                        <div class="player-photo-container">
-                            <img src="assets/staff/D.S. Boscolo Emanuele.jpg?v=20260102" class="player-photo"
-                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                            <div class="player-placeholder" style="display:none;font-size:4rem;">⚽</div>
-                            <div class="player-role-badge">DIRETTORE SP.</div>
-                        </div>
-                        <div class="player-info">
-                            <div class="player-name">Boscolo Emanuele</div>
-                        </div>
-                    </div>
 
-                    <!-- Level 3: Operativi -->
-                    <!-- Resp Tecnico -->
-                    <div class="player-card">
-                        <div class="player-photo-container">
-                            <img src="assets/staff/T.M. Doria Marco.jpg?v=20260102" class="player-photo"
-                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                            <div class="player-placeholder" style="display:none;font-size:4rem;">🧠</div>
-                            <div class="player-role-badge">TEAM MANAGER</div>
+                        <!-- U15 -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg); cursor: pointer;"
+                            onclick="document.querySelector('button[data-target=\'roster-view\']').click()">
+                            <div style="height: 250px; overflow: hidden;">
+                                <img src="assets/squadre/2025-26/U15.jpeg" alt="Under 15"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h3 style="margin: 0; color: var(--primary);">Under 15</h3>
+                            </div>
                         </div>
-                        <div class="player-info">
-                            <div class="player-name">Doria Marco</div>
+
+                        <!-- CSI -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg); cursor: pointer;"
+                            onclick="document.querySelector('button[data-target=\'csi-view\']').click()">
+                            <div style="height: 250px; overflow: hidden;">
+                                <img src="assets/squadre/2025-26/CSI.jpeg" alt="CSI"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h3 style="margin: 0; color: var(--primary);">CSI</h3>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Dirigente -->
-                    <div class="player-card">
-                        <div class="player-photo-container">
-                            <img src="assets/staff/Dir. Loffreda Jonny.jpg?v=20260102" class="player-photo"
-                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                            <div class="player-placeholder" style="display:none;font-size:4rem;">📋</div>
-                            <div class="player-role-badge">DIRIGENTE</div>
+
+                        <!-- Femminile -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg); cursor: pointer;"
+                            onclick="document.querySelector('button[data-target=\'femminile-view\']').click()">
+                            <div style="height: 250px; overflow: hidden;">
+                                <img src="assets/squadre/2025-26/femminile.jpeg" alt="Femminile"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h3 style="margin: 0; color: var(--primary);">Femminile</h3>
+                            </div>
                         </div>
-                        <div class="player-info">
-                            <div class="player-name">Loffreda Jonny</div>
+
+                        <!-- Pulcini -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg); cursor: pointer;"
+                            onclick="document.querySelector('button[data-target=\'sgs-view\']').click()">
+                            <div style="height: 250px; overflow: hidden;">
+                                <img src="assets/squadre/2025-26/Pulcini.jpeg" alt="Pulcini"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h3 style="margin: 0; color: var(--primary);">Pulcini</h3>
+                            </div>
+                        </div>
+
+                        <!-- Primi Calci -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg); cursor: pointer;"
+                            onclick="document.querySelector('button[data-target=\'sgs-view\']').click()">
+                            <div style="height: 250px; overflow: hidden;">
+                                <img src="assets/squadre/2025-26/Primi calci.jpeg" alt="Primi Calci"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h3 style="margin: 0; color: var(--primary);">Primi Calci</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -394,8 +740,8 @@
                 </div>
                 <div class="org-chart">
 
-                    <!-- 1. Dirigenza Società -->
-                    <div class="org-group-title">Dirigenza Società</div>
+                    <!-- Direttivo -->
+                    <div class="org-group-title">Direttivo</div>
                     <div class="org-level level-1">
                         <div class="org-node">
                             <div class="org-photo-container">
@@ -426,8 +772,8 @@
                         </div>
                     </div>
 
-                    <!-- 2. Gestione Sportiva C5 -->
-                    <div class="org-group-title">Gestione Sportiva C5</div>
+                    <!-- Gestione Sportiva -->
+                    <div class="org-group-title">Gestione Sportiva</div>
                     <div class="org-level level-2">
                         <div class="org-node">
                             <div class="org-photo-container">
@@ -458,532 +804,331 @@
                         </div>
                         <div class="org-node">
                             <div class="org-photo-container">
-                                <span class="org-icon">📱</span>
+                                <img src="assets/staff/Ghirardon Jacopo.jpg" class="player-photo"
+                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                                <span class="org-icon" style="display:none">📱</span>
                             </div>
                             <span class="org-role">Social Media Manager</span>
                             <div class="org-name">Ghirardon Jacopo</div>
                         </div>
                     </div>
-
-                    <!-- 3. Staff 1^ Sq. e U19 -->
-                    <div class="org-group-title">Staff 1^ Sq. e U19</div>
-                    <div class="org-level level-3">
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <span class="org-icon">👔</span>
-                            </div>
-                            <span class="org-role">Allenatore 1^ Sq.</span>
-                            <div class="org-name">Boscolo Sandro</div>
-                        </div>
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <span class="org-icon">👔</span>
-                            </div>
-                            <span class="org-role">Allenatore U19</span>
-                            <div class="org-name">Tiozzo Marten</div>
-                        </div>
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <span class="org-icon">⏱️</span>
-                            </div>
-                            <span class="org-role">Prep. Atletico</span>
-                            <div class="org-name">De Cata Daniele</div>
-                        </div>
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <span class="org-icon">🧤</span>
-                            </div>
-                            <span class="org-role">Prep. Portieri</span>
-                            <div class="org-name">Ballarin Riccardo</div>
-                        </div>
-                    </div>
-
-                    <!-- 4. Staff Under 15 -->
-                    <div class="org-group-title">Staff Under 15</div>
-                    <div class="org-level level-4">
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <img src="assets/staff/Mr. Benericetti.jpg" class="org-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <span class="org-icon" style="display:none">👔</span>
-                            </div>
-                            <span class="org-role">Allenatore U15</span>
-                            <div class="org-name">Benericetti Stefano</div>
-                        </div>
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <img src="assets/staff/Dir. Loffreda Jonny.jpg" class="org-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <span class="org-icon" style="display:none">📋</span>
-                            </div>
-                            <span class="org-role">Dirigente Accomp.</span>
-                            <div class="org-name">Loffreda Jonny</div>
-                        </div>
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <span class="org-icon">💻</span>
-                            </div>
-                            <span class="org-role">Editor Video Analyst</span>
-                            <div class="org-name">De Antoni Massimo</div>
-                        </div>
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <img src="assets/staff/Prep. Atletico Claudia Naccari.jpg" class="org-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <span class="org-icon" style="display:none">⏱️</span>
-                            </div>
-                            <span class="org-role">Prep. Atletica</span>
-                            <div class="org-name">Naccari Claudia</div>
-                        </div>
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <img src="assets/staff/Prep. Portieri Duse Devid.jpg" class="org-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <span class="org-icon" style="display:none">🧤</span>
-                            </div>
-                            <span class="org-role">Prep. Portieri</span>
-                            <div class="org-name">Duse Devid</div>
-                        </div>
-                    </div>
-
-                    <!-- 5. Staff S.G.S. -->
-                    <div class="org-group-title">Staff S.G.S.</div>
-                    <div class="org-level level-5">
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <img src="assets/staff/Condigliere Perini Andrea.jpg" class="org-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <span class="org-icon" style="display:none">🌱</span>
-                            </div>
-                            <span class="org-role">Responsabile S.G.S.</span>
-                            <div class="org-name">Perini Andrea</div>
-                        </div>
-                    </div>
-
-                    <!-- 6. Staff Femminile -->
-                    <div class="org-group-title">Staff Femminile</div>
-                    <div class="org-level level-6">
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <img src="assets/staff/T.M. Scarpa Martina.jpg" class="org-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <span class="org-icon" style="display:none">🧠</span>
-                            </div>
-                            <span class="org-role">Team Manager</span>
-                            <div class="org-name">Scarpa Martina</div>
-                        </div>
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <img src="assets/staff/Mr. Battagin Luca.jpg" class="org-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <span class="org-icon" style="display:none">👔</span>
-                            </div>
-                            <span class="org-role">Allenatore</span>
-                            <div class="org-name">Battagin Luca</div>
-                        </div>
-                        <div class="org-node">
-                            <div class="org-photo-container">
-                                <img src="assets/staff/Prep. Atletico Claudia Naccari.jpg" class="org-photo"
-                                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                                <span class="org-icon" style="display:none">⏱️</span>
-                            </div>
-                            <span class="org-role">Prep. Atletica</span>
-                            <div class="org-name">Naccari Claudia</div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
 
-        <!-- Sponsors Section -->
-        <div class="sponsors-section">
-            <h3>Partner Ufficiali</h3>
-            <div class="sponsors-grid">
-                <a href="assets/sponsor/sponsor ADM.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento ADM">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor ADM.png" alt="Sponsor ADM" class="sponsor-logo-img">
-                    </div>
-                </a>
-                <a href="assets/sponsor/sponsor COOP.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento COOP">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor COOP.png" alt="Sponsor COOP" class="sponsor-logo-img">
-                    </div>
-                </a>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Stats Container View -->
-    <div id="stats-container-view" class="view-content">
-        <div class="sub-tabs">
-            <button class="sub-tab-btn active" data-subtarget="players-view">Giocatori</button>
-            <button class="sub-tab-btn" data-subtarget="quartets-view">Quartetti</button>
-            <button class="sub-tab-btn" data-subtarget="goalkeepers-view">Portieri</button>
-        </div>
-
-        <!-- Players Sub-View -->
-        <div id="players-view" class="sub-view active">
+        <!-- Storia Sub-View -->
+        <div id="staff-storia-subview" class="sub-view">
             <div class="card">
                 <div class="card-header">
-                    <h2>Giocatori</h2>
+                    <h2>STORIA</h2>
                 </div>
-                <div class="table-responsive">
-                    <table class="styled-table" id="players-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Giocatore</th>
-                                <th>Min</th>
-                                <th>GF</th>
-                                <th>GS</th>
-                                <th>Tiri</th>
-                                <th>PR</th>
-                                <th>PP</th>
-                                <th>FF</th>
-                                <th>FS</th>
-                                <th>IP %</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            <div id="players-charts-section" class="charts-container">
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h3>GOAL REALIZZATI</h3>
-                    </div>
-                    <div class="chart-wrapper"><canvas id="playersGoalsChart"></canvas></div>
-                </div>
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h3>VOLUME DI TIRO (IN/OUT/MURATI)</h3>
-                    </div>
-                    <div class="chart-wrapper"><canvas id="playerShotsChart"></canvas></div>
-                </div>
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h3>Palle Recuperate vs Perse</h3>
-                    </div>
-                    <div class="chart-wrapper"><canvas id="playersPRPPChart"></canvas></div>
-                </div>
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h3>TIMING GIOCATORI (MINUTI)</h3>
-                    </div>
-                    <div class="chart-wrapper"><canvas id="playersTimingChart"></canvas></div>
+                <div class="card-body" style="padding: 2rem; line-height: 1.6; color: var(--text);">
+                    <section style="margin-bottom: 2.5rem;">
+                        <h3
+                            style="color: var(--primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                            Le origini
+                        </h3>
+                        <p style="margin-bottom: 1rem;">
+                            La storia dell’ASD Valli Chioggia affonda le proprie radici nel tessuto sociale della
+                            frazione di <strong>Valli di Chioggia</strong>, dove lo sport ha sempre rappresentato un
+                            punto di riferimento educativo e aggregativo. In un contesto di paese, fatto di relazioni
+                            autentiche, sacrificio e volontariato, l’attività sportiva è stata da subito intesa come
+                            strumento di crescita umana prima ancora che agonistica.
+                        </p>
+                        <p>
+                            Per molti anni lo sport a Valli ha vissuto attraverso iniziative spontanee, tornei locali,
+                            attività parrocchiali e dilettantistiche, con particolare attenzione ai giovani. Campi,
+                            palestre e spazi condivisi sono stati luoghi di incontro, educazione al rispetto delle
+                            regole e costruzione del senso di appartenenza alla comunità.
+                        </p>
+
+                        <div style="margin-top: 1.5rem; border-radius: 1rem; overflow: hidden; max-width: 500px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 2px solid var(--border); cursor: zoom-in;"
+                            onclick="openZoom('assets/strutture/Valli di chioggia - murales di notte.jpg')">
+                            <img src="assets/strutture/Valli di chioggia - murales di notte.jpg"
+                                alt="Murales Valli di Chioggia"
+                                style="width: 100%; display: block; filter: brightness(0.9); transition: transform 0.3s;"
+                                onmouseover="this.style.transform='scale(1.03)'"
+                                onmouseout="this.style.transform='scale(1)'"
+                                onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            <div
+                                style="padding: 0.5rem; background: rgba(0,0,0,0.6); color: #fff; font-size: 0.75rem; text-align: center; position: relative;">
+                                Murales Valli di Chioggia - Vista Notturna
+                            </div>
+                        </div>
+                    </section>
+
+                    <section style="margin-bottom: 2.5rem;">
+                        <h3
+                            style="color: var(--primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                            La nascita della società
+                        </h3>
+                        <p style="margin-bottom: 1rem;">
+                            Nel <strong>2017</strong> un gruppo di dirigenti e appassionati locali decide di dare una
+                            struttura più solida a questa tradizione, fondando l’<strong>Associazione Sportiva
+                                Dilettantistica Valli Chioggia</strong>. La nascita della società risponde a un’esigenza
+                            concreta: garantire continuità organizzativa, tutela educativa e prospettive sportive a
+                            ragazzi e ragazze del territorio.
+                        </p>
+                        <p>
+                            Fin dall’inizio, la nuova realtà si distingue per una visione chiara: costruire una società
+                            seria, radicata nel paese, capace di coniugare disciplina sportiva, valori educativi e
+                            spirito di servizio.
+                        </p>
+                    </section>
+
+                    <section style="margin-bottom: 2.5rem;">
+                        <h3
+                            style="color: var(--primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                            Lo sviluppo delle attività sportive
+                        </h3>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">Il calcio a 5</h4>
+                            <p style="margin-bottom: 1rem;">
+                                Il <strong>calcio a 5</strong> diventa progressivamente il fulcro dell’attività
+                                agonistica. Una scelta naturale, dettata dalla disponibilità degli impianti e dalla
+                                volontà di offrire un’attività continuativa durante tutto l’anno.
+                            </p>
+                            <p style="margin-bottom: 1rem;">
+                                La prima squadra maschile partecipa ai campionati regionali FIGC, affrontando negli anni
+                                i tornei di Serie D, C2 e categorie superiori, consolidando la propria presenza nel
+                                panorama del futsal veneto. I risultati sportivi, pur importanti, non sono mai stati
+                                l’unico metro di valutazione: correttezza, identità e crescita dei giovani hanno sempre
+                                rappresentato priorità irrinunciabili.
+                            </p>
+                            <p>
+                                Accanto alla prima squadra, la società investe con decisione nel <strong>settore
+                                    giovanile</strong>, ritenuto pilastro fondamentale per il futuro. L’attività di base
+                                e le categorie giovanili vengono organizzate con attenzione alla formazione tecnica e,
+                                soprattutto, educativa.
+                            </p>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">Il futsal femminile</h4>
+                            <p>
+                                Coerentemente con una visione inclusiva dello sport, l’ASD Valli Chioggia avvia anche un
+                                progetto di <strong>calcio a 5 femminile</strong>, offrendo alle atlete del territorio
+                                un’opportunità concreta di crescita sportiva. La squadra femminile partecipa a
+                                competizioni regionali e tornei, contribuendo a diffondere i valori dello sport anche in
+                                ambito femminile.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">Oltre il futsal</h4>
+                            <p>
+                                Pur identificandosi oggi prevalentemente con il calcio a 5, la società mantiene una
+                                vocazione più ampia, che può essere definita a tutti gli effetti
+                                <strong>polisportiva</strong>. Le attività promosse nel tempo includono iniziative
+                                sportive, ricreative e sociali rivolte a diverse fasce d’età, in collaborazione con
+                                scuole, istituzioni e associazioni locali.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section style="margin-bottom: 2.5rem;">
+                        <h3
+                            style="color: var(--primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                            Gli impianti e il rapporto con il territorio
+                        </h3>
+                        <p style="margin-bottom: 1rem;">
+                            Elemento centrale della crescita della società è la gestione e valorizzazione degli impianti
+                            sportivi locali, in particolare il <strong>Palasport Aldo e Dino Ballarin</strong> di Valli
+                            di Chioggia. Questo spazio non è solo sede di allenamenti e gare, ma vero e proprio punto di
+                            riferimento per la vita sportiva e sociale del paese.
+                        </p>
+                        <p>
+                            Il rapporto con il territorio e con l’Amministrazione comunale si basa su collaborazione,
+                            rispetto reciproco e senso di responsabilità, nella consapevolezza che gli impianti sportivi
+                            sono un patrimonio collettivo da preservare e tramandare.
+                        </p>
+                    </section>
+
+                    <section style="margin-bottom: 2.5rem;">
+                        <h3
+                            style="color: var(--primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                            Valori e identità
+                        </h3>
+                        <p style="margin-bottom: 1rem;">L’ASD Valli Chioggia fonda la propria identità su valori
+                            semplici e solidi:</p>
+                        <ul style="list-style: none; padding-left: 1.5rem;">
+                            <li style="margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.5rem;">
+                                <span style="color: var(--primary);">•</span> rispetto delle regole e delle persone
+                            </li>
+                            <li style="margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.5rem;">
+                                <span style="color: var(--primary);">•</span> spirito di sacrificio
+                            </li>
+                            <li style="margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.5rem;">
+                                <span style="color: var(--primary);">•</span> senso di appartenenza
+                            </li>
+                            <li style="margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.5rem;">
+                                <span style="color: var(--primary);">•</span> educazione dei giovani
+                            </li>
+                            <li style="margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.5rem;">
+                                <span style="color: var(--primary);">•</span> volontariato e servizio alla comunità
+                            </li>
+                        </ul>
+                        <p style="margin-top: 1rem; font-style: italic; color: var(--text-muted);">
+                            Indossare i colori della società significa rappresentare non solo una squadra, ma un intero
+                            paese, la sua storia e le sue tradizioni.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3
+                            style="color: var(--primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                            Oggi e domani
+                        </h3>
+                        <p style="margin-bottom: 1rem;">
+                            Oggi l’ASD Valli Chioggia è una realtà sportiva consolidata, riconosciuta nel panorama
+                            locale e regionale. Guardando al futuro, la società continua a ispirarsi ai principi che ne
+                            hanno guidato la nascita: crescere senza snaturarsi, migliorare senza dimenticare le proprie
+                            radici, formare persone prima che atleti.
+                        </p>
+                        <p
+                            style="font-weight: 600; text-align: center; margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; color: var(--primary);">
+                            La storia del Valli Chioggia non è fatta solo di risultati, ma di persone, di generazioni
+                            che si sono avvicendate con lo stesso spirito: fare sport con serietà, nel rispetto della
+                            tradizione e al servizio della comunità.
+                        </p>
+                    </section>
                 </div>
             </div>
         </div>
 
-        <!-- Goalkeepers Sub-View -->
-        <div id="goalkeepers-view" class="sub-view">
+        <!-- Logistica Sub-View -->
+        <div id="staff-logistica-subview" class="sub-view">
             <div class="card">
                 <div class="card-header">
-                    <h2>Statistiche Portieri</h2>
+                    <h2>Logistica</h2>
                 </div>
-                <div class="table-responsive">
-                    <table class="styled-table" id="goalkeepers-table">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Minuti</th>
-                                <th>GS</th>
-                                <th class="text-muted" style="font-size: 0.7rem;">GS SX</th>
-                                <th class="text-muted" style="font-size: 0.7rem;">GS CT</th>
-                                <th class="text-muted" style="font-size: 0.7rem;">GS DX</th>
-                                <th>Parate</th>
-                                <th class="text-muted" style="font-size: 0.7rem;">P SX</th>
-                                <th class="text-muted" style="font-size: 0.7rem;">P CT</th>
-                                <th class="text-muted" style="font-size: 0.7rem;">P DX</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            <!-- Goalkeepers Chart moved here -->
-            <div id="goalkeepers-charts-section" class="card chart-card">
-                <div class="card-header">
-                    <h3>Rendimento Portieri (Dettaglio)</h3>
-                </div>
-                <div class="chart-wrapper"><canvas id="goalkeepersChart"></canvas></div>
-            </div>
-            <div class="card chart-card">
-                <div class="card-header">
-                    <h3>TIMING PORTIERI (MINUTI)</h3>
-                </div>
-                <div class="chart-wrapper"><canvas id="goalkeepersTimingChart"></canvas></div>
-            </div>
-        </div>
+                <div class="card-body" style="padding: 1.5rem;">
+                    <div class="team-gallery-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 280px)); gap: 1.5rem; justify-content: center;">
+                        <!-- Palazzetto Valli -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg);">
+                            <div style="height: 150px; overflow: hidden; cursor: zoom-in;"
+                                onclick="openZoom(this.querySelector('img').src)">
+                                <img src="assets/strutture/Valli di chioggia.jpg" alt="Palazzetto Aldo e Dino Ballarin"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h4 style="margin: 0; color: var(--primary); font-size: 0.9rem;">Palazzetto "Aldo e Dino
+                                    Ballarin"</h4>
+                                <p
+                                    style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0.75rem;">
+                                    Valli di Chioggia</p>
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=Palazzetto+Aldo+e+Dino+Ballarin+Valli+di+Chioggia"
+                                    target="_blank" class="btn secondary small"
+                                    style="width: 100%; text-decoration: none; font-size: 0.75rem; padding: 0.5rem;">
+                                    📍 Indicazioni
+                                </a>
+                            </div>
+                        </div>
 
-        <!-- Quartets Sub-View -->
-        <div id="quartets-view" class="sub-view">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Performance Quartetti</h2>
-                </div>
-                <div class="table-responsive">
-                    <table class="styled-table" id="quartets-table">
-                        <thead>
-                            <tr>
-                                <th>Membri</th>
-                                <th>GF</th>
-                                <th>GS</th>
-                                <th>TF</th>
-                                <th>TS</th>
-                                <th>PR</th>
-                                <th>PP</th>
-                                <th>Freq</th>
-                                <th>IP %</th>
-                                <th>Min</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            <div id="quartets-charts-section" class="charts-container">
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h3>VOLUME GF/GS</h3>
-                    </div>
-                    <div class="chart-wrapper"><canvas id="quartetsPerformanceChart"></canvas></div>
-                </div>
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h3>TIRI FATTI VS SUBITI</h3>
-                    </div>
-                    <div class="chart-wrapper"><canvas id="quartetsShotsChart"></canvas></div>
-                </div>
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h3>PALLE RECUPERATE VS PERSE</h3>
-                    </div>
-                    <div class="chart-wrapper"><canvas id="quartetsPRPPChart"></canvas></div>
-                </div>
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h3>TIMING QUARTETTI (MINUTI)</h3>
-                    </div>
-                    <div class="chart-wrapper"><canvas id="quartetsTimingChart"></canvas></div>
-                </div>
-            </div>
-        </div>
+                        <!-- Palazzetto Borgo San Giovanni -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg);">
+                            <div style="height: 150px; overflow: hidden; cursor: zoom-in;"
+                                onclick="openZoom(this.querySelector('img').src)">
+                                <img src="assets/strutture/Borgo San Giovanni di Chioggia.jpeg"
+                                    alt="Palazzetto Borgo San Giovanni"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h3 style="margin: 0; color: var(--primary); font-size: 0.9rem;">Palazzetto Borgo San
+                                    Giovanni</h3>
+                                <p
+                                    style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0.75rem;">
+                                    Chioggia</p>
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=Palazzetto+Borgo+San+Giovanni+Chioggia"
+                                    target="_blank" class="btn secondary small"
+                                    style="width: 100%; text-decoration: none; font-size: 0.75rem; padding: 0.5rem;">
+                                    📍 Indicazioni
+                                </a>
+                            </div>
+                        </div>
 
-        <!-- Sponsors Section -->
-        <div class="sponsors-section">
-            <h3>Partner Ufficiali</h3>
-            <div class="sponsors-grid">
-                <a href="assets/sponsor/sponsor ADM.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento ADM">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor ADM.png" alt="Sponsor ADM" class="sponsor-logo-img">
-                    </div>
-                </a>
-                <a href="assets/sponsor/sponsor COOP.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento COOP">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor COOP.png" alt="Sponsor COOP" class="sponsor-logo-img">
-                    </div>
-                </a>
-            </div>
-        </div>
+                        <!-- Sede Segreteria -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg);">
+                            <div style="height: 150px; overflow: hidden; cursor: zoom-in;"
+                                onclick="openZoom(this.querySelector('img').src)">
+                                <img src="assets/strutture/sede_segreteria.png" alt="Sede Segreteria"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h3 style="margin: 0; color: var(--primary); font-size: 0.9rem;">Sede e Segreteria</h3>
+                                <p
+                                    style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0.75rem;">
+                                    Valli di Chioggia</p>
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=Via+Valli+Chioggia"
+                                    target="_blank" class="btn secondary small"
+                                    style="width: 100%; text-decoration: none; font-size: 0.75rem; padding: 0.5rem;">
+                                    📍 Indicazioni
+                                </a>
+                            </div>
+                        </div>
 
-    </div> <!-- End Stats Container -->
-
-
-
-
-
-
-
-
-
-
-    <!-- Campionato View (Combined) -->
-    <div id="campionato-view" class="view-content">
-        <div class="sub-tabs">
-            <button class="sub-tab-btn active" data-subtarget="campionato-calendario">Calendario</button>
-            <button class="sub-tab-btn" data-subtarget="campionato-classifica">Classifica</button>
-        </div>
-
-        <!-- Calendario Sub-View -->
-        <div id="campionato-calendario" class="sub-view active">
-            <div class="card">
-                <div class="card-header">
-                    <h2>CAMPIONATO REGIONALE DI PROMOZIONE UNDER 15 - CALCIO A 5</h2>
-                </div>
-                <div class="table-responsive">
-                    <table class="styled-table" id="calendario-table">
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Classifica Sub-View -->
-        <div id="campionato-classifica" class="sub-view">
-            <div class="card layout-compact">
-                <div class="card-header">
-                    <h2>CLASSIFICA</h2>
-                </div>
-                <div class="table-responsive">
-                    <table class="styled-table" id="classifica-table">
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sponsors Section (Shared) -->
-        <div class="sponsors-section">
-            <h3>Partner Ufficiali</h3>
-            <div class="sponsors-grid">
-                <a href="assets/sponsor/sponsor ADM.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento ADM">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor ADM.png" alt="Sponsor ADM" class="sponsor-logo-img">
-                    </div>
-                </a>
-                <a href="assets/sponsor/sponsor COOP.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento COOP">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor COOP.png" alt="Sponsor COOP" class="sponsor-logo-img">
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- Schemi View -->
-    <div id="schemi-view" class="view-content">
-        <div class="sub-tabs layout-compact" style="margin-bottom: 1.5rem;">
-            <button class="sub-tab-btn active" data-subtarget="schemi-angoli">Angoli</button>
-            <button class="sub-tab-btn" data-subtarget="schemi-punizioni">Punizioni</button>
-            <button class="sub-tab-btn" data-subtarget="schemi-rimesse">Rimesse</button>
-            <button class="sub-tab-btn" data-subtarget="schemi-inizio">Calcio d'inizio</button>
-            <button class="sub-tab-btn" data-subtarget="schemi-40">4-0</button>
-            <button class="sub-tab-btn" data-subtarget="schemi-31">3-1</button>
-        </div>
-
-        <div class="layout-compact">
-            <!-- Angoli -->
-            <div id="schemi-angoli" class="sub-view active">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>ANGOLI</h2>
-                    </div>
-                    <div class="card-body" style="padding: 1.5rem;">
-                        <div class="schemi-video-grid" id="grid-angoli">
-                            <!-- Videos will be injected here -->
+                        <!-- Sala Fitness -->
+                        <div class="team-card"
+                            style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg);">
+                            <div style="height: 150px; overflow: hidden; cursor: zoom-in;"
+                                onclick="openZoom(this.querySelector('img').src)">
+                                <img src="assets/strutture/Valli di chioggia - Fitness.jpg" alt="Sala Fitness"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'"
+                                    onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                            </div>
+                            <div style="padding: 1rem; text-align: center;">
+                                <h3 style="margin: 0; color: var(--primary); font-size: 0.9rem;">Sala Fitness</h3>
+                                <p
+                                    style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0.75rem;">
+                                    Valli di Chioggia</p>
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=Via+Valli+Chioggia"
+                                    target="_blank" class="btn secondary small"
+                                    style="width: 100%; text-decoration: none; font-size: 0.75rem; padding: 0.5rem;">
+                                    📍 Indicazioni
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div> <!-- card-body -->
+            </div> <!-- card -->
+        </div> <!-- staff-logistica-subview -->
+        +
+        + <!-- Relazioni Sub-View -->
+        + <div id="staff-relazioni-subview" class="sub-view">
+            + <div class="card">
+                + <div class="card-header">
+                    + <h2>RELAZIONI</h2>
+                    + </div>
+                + <div class="card-body">
+                    + <ul id="relazioni-list" style="list-style: none; padding: 0;"></ul>
+                    + </div>
+                + </div>
+            + </div>
 
-            <!-- Punizioni -->
-            <div id="schemi-punizioni" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>PUNIZIONI</h2>
-                    </div>
-                    <div class="card-body" style="padding: 1.5rem;">
-                        <div class="schemi-video-grid" id="grid-punizioni">
-                            <!-- Videos will be injected here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Rimesse -->
-            <div id="schemi-rimesse" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>RIMESSE</h2>
-                    </div>
-                    <div class="card-body" style="padding: 1.5rem;">
-                        <div class="schemi-video-grid" id="grid-rimesse">
-                            <!-- Videos will be injected here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Calcio d'inizio -->
-            <div id="schemi-inizio" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>CALCIO D'INIZIO</h2>
-                    </div>
-                    <div class="card-body" style="padding: 1.5rem;">
-                        <div class="schemi-video-grid" id="grid-inizio">
-                            <!-- Videos will be injected here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4-0 -->
-            <div id="schemi-40" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>SCHEMA 4-0</h2>
-                    </div>
-                    <div class="card-body" style="padding: 1.5rem;">
-                        <div class="schemi-video-grid" id="grid-40">
-                            <!-- Videos will be injected here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3-1 -->
-            <div id="schemi-31" class="sub-view">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>SCHEMA 3-1</h2>
-                    </div>
-                    <div class="card-body" style="padding: 1.5rem;">
-                        <div class="schemi-video-grid" id="grid-31">
-                            <!-- Videos will be injected here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sponsors Section -->
-        <div class="sponsors-section">
-            <h3>Partner Ufficiali</h3>
-            <div class="sponsors-grid">
-                <a href="assets/sponsor/sponsor ADM.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento ADM">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor ADM.png" alt="Sponsor ADM" class="sponsor-logo-img">
-                    </div>
-                </a>
-                <a href="assets/sponsor/sponsor COOP.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento COOP">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor COOP.png" alt="Sponsor COOP" class="sponsor-logo-img">
-                    </div>
-                </a>
-            </div>
-        </div>
-
-    </div>
+    </div> <!-- staff-view -->
 
     <!-- Sponsor View -->
     <div id="sponsor-view" class="view-content">
         <div class="sub-tabs">
-            <button class="sub-tab-btn active" data-subtarget="sponsor-partner-subview">Partner Ufficiali</button>
+            <button class="sub-tab-btn active" data-subtarget="sponsor-partner-subview">Partner
+                Ufficiali</button>
             <button class="sub-tab-btn" data-subtarget="sponsor-main-subview">Sponsor</button>
             <button class="sub-tab-btn" data-subtarget="sponsor-benefit-subview">Benefit</button>
         </div>
@@ -1049,35 +1194,491 @@
 
     </div>
 
-    <!-- Relazioni View -->
-    <div id="relazioni-view" class="view-content">
-        <div class="card">
-            <div class="card-header">
-                <h2>RELAZIONI</h2>
+    <!-- 1^ Squadra View -->
+    <div id="first-team-view" class="view-content">
+        <div class="sub-tabs layout-compact">
+            <button class="sub-tab-btn active" data-subtarget="first-team-home-subview">Home</button>
+            <button class="sub-tab-btn" data-subtarget="first-team-staff-subview">Staff</button>
+            <button class="sub-tab-btn" data-subtarget="first-team-calendario-subview">Calendario</button>
+            <button class="sub-tab-btn" data-subtarget="first-team-classifica-subview">Classifica</button>
+        </div>
+
+        <!-- Home Sub-View -->
+        <div id="first-team-home-subview" class="sub-view active">
+            <div class="home-main-layout layout-compact">
+                <div class="home-hero">
+                    <div class="hero-team-photo-container">
+                        <img src="assets/squadre/2025-26/C2.jpeg" alt="Foto Squadra C2" class="hero-team-photo">
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <!-- Dynamic stats will be injected here -->
+                </div>
             </div>
-            <div class="card-body">
-                <ul id="relazioni-list" style="list-style: none; padding: 0;"></ul>
+            <!-- Quick Links -->
+            <div class="quick-links"
+                style="padding: 1rem; border: none; background: transparent; max-width: 900px; margin: 0 auto;">
+                <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Rapido</h3>
+                <div class="links-grid" style="grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#first-team-view button[data-subtarget=\'first-team-staff-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">👔</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Staff</span>
+                    </button>
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#first-team-view button[data-subtarget=\'first-team-calendario-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">📅</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Calendario</span>
+                    </button>
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#first-team-view button[data-subtarget=\'first-team-classifica-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">🏆</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Classifica</span>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Sponsors Section -->
-        <div class="sponsors-section">
-            <h3>Partner Ufficiali</h3>
-            <div class="sponsors-grid">
-                <a href="assets/sponsor/sponsor ADM.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento ADM">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor ADM.png" alt="Sponsor ADM" class="sponsor-logo-img">
+        <!-- Staff Sub-View -->
+        <div id="first-team-staff-subview" class="sub-view">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Staff 1^ Squadra</h2>
+                </div>
+                <div class="roster-grid">
+                    <!-- Allenatore -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <img src="assets/staff/Mr. Boscolo Sandro.jpg" class="player-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <div class="player-placeholder" style="display:none;font-size:4rem;">👔</div>
+                            <div class="player-role-badge">ALLENATORE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Boscolo Sandro</div>
+                        </div>
                     </div>
-                </a>
-                <a href="assets/sponsor/sponsor COOP.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento COOP">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor COOP.png" alt="Sponsor COOP" class="sponsor-logo-img">
+                    <!-- Prep Atletico -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <img src="assets/staff/De Cata Daniele.jpg" class="player-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <div class="player-placeholder" style="display:none;font-size:4rem;">⏱️</div>
+                            <div class="player-role-badge">PREP. ATLETICO</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">De Cata Daniele</div>
+                        </div>
                     </div>
-                </a>
+                    <!-- Prep Portieri -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <img src="assets/staff/Ballarin Riccardo.jpg?v=2" class="player-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <div class="player-placeholder" style="display:none;font-size:4rem;">🧤</div>
+                            <div class="player-role-badge">PREP. PORTIERI</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Ballarin Riccardo</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Calendario Sub-View -->
+        <div id="first-team-calendario-subview" class="sub-view">
+            <div class="card layout-compact">
+                <div class="card-header">
+                    <h2>CALENDARIO SERIE C2</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table" id="first-team-calendario-table">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Classifica Sub-View -->
+        <div id="first-team-classifica-subview" class="sub-view">
+            <div class="card layout-compact">
+                <div class="card-header">
+                    <h2>CLASSIFICA SERIE C2</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table" id="first-team-classifica-table">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- U19 View -->
+    <div id="u19-view" class="view-content">
+        <div class="sub-tabs layout-compact">
+            <button class="sub-tab-btn active" data-subtarget="u19-home-subview">Home</button>
+            <button class="sub-tab-btn" data-subtarget="u19-staff-subview">Staff</button>
+            <button class="sub-tab-btn" data-subtarget="u19-calendario-subview">Calendario</button>
+            <button class="sub-tab-btn" data-subtarget="u19-classifica-subview">Classifica</button>
+        </div>
+
+        <!-- Home Sub-View -->
+        <div id="u19-home-subview" class="sub-view active">
+            <div class="home-main-layout layout-compact">
+                <div class="home-hero">
+                    <div class="hero-team-photo-container">
+                        <img src="assets/squadre/2025-26/U19.jpeg" alt="Foto Squadra U19" class="hero-team-photo">
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <!-- Dynamic stats will be injected here -->
+                </div>
+            </div>
+            <!-- Quick Links -->
+            <div class="quick-links"
+                style="padding: 1rem; border: none; background: transparent; max-width: 900px; margin: 0 auto;">
+                <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Rapido</h3>
+                <div class="links-grid" style="grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#u19-view button[data-subtarget=\'u19-staff-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">👔</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Staff</span>
+                    </button>
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#u19-view button[data-subtarget=\'u19-calendario-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">📅</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Calendario</span>
+                    </button>
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#u19-view button[data-subtarget=\'u19-classifica-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">🏆</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Classifica</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Staff Sub-View -->
+        <div id="u19-staff-subview" class="sub-view">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Staff Under 19</h2>
+                </div>
+                <div class="roster-grid">
+                    <!-- Allenatore -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <img src="assets/staff/Mr. Tiozzo Marten.jpg" class="player-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <div class="player-placeholder" style="display:none;font-size:4rem;">👔</div>
+                            <div class="player-role-badge">ALLENATORE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Tiozzo Marten</div>
+                        </div>
+                    </div>
+                    <!-- Dirigente Accompagnatore -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <img src="assets/staff/T.M. Doria Marco.jpg" class="player-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <div class="player-placeholder" style="display:none;font-size:4rem;">📋</div>
+                            <div class="player-role-badge">DIRIGENTE ACC.</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Doria Marco</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendario Sub-View -->
+        <div id="u19-calendario-subview" class="sub-view">
+            <div class="card layout-compact">
+                <div class="card-header">
+                    <h2>CALENDARIO UNDER 19 NAZIONALE</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table" id="u19-calendario-table">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Classifica Sub-View -->
+        <div id="u19-classifica-subview" class="sub-view">
+            <div class="card layout-compact">
+                <div class="card-header">
+                    <h2>CLASSIFICA UNDER 19 NAZIONALE</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table" id="u19-classifica-table">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- CSI View -->
+    <div id="csi-view" class="view-content">
+        <div class="sub-tabs layout-compact">
+            <button class="sub-tab-btn active" data-subtarget="csi-home-subview">Home</button>
+            <button class="sub-tab-btn" data-subtarget="csi-calendario-subview">Calendario</button>
+            <button class="sub-tab-btn" data-subtarget="csi-classifica-subview">Classifica</button>
+        </div>
+
+        <!-- Home Sub-View -->
+        <div id="csi-home-subview" class="sub-view active">
+            <div class="home-main-layout layout-compact">
+                <div class="home-hero">
+                    <div class="hero-team-photo-container">
+                        <img src="assets/squadre/2025-26/CSI.jpeg" alt="Foto Squadra CSI" class="hero-team-photo"
+                            onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <!-- Dynamic stats -->
+                </div>
+            </div>
+            <!-- Quick Links -->
+            <div class="quick-links"
+                style="padding: 1rem; border: none; background: transparent; max-width: 900px; margin: 0 auto;">
+                <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Rapido</h3>
+                <div class="links-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#csi-view button[data-subtarget=\'csi-calendario-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">📅</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Calendario</span>
+                    </button>
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#csi-view button[data-subtarget=\'csi-classifica-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">🏆</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Classifica</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendario Sub-View -->
+        <div id="csi-calendario-subview" class="sub-view">
+            <div class="card layout-compact">
+                <div class="card-header">
+                    <h2>CALENDARIO CSI</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table" id="csi-calendario-table">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Classifica Sub-View -->
+        <div id="csi-classifica-subview" class="sub-view">
+            <div class="card layout-compact">
+                <div class="card-header">
+                    <h2>CLASSIFICA CSI</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table" id="csi-classifica-table">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Femminile View -->
+    <div id="femminile-view" class="view-content">
+        <div class="sub-tabs layout-compact">
+            <button class="sub-tab-btn active" data-subtarget="femminile-home-subview">Home</button>
+            <button class="sub-tab-btn" data-subtarget="femminile-staff-subview">Staff</button>
+            <button class="sub-tab-btn" data-subtarget="femminile-calendario-subview">Calendario</button>
+            <button class="sub-tab-btn" data-subtarget="femminile-classifica-subview">Classifica</button>
+        </div>
+
+        <!-- Home Sub-View -->
+        <div id="femminile-home-subview" class="sub-view active">
+            <div class="home-main-layout layout-compact">
+                <div class="home-hero">
+                    <div class="hero-team-photo-container">
+                        <img src="assets/squadre/2025-26/femminile.jpeg" alt="Foto Squadra Femminile"
+                            class="hero-team-photo" onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <!-- Dynamic stats -->
+                </div>
+            </div>
+            <!-- Quick Links -->
+            <div class="quick-links"
+                style="padding: 1rem; border: none; background: transparent; max-width: 900px; margin: 0 auto;">
+                <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Rapido</h3>
+                <div class="links-grid" style="grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#femminile-view button[data-subtarget=\'femminile-staff-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">👔</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Staff</span>
+                    </button>
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#femminile-view button[data-subtarget=\'femminile-calendario-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">📅</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Calendario</span>
+                    </button>
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#femminile-view button[data-subtarget=\'femminile-classifica-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">🏆</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Classifica</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Staff Sub-View -->
+        <div id="femminile-staff-subview" class="sub-view">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Staff Femminile</h2>
+                </div>
+                <div class="roster-grid">
+                    <!-- Allenatore -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <img src="assets/staff/Mr. Battagin Luca.jpg" class="player-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <div class="player-placeholder" style="display:none;font-size:4rem;">👔</div>
+                            <div class="player-role-badge">ALLENATORE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Battagin Luca</div>
+                        </div>
+                    </div>
+                    <!-- Team Manager -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <img src="assets/staff/T.M. Scarpa Martina.jpg" class="player-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <div class="player-placeholder" style="display:none;font-size:4rem;">📋</div>
+                            <div class="player-role-badge">TEAM MANAGER</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Scarpa Martina</div>
+                        </div>
+                    </div>
+                    <!-- Prep Atletica -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <img src="assets/staff/Prep. Atletico Claudia Naccari.jpg" class="player-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <div class="player-placeholder" style="display:none;font-size:4rem;">⏱️</div>
+                            <div class="player-role-badge">PREP. ATLETICA</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Naccari Claudia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendario Sub-View -->
+        <div id="femminile-calendario-subview" class="sub-view">
+            <div class="card layout-compact">
+                <div class="card-header">
+                    <h2>CALENDARIO FEMMINILE</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table" id="femminile-calendario-table">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Classifica Sub-View -->
+        <div id="femminile-classifica-subview" class="sub-view">
+            <div class="card layout-compact">
+                <div class="card-header">
+                    <h2>CLASSIFICA FEMMINILE</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table" id="femminile-classifica-table">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- SGS View -->
+    <div id="sgs-view" class="view-content">
+        <div class="card">
+            <div class="card-header">
+                <h2>Settore Giovanile Scolastico</h2>
+            </div>
+            <div class="card-body" style="padding: 1.5rem;">
+                <div class="team-gallery-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <!-- Pulcini -->
+                    <div class="team-card"
+                        style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg);">
+                        <div style="height: 250px; overflow: hidden;">
+                            <img src="assets/squadre/2025-26/Pulcini.jpeg" alt="Pulcini"
+                                style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                onmouseover="this.style.transform='scale(1.05)'"
+                                onmouseout="this.style.transform='scale(1)'"
+                                onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                        </div>
+                        <div style="padding: 1rem; text-align: center;">
+                            <h3 style="margin: 0; color: var(--primary);">Pulcini</h3>
+                        </div>
+                    </div>
+
+                    <!-- Primi Calci -->
+                    <div class="team-card"
+                        style="border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--bg);">
+                        <div style="height: 250px; overflow: hidden;">
+                            <img src="assets/squadre/2025-26/Primi calci.jpeg" alt="Primi Calci"
+                                style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
+                                onmouseover="this.style.transform='scale(1.05)'"
+                                onmouseout="this.style.transform='scale(1)'"
+                                onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                        </div>
+                        <div style="padding: 1rem; text-align: center;">
+                            <h3 style="margin: 0; color: var(--primary);">Primi Calci</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 
 
@@ -1106,16 +1707,15 @@
                 <table class="compact-table" id="privacy-table" style="text-align: center;">
                     <thead>
                         <tr>
-                            <th style="text-align: left; width: 120px;">Ruolo</th>
-                            <th>Home</th>
-                            <th>Rosa</th>
+                            <th style="text-align: left; width: 150px;">Ruolo</th>
                             <th>Società</th>
-                            <th>Stats</th>
-                            <th>Camp.</th>
-                            <th>Schemi</th>
-                            <th>Rel.</th>
+                            <th>Home</th>
+                            <th>Logistica</th>
+                            <th>Storia</th>
+                            <th>Relazioni</th>
+                            <th>Sponsor</th>
+                            <th>Privacy</th>
                             <th>Setup</th>
-                            <th>Perf.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1125,28 +1725,11 @@
             </div>
         </div>
 
-        <!-- Sponsors Section -->
-        <div class="sponsors-section">
-            <h3>Partner Ufficiali</h3>
-            <div class="sponsors-grid">
-                <a href="assets/sponsor/sponsor ADM.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento ADM">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor ADM.png" alt="Sponsor ADM" class="sponsor-logo-img">
-                    </div>
-                </a>
-                <a href="assets/sponsor/sponsor COOP.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento COOP">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor COOP.png" alt="Sponsor COOP" class="sponsor-logo-img">
-                    </div>
-                </a>
-            </div>
-        </div>
+
     </div>
 
     <div id="setup-view" class="view-content">
-        <div class="card" style="max-width: 950px; margin: 0 auto;">
+        <div class="card" style="width: 100%; margin: 0 auto;">
             <div class="card-header">
                 <h2>Setup & Gestione</h2>
             </div>
@@ -1274,7 +1857,8 @@
                             </table>
                         </div>
                     </div>
-                </div> <!-- End Main Content Wrapper -->
+                </div> <!-- End Accessi Subview -->
+
             </div>
 
             <div id="files-subview" class="sub-view">
@@ -1323,24 +1907,7 @@
             </div>
         </div>
 
-        <!-- Sponsors Section -->
-        <div class="sponsors-section">
-            <h3>Partner Ufficiali</h3>
-            <div class="sponsors-grid">
-                <a href="assets/sponsor/sponsor ADM.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento ADM">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor ADM.png" alt="Sponsor ADM" class="sponsor-logo-img">
-                    </div>
-                </a>
-                <a href="assets/sponsor/sponsor COOP.pdf" target="_blank" class="sponsor-card"
-                    title="Visualizza documento COOP">
-                    <div class="sponsor-logo-container">
-                        <img src="assets/sponsor/sponsor COOP.png" alt="Sponsor COOP" class="sponsor-logo-img">
-                    </div>
-                </a>
-            </div>
-        </div>
+
 
     </div>
     </div>
@@ -1370,7 +1937,8 @@
             </div>
             <div style="margin-top: 1rem; text-align: center;">
                 <a href="#" id="open-register-link"
-                    style="color: #6366f1; font-size: 0.9rem; text-decoration: none;">Non hai un account? Richiedi
+                    style="color: #6366f1; font-size: 0.9rem; text-decoration: none;">Non hai un account?
+                    Richiedi
                     Accesso</a>
             </div>
         </div>
@@ -1386,7 +1954,8 @@
                     style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #fff; font-size: 1rem;">
             </div>
             <div class="form-group" style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem; color: #94a3b8;">Password Desiderata</label>
+                <label style="display: block; margin-bottom: 0.5rem; color: #94a3b8;">Password
+                    Desiderata</label>
                 <input type="text" id="reg-password" class="modal-input"
                     style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #fff; font-size: 1rem;">
             </div>
@@ -1410,9 +1979,23 @@
         </div>
     </div>
 
+    <!-- Image Zoom Modal -->
+    <div id="imgZoomModal" class="img-zoom-modal" onclick="this.classList.remove('active')">
+        <img id="zoomedImg" src="" alt="Zoomed view">
+    </div>
+
+    <script>
+        function openZoom(src) {
+            const modal = document.getElementById('imgZoomModal');
+            const img = document.getElementById('zoomedImg');
+            img.src = src;
+            modal.classList.add('active');
+        }
+    </script>
+
     <!-- Main Logic Script (No Module) -->
     <script src="./js/user_widget_logic.js"></script>
-    <script src="./js/script.js?v=20260108_0830"></script>
+    <script src="./js/script.js?v=20260112_0135"></script>
 
 </body>
 
