@@ -538,12 +538,11 @@ function renderRelazioniList() {
         const displayName = file.split('/').pop().replace(/\.(pdf|docx|doc)$/i, '');
 
         // Encode file path components for URL safety
-        // Split by / to encode segments individually if it's a path, though here normally just filename
-        // But preventing issues if file has path separators
-        const validPath = file.split('/').map(part => encodeURIComponent(part)).join('/');
+        // use encodeURI to preserve slashes but encode spaces and special chars
+        const validPath = encodeURI(file);
 
         item.innerHTML = `
-            <a href="DB/relazioni/${validPath}" target="_blank" class="relazioni-card">
+            <a href="./DB/relazioni/${validPath}" class="relazioni-card" onclick="window.open(this.href, '_blank'); return false;">
                 <div class="rel-icon">${file.toLowerCase().endsWith('.pdf') ? '📄' : '📝'}</div>
                 <div class="rel-name">${displayName}</div>
                 <div class="rel-action">Apri Documento</div>
