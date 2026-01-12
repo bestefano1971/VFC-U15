@@ -17,50 +17,61 @@ function logDebug(message, data = null) {
 // --- TAB RENDER LOGIC ---
 function renderTabsWithLocks() {
     const userRole = localStorage.getItem('currentUserRole');
-    let permissions = [];
+    const permissions = (typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.permissions) || [];
+    const tabs = document.querySelectorAll('.tab-btn, .sub-tab-btn');
 
-    // Attempt to load permissions from DB
-    if (typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.permissions) {
-        permissions = PRELOADED_DATABASE.permissions;
-    }
+    // Split permissions into two tables if header row exists
+    const pivotIdx = permissions.findIndex(p => p.Ruolo_Accesso === 'Ruolo_Accesso');
+    const table1 = pivotIdx !== -1 ? permissions.slice(0, pivotIdx) : permissions;
+    const table2 = pivotIdx !== -1 ? permissions.slice(pivotIdx + 1) : [];
 
-    const tabsContainer = document.querySelector('.tabs');
-    if (!tabsContainer) return;
+    const getPerm = (role, key) => {
+        if (String(role).toUpperCase() === 'ADMIN') return true;
 
-    let rolePerms = permissions.find(p => p.Ruolo === userRole || p.Ruolo_Accesso === userRole);
-
-    // Default Fallback
-    if (!rolePerms) {
-        if (userRole === 'Admin') {
-            rolePerms = { Home: true, Rosa: true, Società: true, Statistiche: true, Calendario: true, Classifica: true, Schemi: true, Relazioni: true, Setup: true };
-        } else {
-            // Default restricted for unknown
-            rolePerms = { Home: true, Rosa: true, Società: true, Statistiche: true, Calendario: true, Classifica: true, Schemi: false, Relazioni: false, Setup: false };
-        }
-    }
-
-    const tabs = tabsContainer.querySelectorAll('.tab-btn');
-    tabs.forEach(btn => {
-        const text = btn.textContent.replace(' 🔒', '').trim();
-        let label = text;
-        const keyMap = {
-            "HOME": "Home", "ROSA": "Rosa", "STAFF": "Società", "SOCIETÀ": "Società", "SOCIETA": "Società",
-            "STATISTICHE": "Statistiche", "CALENDARIO": "Calendario", "CLASSIFICA": "Classifica",
-            "CAMPIONATO": "Calendario",
-            "SCHEMI": "Schemi", "RELAZIONI": "Relazioni", "PRIVACY": "Home", "SPONSOR": "Home", "SETUP": "Setup"
+        // Mapping for Table 1 (Structural Tabs)
+        const map1 = {
+            "SOCIETÀ": "Società", "SOCIETA": "Società", "HOME": "Home",
+            "SPONSOR": "Sponsor", "PRIVACY": "Privacy", "SETUP": "Setup",
+            "LOGISTICA": "Logistica", "STORIA": "Storia", "RELAZIONI": "Relazioni"
         };
-        const permKey = keyMap[label.toUpperCase()] || label;
 
-        let allowed = false;
-        if (rolePerms) {
-            const v = rolePerms[permKey];
-            if (v === true || v === 1 || String(v).toLowerCase() === 'true') {
-                allowed = true;
+        // Mapping for Table 2 (Technical Content)
+        const map2 = {
+            "U15": "Società", "ROSA": "Home", "GIOCATORI": "Home",
+            "STAFF": "Logistica", "ORGANIGRAMMA": "Logistica",
+            "STATISTICHE": "Storia", "STATISTICA": "Storia",
+            "SCHEMI": "Relazioni", "PERFORMANCE": "Sponsor"
+        };
+
+        let val = false;
+
+        // Check Table 2 first (more specific)
+        if (map2[key.toUpperCase()]) {
+            const p = table2.find(r => (r.Ruolo_Accesso || r.Ruolo) === role);
+            if (p) val = p[map2[key.toUpperCase()]];
+        }
+        // Fallback to Table 1
+        else if (map1[key.toUpperCase()]) {
+            const p = table1.find(r => (r.Ruolo_Accesso || r.Ruolo) === role);
+            if (p) val = p[map1[key.toUpperCase()]];
+        }
+        else {
+            // Default cases for teams not explicitly in mapping (fallback to Home or true?)
+            const teams = ["1^ SQUADRA", "U19", "SGS", "CSI", "FEMMINILE", "PULCINI", "PRIMI CALCI"];
+            if (teams.includes(key.toUpperCase())) {
+                const p = table1.find(r => (r.Ruolo_Accesso || r.Ruolo) === role);
+                val = p ? p.Home : true;
+            } else {
+                val = true; // Default allowed
             }
         }
 
-        // Safety: Admin is always allowed (case-insensitive)
-        if (String(userRole).toUpperCase() === 'ADMIN') allowed = true;
+        return val === true || val === 1 || String(val).toLowerCase() === 'true';
+    };
+
+    tabs.forEach(btn => {
+        const label = btn.textContent.replace(' 🔒', '').trim();
+        const allowed = getPerm(userRole, label);
 
         if (!allowed) {
             btn.textContent = label + ' 🔒';
@@ -267,43 +278,20 @@ function updateUI() {
             }
         });
 
-        // Official Stats from Classifica
-        let classGF = 0, classGS = 0, classPG = 0;
-        if (typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.classifica) {
-            const valliRow = PRELOADED_DATABASE.classifica.find(r => {
-                if (!r || !r[0]) return false;
-                const name = String(r[0]).toUpperCase();
-                return name.includes("VALLI") || name.includes("CHIOGGIA") || name.includes("V.F.C");
-            });
+        // Populate Team Home Stats
+        updateTeamHomeStats('u15', 'U15');
+        updateTeamHomeStats('first-team', '1^Squadra');
+        updateTeamHomeStats('u19', 'U19');
+        updateTeamHomeStats('csi', 'CSI');
+        updateTeamHomeStats('femminile', 'Femminile');
 
-            if (valliRow) {
-                logDebug("MATCH FOUND in classifica:", valliRow);
-                classPG = parseInt(valliRow[2]) || 0;
-                classGF = parseInt(valliRow[6]) || 0;
-                classGS = parseInt(valliRow[7]) || 0;
-
-                const winsEl = document.getElementById('home-wins');
-                const drawsEl = document.getElementById('home-draws');
-                const lossesEl = document.getElementById('home-losses');
-                if (winsEl) winsEl.textContent = valliRow[3] !== undefined ? valliRow[3] : 0;
-                if (drawsEl) drawsEl.textContent = valliRow[4] !== undefined ? valliRow[4] : 0;
-                if (lossesEl) lossesEl.textContent = valliRow[5] !== undefined ? valliRow[5] : 0;
-            }
-        }
-
-        // Goal Calculation Logic (Max of Sync Files and Classifica)
-        // Goal Calculation Logic (Strictly from processed files for consistency)
-        const finalGF = APP_STATE.totalGF || 0;
-        const finalGS = APP_STATE.totalGS || 0;
-        const finalPG = (APP_STATE.processedFiles || []).length; // Use loaded files count for consistency
-
-        const matchesEl = document.getElementById('home-matches');
-        const gfEl = document.getElementById('home-gf');
-        const gsEl = document.getElementById('home-gs');
-
-        if (matchesEl) matchesEl.textContent = finalPG;
-        if (gfEl) gfEl.textContent = finalGF;
-        if (gsEl) gsEl.textContent = finalGS;
+        // Override U15 with dynamic file stats if available
+        const matchesEl = document.getElementById('u15-matches');
+        const gfEl = document.getElementById('u15-gf');
+        const gsEl = document.getElementById('u15-gs');
+        if (matchesEl && (APP_STATE.processedFiles || []).length > 0) matchesEl.textContent = (APP_STATE.processedFiles || []).length;
+        if (gfEl && APP_STATE.totalGF !== undefined) gfEl.textContent = APP_STATE.totalGF;
+        if (gsEl && APP_STATE.totalGS !== undefined) gsEl.textContent = APP_STATE.totalGS;
 
         // Roster
         const rosterGrid = document.getElementById('roster-grid');
@@ -391,8 +379,20 @@ function updateUI() {
 
                 const card = document.createElement('div');
                 card.className = 'player-card';
-                const userRole = window.CURRENT_USER ? window.CURRENT_USER.role : 'Ospite';
-                const hasPerfAccess = ['Admin', 'Staff Tecnico', 'Dirigenza'].includes(userRole);
+                const hasPerfAccess = (function () {
+                    const role = window.CURRENT_USER ? window.CURRENT_USER.role : '';
+                    if (role === 'Admin') return true;
+                    // Reference the same logic as renderTabsWithLocks
+                    const perms = (typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.permissions) || [];
+                    const pIdx = perms.findIndex(p => p.Ruolo_Accesso === 'Ruolo_Accesso');
+                    const t2 = pIdx !== -1 ? perms.slice(pIdx + 1) : [];
+                    const rr = t2.find(r => (r.Ruolo_Accesso || r.Ruolo) === role);
+                    if (rr) {
+                        const val = rr.Sponsor;
+                        return val === true || val === 1 || String(val).toLowerCase() === 'true';
+                    }
+                    return false;
+                })();
 
                 card.innerHTML = `
                 <div class="player-photo-container">
@@ -429,94 +429,6 @@ function updateUI() {
             });
         }
 
-        // Calendar Smart Logic
-        const calTable = document.querySelector('#calendario-table tbody');
-        if (calTable && typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.calendario) {
-            calTable.innerHTML = '';
-            PRELOADED_DATABASE.calendario.forEach(row => {
-                if (!row || row.length === 0) return;
-                const rowText = row.map(c => typeof c === 'object' ? (c ? c.text : '') : String(c || '')).join(' ').toUpperCase();
-                if (rowText.includes("CAMPIONATO REGIONALE") || row.every(c => !c)) return;
-
-                const tr = document.createElement('tr');
-                if (String(row[0] || '').length > 0 && (!row[1] || String(row[1]) === '')) {
-                    const td = document.createElement('td');
-                    td.textContent = (typeof row[0] === 'object' ? (row[0] ? row[0].text : '') : String(row[0])).toUpperCase();
-                    td.colSpan = 10; td.style.fontWeight = '800'; td.style.textAlign = 'center'; td.style.background = 'var(--bg)';
-                    tr.appendChild(td);
-                } else {
-                    let dateIdx = row.findIndex(c => { const s = typeof c === 'object' ? (c ? c.text : '') : String(c || ''); return s.match(/\d{1,2}[\/\-]\d{1,2}/); });
-                    const isHeader = row[0] === 'DATA';
-                    if (dateIdx === -1) dateIdx = isHeader ? 0 : 0;
-
-                    const tdDate = document.createElement('td');
-                    tdDate.className = 'cal-date';
-                    if (dateIdx !== -1 && row[dateIdx]) tdDate.textContent = typeof row[dateIdx] === 'object' ? (row[dateIdx] ? row[dateIdx].text : '') : String(row[dateIdx]);
-                    if (isHeader) tdDate.style.fontWeight = 'bold';
-                    tr.appendChild(tdDate);
-
-                    for (let i = 0; i < row.length; i++) {
-                        if (i === dateIdx) continue;
-                        const cell = row[i];
-                        if (typeof cell === 'object' && cell && cell.url) continue;
-                        const td = document.createElement('td'); td.className = 'cal-content';
-                        const s = String(cell || '');
-                        td.textContent = s;
-                        if (s.toUpperCase().includes('VALLI')) td.classList.add('highlight-valli');
-                        if (isHeader) td.style.fontWeight = 'bold';
-                        tr.appendChild(td);
-                    }
-
-                    let linkCells = [];
-                    row.forEach(cell => { if (cell && typeof cell === 'object' && cell.url) linkCells.push(cell); });
-                    if (linkCells.length > 0) {
-                        const getScore = (text) => {
-                            const t = (text || "").toUpperCase();
-                            if (t.includes('MDAY')) return 1;
-                            if (t.includes('MVP')) return 2;
-                            if (t.includes('HIGH') || t.includes('HIGHT')) return 3;
-                            return 4;
-                        };
-                        linkCells.sort((a, b) => getScore(a.text) - getScore(b.text));
-                        linkCells.forEach(cell => {
-                            const td = document.createElement('td'); td.className = 'cal-link';
-                            const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
-
-                            // Cleanup URL for web
-                            let cleanUrl = cell.url.replace(/\\/g, '/');
-                            if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
-                            if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
-
-                            // Ensure it points to assets properly (relative to index.html)
-                            // If it starts with 'assets', it's good. 
-                            // If user is online, check case sensitivity.
-
-                            td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link">${icon} ${cell.text}</a>`;
-                            tr.appendChild(td);
-                        });
-                    } else if (!isHeader) {
-                        tr.appendChild(document.createElement('td'));
-                    }
-                }
-                calTable.appendChild(tr);
-            });
-        }
-
-        // Classifica
-        const claTable = document.querySelector('#classifica-table tbody');
-        if (claTable && typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.classifica) {
-            claTable.innerHTML = '';
-            PRELOADED_DATABASE.classifica.forEach(row => {
-                if (!row || row.every(c => !c)) return;
-                const rowStr = row.join(' ').toUpperCase();
-                if (rowStr.includes("CAMPIONATO")) return;
-                const tr = document.createElement('tr');
-                if (row.join(' ').toUpperCase().includes("VALLI")) tr.classList.add('highlight-valli');
-                row.forEach(c => { const td = document.createElement('td'); td.textContent = c; tr.appendChild(td); });
-                claTable.appendChild(tr);
-            });
-        }
-
         // Render Charts
         if (typeof Chart !== 'undefined') {
             try { renderCharts(activePlayers, activeGoalkeepers); } catch (e) { console.error("Chart Error:", e); }
@@ -529,7 +441,15 @@ function updateUI() {
         renderRelazioniList();
         renderSchemiVideos();
         renderFilesTable();
-        renderPrivacyTable(); // Added privacy table rendering
+        renderPrivacyTable();
+
+        // Render Team Custom Tables (U15, 1^ Squadra, U19, CSI, Femminile)
+        renderTeamCustomTables('u15', 'U15');
+        renderTeamCustomTables('first-team', '1^Squadra');
+        renderTeamCustomTables('u19', 'U19');
+        renderTeamCustomTables('csi', 'CSI');
+        renderTeamCustomTables('femminile', 'Femminile');
+
         // Update Tabs Locks
         renderTabsWithLocks();
 
@@ -1491,7 +1411,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Permissions Logic
     function canAccess(viewId, role) {
-        const restricted = ['setup-view', 'relazioni-view'];
+        const restricted = ['setup-view'];
         if (!restricted.includes(viewId)) return true; // Public views
         if (role === 'Admin' || role === 'Staff Tecnico' || role === 'Dirigenza') return true; // Privileged roles
         return false; // Others blocked
@@ -1518,8 +1438,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (cancelBtn) cancelBtn.style.display = 'inline-block';
 
                 // Default view
-                const homeBtn = document.querySelector('.tab-btn[data-target="home-view"]');
-                if (homeBtn && !homeBtn.classList.contains('locked-tab')) homeBtn.click();
+                const defaultBtn = document.querySelector('.tab-btn[data-target="staff-view"]');
+                if (defaultBtn && !defaultBtn.classList.contains('locked-tab')) {
+                    defaultBtn.click();
+                    setTimeout(() => {
+                        const subBtn = document.querySelector('.sub-tab-btn[data-subtarget="staff-home-subview"]');
+                        if (subBtn) subBtn.click();
+                    }, 100);
+                }
             },
             () => {
                 // Should not happen if cancel is hidden, but just in case
@@ -1551,12 +1477,12 @@ document.addEventListener('DOMContentLoaded', () => {
         logAccessAttempt(targetId, true, window.CURRENT_USER.username);
         activateView(targetId, t);
 
-        if (targetId === 'relazioni-view') renderRelazioniList();
         if (targetId === 'setup-view') {
             renderUsersTable();
             renderAccessLogs();
         }
         if (targetId === 'schemi-view') renderSchemiVideos();
+        if (targetId === 'privacy-view') renderPrivacyTable();
     }));
 
     function activateView(targetId, btn) {
@@ -1570,12 +1496,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.sub-tab-btn').forEach(t => t.addEventListener('click', () => {
         const targetId = t.dataset.subtarget;
 
+        if (t.classList.contains('locked-tab') || t.getAttribute('data-locked') === 'true') {
+            alert("⛔ Sezione bloccata per il tuo ruolo.");
+            return;
+        }
+
         if (targetId === 'accessi-subview') {
             renderAccessLogs();
             renderUsersTable();
         }
+        if (targetId === 'staff-relazioni-subview') {
+            renderRelazioniList();
+        }
 
-        const parent = t.closest('.view-content') || document;
+        const parent = t.closest('.sub-view-container') || t.closest('.view-content') || document;
         parent.querySelectorAll('.sub-tab-btn').forEach(x => x.classList.remove('active'));
         parent.querySelectorAll('.sub-view').forEach(x => x.classList.remove('active'));
         t.classList.add('active');
@@ -1647,7 +1581,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         logDebug(`Dati caricati: ${APP_STATE.processedFiles.length} file elaborati.`);
-        updateUI();
+
+        // Explicitly render custom tables for all teams
+        console.log("[loadDB] Triggering custom table rendering...");
+        renderTeamCustomTables('u15', 'U15');
+        renderU15Roster();
+        renderTeamCustomTables('first-team', '1^Squadra');
+        renderTeamCustomTables('u19', 'U19');
+        renderTeamCustomTables('csi', 'CSI');
+        renderTeamCustomTables('femminile', 'Femminile');
+
+        if (typeof updateUI === 'function') {
+            updateUI();
+        } else {
+            console.warn("updateUI function is missing!");
+        }
     };
     loadDB();
 
@@ -1781,9 +1729,20 @@ document.addEventListener('DOMContentLoaded', () => {
     window.openPlayerPerformance = function (fullName) {
         if (typeof PRELOADED_DATABASE === 'undefined') return;
 
-        // Double check permissions
-        const userRole = window.CURRENT_USER ? window.CURRENT_USER.role : 'Ospite';
-        if (!['Admin', 'Staff Tecnico', 'Dirigenza'].includes(userRole)) {
+        // Check permissions via the same getPerm function logic or similar check
+        const permissions = (typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.permissions) || [];
+        const pivotIdx = permissions.findIndex(p => p.Ruolo_Accesso === 'Ruolo_Accesso');
+        const table2 = pivotIdx !== -1 ? permissions.slice(pivotIdx + 1) : [];
+        const roleRow = table2.find(r => (r.Ruolo_Accesso || r.Ruolo) === userRole);
+
+        let hasPerfAccess = false;
+        if (userRole === 'Admin') hasPerfAccess = true;
+        else if (roleRow) {
+            const val = roleRow.Sponsor; // Mapped to Performance
+            hasPerfAccess = val === true || val === 1 || String(val).toLowerCase() === 'true';
+        }
+
+        if (!hasPerfAccess) {
             alert("⛔ Accesso riservato allo Staff Tecnico e Dirigenza.");
             return;
         }
@@ -1902,53 +1861,383 @@ File Trovati in DB: ${relFiles.length}
         }
     };
 
+    // Link Rapidi Handler
+    document.querySelectorAll('.quick-link-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const target = btn.getAttribute('data-goto');
+            if (!target) return;
+
+            // Handle PDF/File Links
+            if (target.includes('.') || target.includes('/')) {
+                window.open(target, '_blank');
+                return;
+            }
+
+            // Handle Internal Navigation
+            const el = document.getElementById(target);
+            if (el) {
+                // Check if inside a restricted view
+                const parentView = el.closest('.view-content');
+                if (parentView) {
+                    const tabBtn = document.querySelector(`.tab-btn[data-target="${parentView.id}"]`);
+                    if (tabBtn) tabBtn.click();
+                }
+
+                // Check for sub-views
+                let current = el;
+                const subViews = [];
+                while (current && current !== parentView) {
+                    if (current.classList.contains('sub-view')) {
+                        subViews.unshift(current);
+                    }
+                    current = current.parentElement;
+                }
+
+                subViews.forEach(sv => {
+                    const subBtn = document.querySelector(`.sub-tab-btn[data-subtarget="${sv.id}"]`);
+                    if (subBtn) subBtn.click();
+                });
+
+                // Scroll
+                setTimeout(() => {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            }
+        });
+    });
+
 });
 
 function renderPrivacyTable() {
     const tbody = document.querySelector('#privacy-table tbody');
     if (!tbody) return;
 
-    if (typeof PRELOADED_DATABASE === 'undefined' || !PRELOADED_DATABASE.permissions) {
-        return;
-    }
+    if (typeof PRELOADED_DATABASE === 'undefined' || !PRELOADED_DATABASE.permissions) return;
 
     tbody.innerHTML = '';
     const permissions = PRELOADED_DATABASE.permissions;
 
-    // Define columns to show (order matters)
-    const columns = [
-        { key: 'Home', label: 'Home' },
-        { key: 'Rosa', label: 'Rosa' },
-        { key: 'Società', label: 'Società' },
-        { key: 'Statistiche', label: 'Stats' },
-        { key: 'Campionato', label: 'Camp.' },
-        { key: 'Schemi', label: 'Schemi' },
-        { key: 'Relazioni', label: 'Rel.' },
-        { key: 'Setup', label: 'Setup' },
-        { key: 'Performance', label: 'Perf.' }
-    ];
+    const check = (val) => {
+        if (val === true || val === 1 || String(val).toLowerCase() === 'true') return '✅';
+        if (val === false || val === 0 || String(val).toLowerCase() === 'false') return '🚫';
+        return val || '';
+    };
 
-    permissions.forEach(p => {
+    permissions.forEach(row => {
         const tr = document.createElement('tr');
 
-        // Role Column
-        const tdRole = document.createElement('td');
-        tdRole.style.textAlign = 'left';
-        tdRole.style.fontWeight = '600';
-        tdRole.style.color = 'var(--text)';
-        tdRole.textContent = p.Ruolo_Accesso || p.Ruolo || 'N/A';
-        tr.appendChild(tdRole);
+        // Style for the pivot row
+        const isPivot = row.Ruolo_Accesso === 'Ruolo_Accesso';
+        if (isPivot) {
+            tr.style.background = 'rgba(99, 102, 241, 0.2)';
+            tr.style.fontWeight = 'bold';
+            tr.style.color = 'var(--primary)';
+        }
 
-        // Feature Columns
-        columns.forEach(col => {
+        // Columns: Ruolo, Società, Home, Logistica, Storia, Relazioni, Sponsor, Privacy, Setup
+        const cols = ['Ruolo_Accesso', 'Società', 'Home', 'Logistica', 'Storia', 'Relazioni', 'Sponsor', 'Privacy', 'Setup'];
+
+        cols.forEach(col => {
             const td = document.createElement('td');
-            const val = p[col.key];
-            // Check for true, 1, or "true" (case insensitive)
-            const isAllowed = val === true || val === 1 || String(val).toLowerCase() === 'true';
-            td.textContent = isAllowed ? '✅' : '🚫';
+            const val = row[col];
+
+            if (col === 'Ruolo_Accesso') {
+                td.style.textAlign = 'left';
+                td.style.fontWeight = '600';
+                td.textContent = isPivot ? 'Mapping Segmento:' : (val || '-');
+            } else {
+                td.textContent = check(val);
+                if (isPivot) td.style.fontSize = '0.75rem';
+            }
             tr.appendChild(td);
         });
 
         tbody.appendChild(tr);
     });
+}
+function renderTeamCustomTables(prefix, sheetName) {
+    if (typeof PRELOADED_DATABASE === 'undefined' || !PRELOADED_DATABASE.extra_sheets) return;
+
+    const data = PRELOADED_DATABASE.extra_sheets[sheetName];
+    if (!data || data.length === 0) {
+        console.warn(`[renderTeamCustomTables] No data found for sheet: ${sheetName}`);
+        return;
+    }
+    console.log(`[renderTeamCustomTables] Rendering ${sheetName} for prefix ${prefix}. Rows: ${data.length}`);
+
+    const header = data[0];
+    const getCellContent = (cell, isHeader = false) => {
+        if (typeof cell === 'object' && cell && cell.url) return cell.text || (isHeader ? '' : '0');
+        const s = String(cell || '').trim();
+        if (s === '') return isHeader ? '' : '0';
+        return s;
+    };
+
+    // Partition data by empty columns
+    const partitions = [];
+    let currentPart = [];
+    header.forEach((val, i) => {
+        if (String(val || '').trim() === '' && i > 0) {
+            if (currentPart.length > 0) partitions.push(currentPart);
+            currentPart = [];
+        } else {
+            currentPart.push(i);
+        }
+    });
+    if (currentPart.length > 0) partitions.push(currentPart);
+
+    let calIndices = null;
+    let claIndices = null;
+
+    partitions.forEach(indices => {
+        const rowText = indices.map(i => String(header[i] || '').toUpperCase()).join(' ');
+        const hasCalKeywords = rowText.includes('LOCALI') || rowText.includes('DATE') || rowText.includes('DATA') || rowText.includes('NR.') || rowText.includes('RIS');
+        const hasClaKeywords = rowText.includes('SQUADRE') || rowText.includes('SQUADRA') || rowText.includes('PT') || rowText.includes('POS');
+
+        if (hasCalKeywords) {
+            calIndices = indices;
+        } else if (hasClaKeywords) {
+            claIndices = indices;
+        }
+    });
+
+    // Fallback: If only one partition and not identified, try default
+    if (partitions.length === 1 && !calIndices && !claIndices) {
+        const rowText = partitions[0].map(i => String(header[i] || '').toUpperCase()).join(' ');
+        if (rowText.includes('RIS') || rowText.includes('COLUMN')) calIndices = partitions[0];
+        else claIndices = partitions[0];
+    }
+
+    // 1. Calendario
+    const calTable = document.querySelector(`#${prefix}-calendario-table tbody`);
+    if (!calTable) console.error(`[renderTeamCustomTables] Table container #${prefix}-calendario-table tbody NOT FOUND`);
+    if (calTable && calIndices) {
+        calTable.innerHTML = '';
+        data.forEach((row, rowIndex) => {
+            const calRow = calIndices.map(i => row[i]);
+            if (!calRow || calRow.every(c => !c)) return;
+
+            const rowText = calRow.map(c => getCellContent(c, true)).join(' ').toUpperCase();
+            if ((rowText.includes("GIORNATA") || rowText.includes("CAMPIONATO")) && calRow.every((c, i) => i === 0 || !c || (typeof c === 'object' && !c.url))) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.textContent = getCellContent(calRow[0], true).toUpperCase();
+                td.colSpan = 15; td.style.fontWeight = '800'; td.style.textAlign = 'center'; td.style.background = 'var(--bg)';
+                tr.appendChild(td);
+                calTable.appendChild(tr);
+                return;
+            }
+
+            const tr = document.createElement('tr');
+            const isHeader = rowIndex === 0 || String(calRow[0]).toUpperCase().includes('DATA') || String(calRow[0]).toUpperCase().includes('NR.');
+
+            calRow.forEach((cell) => {
+                if (typeof cell === 'object' && cell && cell.url) return;
+                const td = document.createElement('td');
+                const s = getCellContent(cell, isHeader);
+                td.textContent = s;
+                if (isHeader) td.style.fontWeight = 'bold';
+                if (s.toUpperCase().includes('VALLI')) td.classList.add('highlight-valli');
+                if (s.match(/\d{1,2}[\/\-]\d{1,2}/)) td.className = 'cal-date';
+                else td.className = 'cal-content';
+                tr.appendChild(td);
+            });
+
+            let linkCells = calRow.filter(cell => cell && typeof cell === 'object' && cell.url);
+            if (linkCells.length > 0) {
+                const getScore = (text) => {
+                    const t = (text || "").toUpperCase();
+                    if (t.includes('MDAY')) return 1;
+                    if (t.includes('MVP')) return 2;
+                    if (t.includes('HIGH') || t.includes('HIGHT')) return 3;
+                    return 4;
+                };
+                linkCells.sort((a, b) => getScore(a.text) - getScore(b.text));
+                linkCells.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.className = 'cal-link';
+                    const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
+                    let cleanUrl = cell.url.replace(/\\/g, '/');
+                    if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
+                    if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
+                    td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link">${icon} ${cell.text}</a>`;
+                    tr.appendChild(td);
+                });
+            }
+            calTable.appendChild(tr);
+        });
+    }
+
+    // 2. Classifica
+    const claTable = document.querySelector(`#${prefix}-classifica-table tbody`);
+    if (claTable && claIndices) {
+        claTable.innerHTML = '';
+        data.forEach((row, rowIndex) => {
+            const claRow = claIndices.map(i => row[i]);
+            if (!claRow || claRow.every(c => !c)) return;
+
+            const tr = document.createElement('tr');
+            if (claRow.join(' ').toUpperCase().includes("VALLI")) tr.classList.add('highlight-valli');
+
+            const isHeader = rowIndex === 0 || String(claRow[0]).toUpperCase().includes('SQUADRE');
+            claRow.forEach(c => {
+                const td = document.createElement('td');
+                if (isHeader) td.style.fontWeight = 'bold';
+                td.textContent = getCellContent(c, isHeader);
+                tr.appendChild(td);
+            });
+            claTable.appendChild(tr);
+        });
+    }
+}
+
+function renderU15Roster() {
+    console.log("[renderU15Roster] Starting...");
+    const rosterGrid = document.querySelector('#u15-rosa-subview #roster-grid');
+    if (!rosterGrid) {
+        console.warn("[renderU15Roster] #roster-grid not found in #u15-rosa-subview");
+        return;
+    }
+
+    if (!PRELOADED_DATABASE || !PRELOADED_DATABASE.u15_roster) {
+        console.warn("[renderU15Roster] No roster data found.");
+        rosterGrid.innerHTML = '<p>Dati non disponibili.</p>';
+        return;
+    }
+
+    const roster = PRELOADED_DATABASE.u15_roster;
+    // Deduplicate by ID
+    const uniqueRoster = [];
+    const seenIds = new Set();
+
+    // Sort by ID number if possible
+    roster.sort((a, b) => {
+        const idA = parseInt(a.id) || 999;
+        const idB = parseInt(b.id) || 999;
+        return idA - idB;
+    });
+
+    roster.forEach(p => {
+        if (!seenIds.has(p.id)) {
+            seenIds.add(p.id);
+            uniqueRoster.push(p);
+        }
+    });
+
+    console.log(`[renderU15Roster] Rendering ${uniqueRoster.length} players.`);
+    rosterGrid.innerHTML = uniqueRoster.map(p => `
+        <div class="player-card">
+            <div class="player-photo-container">
+                <img src="${p.img}" class="player-photo" onerror="this.src='assets/logo.png'; this.style.opacity='0.5';">
+                <div class="player-role-badge">${p.role || 'Giocatore'}</div>
+            </div>
+            <div class="player-info">
+                <div class="player-name">${p.name || 'Agonista ' + p.id}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateTeamHomeStats(prefix, sheetName) {
+    if (typeof PRELOADED_DATABASE === 'undefined') return;
+
+    const data = PRELOADED_DATABASE.extra_sheets ? PRELOADED_DATABASE.extra_sheets[sheetName] : null;
+
+    // Identify start of "Statistiche veloci" columns
+    let statIdx = -1;
+    if (data && data.length > 0) {
+        const header = data[0];
+        statIdx = header.findIndex((c, i) => i >= 8 && String(c || '').toUpperCase().includes('STAT'));
+    }
+
+    if (statIdx === -1) {
+        // Fallback for U15 if "Statistiche veloci" not found
+        if (!data && sheetName === 'U15' && PRELOADED_DATABASE.classifica) {
+            const valliRow = PRELOADED_DATABASE.classifica.find(row => {
+                const name = String(row[0] || '').toUpperCase();
+                return name.includes("VALLI") || name.includes("CHIOGGIA") || name.includes("V.F.C");
+            });
+            if (valliRow) {
+                const setVal = (suffix, val) => {
+                    const el = document.getElementById(`${prefix}-${suffix}`);
+                    if (el) el.textContent = val;
+                };
+                setVal('matches', parseInt(valliRow[2]) || 0); setVal('wins', parseInt(valliRow[3]) || 0);
+                setVal('draws', parseInt(valliRow[4]) || 0); setVal('losses', parseInt(valliRow[5]) || 0);
+                setVal('gf', parseInt(valliRow[6]) || 0); setVal('gs', parseInt(valliRow[7]) || 0);
+            }
+            return;
+        }
+        return;
+    }
+
+    // Extract unique pairs using a Map (keyed by label)
+    const statsMap = new Map();
+    const iconMap = {
+        'POSIZIONE': '🏆', 'PUNTI': '🌟', 'PARTITE': '⚽', 'VITTORIE': '📈', 'PAREGGI': '🤝',
+        'SCONFITTE': '📉', 'GOL SEGNATI': '🎯', 'GOL SUBITI': '🥅', 'DIFFERENZA': '⚖️',
+        'MEDIA': '🔢', 'CAPOCANNONIERE': '🎖️', 'AMMONIZIONI': '🟨', 'ESPULSIONI': '🟥',
+        'ETA': '📅', 'RIGORE': '⚽'
+    };
+
+    for (let r = 1; r < data.length; r++) {
+        for (let c = statIdx; c < statIdx + 2; c++) {
+            const cellVal = String(data[r][c] || '').trim();
+            if (!cellVal) continue;
+            let label = '', value = '';
+            if (cellVal.includes('\n')) {
+                const parts = cellVal.split('\n').filter(p => p.trim());
+                if (cellVal.toUpperCase().includes('CAPOCANNONIERE')) {
+                    label = 'Capocannoniere';
+                    value = parts.filter(p => !p.toUpperCase().includes('CAPOCANNONIERE')).join(', ');
+                } else if (parts.length >= 2) {
+                    const first = parts[0].trim(), last = parts[parts.length - 1].trim();
+                    if (/\d|°/.test(first)) { value = first; label = parts.slice(1).join(' ').trim(); }
+                    else if (/\d|°/.test(last)) { value = last; label = parts.slice(0, -1).join(' ').trim(); }
+                    else { value = first; label = last; }
+                }
+            } else if (cellVal.toUpperCase().includes('CAPOCANNONIERE')) {
+                // Might be just the label, check if we can skip adding it as a pair if no value
+                // But usually they are combined.
+            }
+
+            if (label && value) {
+                const upLabel = label.toUpperCase();
+                if (statsMap.has(upLabel)) continue; // Evita duplicati (es. Capocannoniere ripetuto)
+
+                let icon = '📊';
+                for (const [k, v] of Object.entries(iconMap)) { if (upLabel.includes(k)) { icon = v; break; } }
+
+                let id = '';
+                if (upLabel.includes('PARTITE')) id = `${prefix}-matches`;
+                else if (upLabel.includes('VITTORIE') || upLabel === 'V') id = `${prefix}-wins`;
+                else if (upLabel.includes('PAREGGI') || upLabel === 'N') id = `${prefix}-draws`;
+                else if (upLabel.includes('SCONFITTE') || upLabel === 'P') id = `${prefix}-losses`;
+                else if (upLabel.includes('GOL SEGNATI')) id = `${prefix}-gf`;
+                else if (upLabel.includes('GOL SUBITI')) id = `${prefix}-gs`;
+
+                statsMap.set(upLabel, { label, value, icon, id });
+            }
+        }
+    }
+
+    const stats = Array.from(statsMap.values());
+    const grid = document.querySelector(`#${prefix}-home-subview .stats-grid`);
+    if (grid && stats.length > 0) {
+        grid.innerHTML = '';
+        grid.style.gridTemplateColumns = stats.length > 6 ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)';
+        grid.style.gap = '0.5rem';
+        stats.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'stat-card';
+            card.style.padding = '0.4rem 0.2rem';
+            card.style.minWidth = '0';
+            card.innerHTML = `
+                <div class="stat-icon" style="font-size: 1rem; margin-bottom: 0.1rem;">${s.icon}</div>
+                <div class="stat-value" ${s.id ? `id="${s.id}"` : ''} style="font-size: 0.9rem; white-space: pre-wrap; line-height: 1.1; font-weight: 700;">${s.value}</div>
+                <div class="stat-label" style="font-size: 0.55rem; opacity: 0.8; word-break: break-word;">${s.label}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
 }
