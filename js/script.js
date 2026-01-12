@@ -537,12 +537,13 @@ function renderRelazioniList() {
         // Clean name for display: remove extension and folder path
         const displayName = file.split('/').pop().replace(/\.(pdf|docx|doc)$/i, '');
 
-        // Use encodeURI which creates valid URIs (spaces->%20) but keeps slashes intact
+        // Create a simple, valid URI for the file
+        // We use encodeURI to ensure spaces are handled (%20) but slashes remain
         const validPath = encodeURI(file);
-        const fullPath = `./DB/relazioni/${validPath}`;
+        const fullPath = `DB/relazioni/${validPath}`;
 
         item.innerHTML = `
-            <a href="${fullPath}" target="_blank" class="relazioni-card">
+            <a href="${fullPath}" target="_self" class="relazioni-card">
                 <div class="rel-icon">${file.toLowerCase().endsWith('.pdf') ? '📄' : '📝'}</div>
                 <div class="rel-name">${displayName}</div>
                 <div class="rel-action">Apri Documento</div>
