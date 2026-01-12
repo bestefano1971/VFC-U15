@@ -1477,6 +1477,18 @@ document.addEventListener('DOMContentLoaded', () => {
         logAccessAttempt(targetId, true, window.CURRENT_USER.username);
         activateView(targetId, t);
 
+        // Auto-navigate to first sub-chapter
+        const viewContent = document.getElementById(targetId);
+        if (viewContent) {
+            const firstSubTab = viewContent.querySelector('.sub-tab-btn');
+            if (firstSubTab) {
+                // Ensure we don't click if it's locked (though sub-tabs might handle it, it's safer)
+                if (!firstSubTab.classList.contains('locked-tab') && firstSubTab.getAttribute('data-locked') !== 'true') {
+                    firstSubTab.click();
+                }
+            }
+        }
+
         if (targetId === 'setup-view') {
             renderUsersTable();
             renderAccessLogs();
@@ -1514,7 +1526,17 @@ document.addEventListener('DOMContentLoaded', () => {
         parent.querySelectorAll('.sub-view').forEach(x => x.classList.remove('active'));
         t.classList.add('active');
         const tg = document.getElementById(targetId);
-        if (tg) tg.classList.add('active');
+        if (tg) {
+            tg.classList.add('active');
+
+            // Auto-navigate to first nested sub-tab if present
+            const nestedTab = tg.querySelector('.sub-tab-btn');
+            if (nestedTab && !nestedTab.classList.contains('locked-tab') && nestedTab.getAttribute('data-locked') !== 'true') {
+                if (nestedTab !== t) {
+                    nestedTab.click();
+                }
+            }
+        }
     }));
 
     function navigateTo(targetView) {
