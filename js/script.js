@@ -531,24 +531,40 @@ function renderRelazioniList() {
         if (file.toLowerCase().startsWith('performance/')) return;
 
         // Create a card-like element
-        const item = document.createElement('li'); // Keep li since parent is ul
+        const item = document.createElement('li');
         item.className = 'relazioni-item';
 
-        // Clean name for display: remove extension and folder path
+        // Clean name for display
         const displayName = file.split('/').pop().replace(/\.(pdf|docx|doc)$/i, '');
 
-        // Create a simple, valid URI for the file
-        // We use encodeURI to ensure spaces are handled (%20) but slashes remain
-        const validPath = encodeURI(file);
-        const fullPath = `DB/relazioni/${validPath}`;
+        const link = document.createElement('a');
+        link.className = 'relazioni-card';
+        // Direct property assignment handles encoding safely
+        link.href = 'DB/relazioni/' + file;
+        link.target = '_blank';
 
-        item.innerHTML = `
-            <a href="${fullPath}" target="_self" class="relazioni-card">
-                <div class="rel-icon">${file.toLowerCase().endsWith('.pdf') ? '📄' : '📝'}</div>
-                <div class="rel-name">${displayName}</div>
-                <div class="rel-action">Apri Documento</div>
-            </a>
-        `;
+        // Debugging: Show path on click if it fails
+        link.onclick = (e) => {
+            // Optional: prevent default if we want to debug only, but let's allow it
+            // alert('Trying to open: ' + link.href); 
+        };
+
+        const icon = document.createElement('div');
+        icon.className = 'rel-icon';
+        icon.innerText = file.toLowerCase().endsWith('.pdf') ? '📄' : '📝';
+
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'rel-name';
+        nameDiv.innerText = displayName;
+
+        const actionDiv = document.createElement('div');
+        actionDiv.className = 'rel-action';
+        actionDiv.innerText = 'Apri Documento';
+
+        link.appendChild(icon);
+        link.appendChild(nameDiv);
+        link.appendChild(actionDiv);
+        item.appendChild(link);
         container.appendChild(item);
     });
 }
