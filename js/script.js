@@ -485,7 +485,7 @@ function renderGoalkeepersTable(gks) {
         const name = PLAYER_NAMES[g.id] || `GK ${g.id}`;
         tr.innerHTML = `
             <td>${name}</td><td>${formatTime(g.minutes)}</td><td class="text-danger" style="font-weight:bold;">${g.gs || 0}</td>
-            <td class="text-muted">${g.goalsSX || 0}</td><td class="text-muted">${g.goalsCT || 0}</td><td class="text-muted">${g.goalsDX || 0}</td>
+            <td class="text-danger">${g.goalsSX || 0}</td><td class="text-danger">${g.goalsCT || 0}</td><td class="text-danger">${g.goalsDX || 0}</td>
             <td class="text-success" style="font-weight:bold;">${g.saves || 0}</td><td class="text-muted">${g.savesSX || 0}</td><td class="text-muted">${g.savesCT || 0}</td><td class="text-muted">${g.savesDX || 0}</td>
         `;
         tbody.appendChild(tr);
