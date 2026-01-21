@@ -492,19 +492,75 @@ function renderGoalkeepersTable(gks) {
     });
 }
 
+// --- Quartets Sorting ---
+let currentQuartetSort = { key: 'minutes', order: 'desc' };
+
+function sortQuartets(key) {
+    if (currentQuartetSort.key === key) {
+        currentQuartetSort.order = currentQuartetSort.order === 'desc' ? 'asc' : 'desc';
+    } else {
+        currentQuartetSort.key = key;
+        currentQuartetSort.order = 'desc';
+    }
+    renderQuartetsTable();
+}
+
 function renderQuartetsTable() {
     const tbody = document.querySelector('#quartets-table tbody');
     if (!tbody) return;
     tbody.innerHTML = '';
-    const quartets = Object.values(APP_STATE.quartets).sort((a, b) => b.minutes - a.minutes);
+
+    let quartets = Object.values(APP_STATE.quartets);
+
+    // Sorting Logic
+    quartets.sort((a, b) => {
+        let valA, valB;
+        switch (currentQuartetSort.key) {
+            case 'membri':
+                valA = a.members.map(id => String(PLAYER_NAMES[id] || id)).join(' ');
+                valB = b.members.map(id => String(PLAYER_NAMES[id] || id)).join(' ');
+                return currentQuartetSort.order === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            case 'gf': valA = a.gf || 0; valB = b.gf || 0; break;
+            case 'gs': valA = a.gs || 0; valB = b.gs || 0; break;
+            case 'tf': valA = a.shotsOn || 0; valB = b.shotsOn || 0; break;
+            case 'ts': valA = a.shotsAgainst || 0; valB = b.shotsAgainst || 0; break;
+            case 'pr': valA = a.pr || 0; valB = b.pr || 0; break;
+            case 'pp': valA = a.pp || 0; valB = b.pp || 0; break;
+            case 'freq': valA = a.freq || 0; valB = b.freq || 0; break;
+            case 'ip': valA = (a.gf || 0) - (a.gs || 0); valB = (b.gf || 0) - (b.gs || 0); break;
+            case 'min': valA = a.minutes || 0; valB = b.minutes || 0; break;
+            default: valA = a.minutes || 0; valB = b.minutes || 0;
+        }
+        return currentQuartetSort.order === 'asc' ? valA - valB : valB - valA;
+    });
+
+    // Update Header Indicators
+    const headers = document.querySelectorAll('#quartets-table th');
+    headers.forEach(th => {
+        th.style.cursor = 'pointer'; // Ensure pointer cursor
+        let text = th.innerText.replace(' ▲', '').replace(' ▼', '');
+        if (th.getAttribute('onclick') && th.getAttribute('onclick').includes(`('${currentQuartetSort.key}')`)) {
+            th.innerText = text + (currentQuartetSort.order === 'asc' ? ' ▲' : ' ▼');
+            th.style.color = 'var(--primary)';
+        } else {
+            th.innerText = text;
+            th.style.color = '';
+        }
+    });
+
     quartets.forEach(q => {
         const tr = document.createElement('tr');
         const names = q.members.map(id => String(PLAYER_NAMES[id] || id).split(' ')[0]).join(', ');
-        const totalShots = (q.shotsOn || 0) + (q.shotsOff || 0);
+        const totalShots = (q.shotsOn || 0) + (q.shotsOff || 0); // Note: TF in table seems to be Total Shots or Shots On? Code below used totalShots for one col?
+        // Wait, original code: <td>${totalShots}</td><td>${q.shotsAgainst || 0}</td>
+        // But headers are: TF, TS. TF usually means Tiri Fatti (Shots Made/On Target?), TS Tiri Subiti.
+        // The original code calculated `totalShots = (q.shotsOn || 0) + (q.shotsOff || 0)` and put it under TF ???
+        // Let's stick to the previous logic for consistency: TF col gets totalShots.
+
         const plusMinus = (q.gf || 0) - (q.gs || 0);
         tr.innerHTML = `
             <td style="font-size: 0.85rem;">${names}</td><td class="text-success">${q.gf || 0}</td><td class="text-danger">${q.gs || 0}</td>
-            <td>${totalShots}</td><td>${q.shotsAgainst || 0}</td><td>${q.pr || 0}</td><td>${q.pp || 0}</td><td>${q.freq || 0}</td>
+            <td>${q.shotsOn || 0}</td><td>${q.shotsAgainst || 0}</td><td>${q.pr || 0}</td><td>${q.pp || 0}</td><td>${q.freq || 0}</td>
             <td style="color: ${plusMinus > 0 ? 'var(--success)' : (plusMinus < 0 ? 'var(--danger)' : 'inherit')}">${plusMinus > 0 ? '+' + plusMinus : plusMinus}</td><td>${formatTime(q.minutes)}</td>
         `;
         tbody.appendChild(tr);
