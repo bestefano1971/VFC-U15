@@ -2141,7 +2141,8 @@ function renderTeamCustomTables(prefix, sheetName) {
             if (dateStr.includes('2026-01-18') || dateStr.includes('18/01/2026') || dateStr.includes('18.01.26')) {
                 console.log(`[PATCH] Injecting media for match on ${dateStr}`);
                 if (!row[4] || row[4] === '' || row[4] === '0') row[4] = { text: 'MDAY7.jpg', url: 'assets/media/MDAY7.jpg' };
-                // Hight-Lights7.mp4 is missing from folder, do not inject to avoid 404
+                // Inject even if missing to preserve table alignment (MDAY, HIGH, MVP)
+                if (!row[5] || row[5] === '' || row[5] === '0') row[5] = { text: 'Hight-Lights7.mp4', url: 'assets/media/Hight-Lights7.mp4' };
                 if (!row[6] || row[6] === '' || row[6] === '0') row[6] = { text: 'MVP7.mp4', url: 'assets/media/MVP7.mp4' };
             }
         });
@@ -2232,8 +2233,8 @@ function renderTeamCustomTables(prefix, sheetName) {
                 const getScore = (text) => {
                     const t = (text || "").toUpperCase();
                     if (t.includes('MDAY')) return 1;
-                    if (t.includes('MVP')) return 2;
-                    if (t.includes('HIGH') || t.includes('HIGHT')) return 3;
+                    if (t.includes('HIGH') || t.includes('HIGHT')) return 2; // Swap priority
+                    if (t.includes('MVP')) return 3;
                     return 4;
                 };
                 linkCells.sort((a, b) => getScore(a.text) - getScore(b.text));
