@@ -458,11 +458,76 @@ function updateUI() {
     }
 }
 
+// --- Players Sorting ---
+let currentPlayerSort = { key: 'goals', order: 'desc' };
+
+function sortPlayers(key) {
+    if (currentPlayerSort.key === key) {
+        currentPlayerSort.order = currentPlayerSort.order === 'desc' ? 'asc' : 'desc';
+    } else {
+        currentPlayerSort.key = key;
+        currentPlayerSort.order = 'desc';
+    }
+    // We need to re-trigger the render. Since renderPlayersTable takes 'players' as arg,
+    // we need to know which players to pass. usually activePlayers or similar.
+    // However, looking at usage, updateUI calls renderPlayersTable(activePlayers).
+    // We can access 'APP_STATE.players' but filtering might be applied elsewhere.
+    // Ideally we should call updateUI() or store the last list. 
+    // BUT simpler: updateUI calls everything. Let's call updateUI() which calls renderPlayersTable eventually,
+    // OR just call renderPlayersTable with the current active players if we can fetch them.
+    // better: Let's assume standard behavior is to just re-render with what's available or call updateUI.
+    // Actually, in this codebase context, calling updateUI() is safe as it re-reads data. 
+    updateUI();
+}
+
 function renderPlayersTable(players) {
     const tbody = document.querySelector('#players-table tbody');
     if (!tbody) return;
     tbody.innerHTML = '';
-    players.sort((a, b) => (b.goals || 0) - (a.goals || 0));
+
+    // Sorting Logic
+    players.sort((a, b) => {
+        let valA, valB;
+        switch (currentPlayerSort.key) {
+            case 'id': valA = a.id; valB = b.id; break;
+            case 'name':
+                valA = PLAYER_NAMES[a.id] || `Player ${a.id}`;
+                valB = PLAYER_NAMES[b.id] || `Player ${b.id}`;
+                return currentPlayerSort.order === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            case 'minutes': valA = a.minutes || 0; valB = b.minutes || 0; break;
+            case 'goals': valA = a.goals || 0; valB = b.goals || 0; break;
+            case 'gs': valA = a.gs || 0; valB = b.gs || 0; break;
+            case 'shots':
+                valA = (a.shotsOn || 0) + (a.shotsOff || 0);
+                valB = (b.shotsOn || 0) + (b.shotsOff || 0);
+                break;
+            case 'pr': valA = a.pr || 0; valB = b.pr || 0; break;
+            case 'pp': valA = a.pp || 0; valB = b.pp || 0; break;
+            case 'ff': valA = a.ff || 0; valB = b.ff || 0; break;
+            case 'fs': valA = a.fs || 0; valB = b.fs || 0; break;
+            case 'ip': valA = a.plusMinus || 0; valB = b.plusMinus || 0; break;
+            default: valA = a.goals || 0; valB = b.goals || 0;
+        }
+        return currentPlayerSort.order === 'asc' ? valA - valB : valB - valA;
+    });
+
+    // Update Header Indicators
+    const headers = document.querySelectorAll('#players-table th');
+    headers.forEach(th => {
+        th.style.cursor = 'pointer';
+        let text = th.innerText.replace(' ▲', '').replace(' ▼', '');
+        // Check if this header matches the current sort key. 
+        // We rely on the onclick attribute presence to identify valid headers or just index? 
+        // Best to check if the onclick contains the key.
+        if (th.getAttribute('onclick') && th.getAttribute('onclick').includes(`('${currentPlayerSort.key}')`)) {
+            th.innerHTML = text + (currentPlayerSort.order === 'asc' ? ' &#9650;' : ' &#9660;'); // Up/Down arrows
+            th.style.color = 'var(--primary)';
+        } else {
+            th.innerText = text;
+            th.style.color = '';
+        }
+    });
+
     players.forEach(p => {
         const tr = document.createElement('tr');
         const name = PLAYER_NAMES[p.id] || `Player ${p.id}`;
@@ -2057,6 +2122,26 @@ function renderTeamCustomTables(prefix, sheetName) {
         console.warn(`[renderTeamCustomTables] No data found for sheet: ${sheetName}`);
         return;
     }
+
+    // PATCH: Inject media links for U15 recent matches (Jan 11 and Jan 18)
+    if (sheetName === 'U15') {
+        data.forEach((row, idx) => {
+            const dateStr = String(row[0] || '');
+            if (dateStr.includes('2026-01-11') || dateStr.includes('11/01/2026') || dateStr.includes('11.01.26')) {
+                // Match 6
+                if (!row[4] || row[4] === '') row[4] = { text: 'MDAY6.jpg', url: 'assets/media/MDAY6.jpg' };
+                if (!row[5] || row[5] === '') row[5] = { text: 'Hight-Lights6.mp4', url: 'assets/media/Hight-Lights6.mp4' };
+                if (!row[6] || row[6] === '') row[6] = { text: 'MVP6.mp4', url: 'assets/media/MVP6.mp4' };
+            }
+            if (dateStr.includes('2026-01-18') || dateStr.includes('18/01/2026') || dateStr.includes('18.01.26')) {
+                // Match 7
+                if (!row[4] || row[4] === '') row[4] = { text: 'MDAY7.jpg', url: 'assets/media/MDAY7.jpg' };
+                if (!row[5] || row[5] === '') row[5] = { text: 'Hight-Lights7.mp4', url: 'assets/media/Hight-Lights7.mp4' };
+                if (!row[6] || row[6] === '') row[6] = { text: 'MVP7.mp4', url: 'assets/media/MVP7.mp4' };
+            }
+        });
+    }
+
     console.log(`[renderTeamCustomTables] Rendering ${sheetName} for prefix ${prefix}. Rows: ${data.length}`);
 
     const header = data[0];
