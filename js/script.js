@@ -2141,7 +2141,7 @@ function renderTeamCustomTables(prefix, sheetName) {
             if (dateStr.includes('2026-01-18') || dateStr.includes('18/01/2026') || dateStr.includes('18.01.26')) {
                 console.log(`[PATCH] Injecting media for match on ${dateStr}`);
                 if (!row[4] || row[4] === '' || row[4] === '0') row[4] = { text: 'MDAY7.jpg', url: 'assets/media/MDAY7.jpg' };
-                if (!row[5] || row[5] === '' || row[5] === '0') row[5] = { text: 'Hight-Lights7.mp4', url: 'assets/media/Hight-Lights7.mp4' };
+                // Hight-Lights7.mp4 is missing from folder, do not inject to avoid 404
                 if (!row[6] || row[6] === '' || row[6] === '0') row[6] = { text: 'MVP7.mp4', url: 'assets/media/MVP7.mp4' };
             }
         });
