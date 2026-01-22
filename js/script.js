@@ -2246,7 +2246,7 @@ function renderTeamCustomTables(prefix, sheetName) {
                     if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
                     if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
                     console.log('Rendering Link:', cleanUrl);
-                    td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link" title="${cell.text}">${icon} ${cell.text}</a>`;
+                    td.innerHTML = `<a href="${cleanUrl}" class="highlight-link" title="${cell.text}">${icon} ${cell.text}</a>`;
                     tr.appendChild(td);
                 });
             }
