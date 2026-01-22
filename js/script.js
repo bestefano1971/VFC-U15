@@ -2134,9 +2134,9 @@ function renderTeamCustomTables(prefix, sheetName) {
 
             if (dateStr.includes('2026-01-11') || dateStr.includes('11/01/2026') || dateStr.includes('11.01.26')) {
                 console.log(`[PATCH] Injecting media for match on ${dateStr}`);
-                if (!row[4] || row[4] === '' || row[4] === '0') row[4] = { text: 'MDAY6', url: 'assets/media/MDAY6.jpg' };
-                if (!row[5] || row[5] === '' || row[5] === '0') row[5] = { text: 'Hight-Lights6', url: 'assets/media/Hight-Lights6.mp4' };
-                if (!row[6] || row[6] === '' || row[6] === '0') row[6] = { text: 'MVP6', url: 'assets/media/MVP6.mp4' };
+                if (!row[4] || row[4] === '' || row[4] === '0') row[4] = { text: 'MDAY6.jpg', url: 'assets/media/MDAY6.jpg' };
+                if (!row[5] || row[5] === '' || row[5] === '0') row[5] = { text: 'Hight-Lights6.mp4', url: 'assets/media/Hight-Lights6.mp4' };
+                if (!row[6] || row[6] === '' || row[6] === '0') row[6] = { text: 'MVP6.mp4', url: 'assets/media/MVP6.mp4' };
             }
             if (dateStr.includes('2026-01-18') || dateStr.includes('18/01/2026') || dateStr.includes('18.01.26')) {
                 console.log(`[PATCH] Injecting media for match on ${dateStr}`);
@@ -2243,9 +2243,8 @@ function renderTeamCustomTables(prefix, sheetName) {
                     td.className = 'cal-link';
                     const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
                     let cleanUrl = cell.url.replace(/\\/g, '/');
-                    if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
-                    if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
-                    td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link">${icon} ${cell.text}</a>`;
+                    console.log('Rendering Link:', cleanUrl);
+                    td.innerHTML = `<a href="${cleanUrl}" class="highlight-link">${icon} ${cell.text}</a>`;
                     tr.appendChild(td);
                 });
             }
