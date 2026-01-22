@@ -2125,19 +2125,24 @@ function renderTeamCustomTables(prefix, sheetName) {
 
     // PATCH: Inject media links for U15 recent matches (Jan 11 and Jan 18)
     if (sheetName === 'U15') {
+        console.log('[PATCH] Checking U15 rows for missing media links...');
         data.forEach((row, idx) => {
-            const dateStr = String(row[0] || '');
+            if (idx === 0) return; // Skip header
+            let dateStr = "";
+            if (typeof row[0] === 'object' && row[0] !== null) dateStr = String(row[0].text || "");
+            else dateStr = String(row[0] || "");
+
             if (dateStr.includes('2026-01-11') || dateStr.includes('11/01/2026') || dateStr.includes('11.01.26')) {
-                // Match 6
-                if (!row[4] || row[4] === '') row[4] = { text: 'MDAY6.jpg', url: 'assets/media/MDAY6.jpg' };
-                if (!row[5] || row[5] === '') row[5] = { text: 'Hight-Lights6.mp4', url: 'assets/media/Hight-Lights6.mp4' };
-                if (!row[6] || row[6] === '') row[6] = { text: 'MVP6.mp4', url: 'assets/media/MVP6.mp4' };
+                console.log(`[PATCH] Injecting media for match on ${dateStr}`);
+                if (!row[4] || row[4] === '' || row[4] === '0') row[4] = { text: 'MDAY6.jpg', url: 'assets/media/MDAY6.jpg' };
+                if (!row[5] || row[5] === '' || row[5] === '0') row[5] = { text: 'Hight-Lights6.mp4', url: 'assets/media/Hight-Lights6.mp4' };
+                if (!row[6] || row[6] === '' || row[6] === '0') row[6] = { text: 'MVP6.mp4', url: 'assets/media/MVP6.mp4' };
             }
             if (dateStr.includes('2026-01-18') || dateStr.includes('18/01/2026') || dateStr.includes('18.01.26')) {
-                // Match 7
-                if (!row[4] || row[4] === '') row[4] = { text: 'MDAY7.jpg', url: 'assets/media/MDAY7.jpg' };
-                if (!row[5] || row[5] === '') row[5] = { text: 'Hight-Lights7.mp4', url: 'assets/media/Hight-Lights7.mp4' };
-                if (!row[6] || row[6] === '') row[6] = { text: 'MVP7.mp4', url: 'assets/media/MVP7.mp4' };
+                console.log(`[PATCH] Injecting media for match on ${dateStr}`);
+                if (!row[4] || row[4] === '' || row[4] === '0') row[4] = { text: 'MDAY7.jpg', url: 'assets/media/MDAY7.jpg' };
+                if (!row[5] || row[5] === '' || row[5] === '0') row[5] = { text: 'Hight-Lights7.mp4', url: 'assets/media/Hight-Lights7.mp4' };
+                if (!row[6] || row[6] === '' || row[6] === '0') row[6] = { text: 'MVP7.mp4', url: 'assets/media/MVP7.mp4' };
             }
         });
     }
