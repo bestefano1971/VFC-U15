@@ -320,17 +320,17 @@
                         <table class="styled-table" id="players-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Giocatore</th>
-                                    <th>Min</th>
-                                    <th>GF</th>
-                                    <th>GS</th>
-                                    <th>Tiri</th>
-                                    <th>PR</th>
-                                    <th>PP</th>
-                                    <th>FF</th>
-                                    <th>FS</th>
-                                    <th>IP %</th>
+                                    <th onclick="sortPlayers('id')" title="Ordina per numero">#</th>
+                                    <th onclick="sortPlayers('name')" title="Ordina per nome">Giocatore</th>
+                                    <th onclick="sortPlayers('minutes')" title="Minuti">Min</th>
+                                    <th onclick="sortPlayers('goals')" title="Goal Fatti">GF</th>
+                                    <th onclick="sortPlayers('gs')" title="Goal Subiti">GS</th>
+                                    <th onclick="sortPlayers('shots')" title="Tiri totali (Specchio + Fuori)">Tiri</th>
+                                    <th onclick="sortPlayers('pr')" title="Palle Recuperate">PR</th>
+                                    <th onclick="sortPlayers('pp')" title="Palle Perse">PP</th>
+                                    <th onclick="sortPlayers('ff')" title="Falli Fatti">FF</th>
+                                    <th onclick="sortPlayers('fs')" title="Falli Subiti">FS</th>
+                                    <th onclick="sortPlayers('ip')" title="Indice Prestazione (Plus/Minus)">IP %</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
