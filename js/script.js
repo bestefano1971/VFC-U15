@@ -2246,7 +2246,8 @@ function renderTeamCustomTables(prefix, sheetName) {
                     if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
                     if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
                     console.log('Rendering Link:', cleanUrl);
-                    td.innerHTML = `<a href="${cleanUrl}" class="highlight-link" title="${cell.text}">${icon} ${cell.text}</a>`;
+                    const displayText = cell.text.replace(/\.(jpg|png|mp4|jpeg)$/i, '');
+                    td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link" title="${displayText}">${icon} ${displayText}</a>`;
                     tr.appendChild(td);
                 });
             }
