@@ -1895,6 +1895,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const permissions = (typeof PRELOADED_DATABASE !== 'undefined' && PRELOADED_DATABASE.permissions) || [];
         const pivotIdx = permissions.findIndex(p => p.Ruolo_Accesso === 'Ruolo_Accesso');
         const table2 = pivotIdx !== -1 ? permissions.slice(pivotIdx + 1) : [];
+
+        // FIX: Retrieve userRole from storage
+        const userRole = localStorage.getItem('currentUserRole');
+
         const roleRow = table2.find(r => (r.Ruolo_Accesso || r.Ruolo) === userRole);
 
         let hasPerfAccess = false;

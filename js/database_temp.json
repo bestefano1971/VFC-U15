@@ -1,0 +1,5158 @@
+{
+  "users": [
+    {
+      "username": "admin@example.com",
+      "role": "Admin",
+      "password": "password"
+    },
+    {
+      "username": "eliboscolo77@gmail.com",
+      "role": "Genitore",
+      "password": "Lorenzo77!"
+    },
+    {
+      "username": "be.stefano1971",
+      "role": "Admin",
+      "password": "Alask@2025"
+    },
+    {
+      "username": "be.stefano1971@gmail.com",
+      "role": "Admin",
+      "password": "1"
+    },
+    {
+      "username": "stefano.murazze@gmail.com",
+      "role": "Ospite",
+      "password": "murazze"
+    },
+    {
+      "username": "dea.max@tiscali.it",
+      "role": "Genitore",
+      "password": "Sicurezza0"
+    },
+    {
+      "username": "matteo@gmail.com",
+      "role": "Dirigenza",
+      "password": "basso"
+    }
+  ],
+  "logs": [
+    {
+      "date": "2026-01-05T18:58:24.074Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:58:22.487Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:58:22.481Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:55:38.626Z",
+      "section": "relazioni-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:55:32.471Z",
+      "section": "schemi-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:54:43.904Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:54:42.473Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:54:42.471Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:54:25.630Z",
+      "section": "setup-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:54:23.736Z",
+      "section": "home-view",
+      "success": true,
+      "role": "be.stefano1971@gmail.com",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:54:23.735Z",
+      "section": "APP_START",
+      "success": true,
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "device": "Desktop"
+    },
+    {
+      "date": "2026-01-05T18:53:02.550Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:53:01.122Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:53:01.121Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:52:48.793Z",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:52:48.792Z",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:49:17.305Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:49:15.730Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:49:15.728Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:48:52.252Z",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:48:52.251Z",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:48:06.940Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:48:04.535Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:48:04.534Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:42:01.337Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:41:59.993Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:41:59.991Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:40:23.236Z",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:40:21.554Z",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:40:21.553Z",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:38:29.824Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:38:28.097Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:38:28.096Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:36:15.404Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:36:13.937Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:36:13.936Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:36:03.096Z",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:36:03.095Z",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:35:30.619Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:35:29.193Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:35:29.192Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:32:00.670Z",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:31:59.178Z",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:31:59.177Z",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:31:27.154Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:31:25.632Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:31:25.631Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:29:56.641Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:29:54.753Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:29:54.752Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:18:27.855Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:18:26.600Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:18:26.599Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:15:27.910Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:15:26.291Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:15:26.289Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:12:44.278Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:12:42.720Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:12:42.719Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:55.424Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:53.874Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:53.873Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:30.337Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:28.794Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:28.792Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:02:57.409Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:02:55.198Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:02:55.196Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:56:57.306Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:56:55.590Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:56:55.589Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:56:09.468Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:56:09.466Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:53:02",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:53:01",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:53:01",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:52:48",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:52:48",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:52:19.084Z",
+      "role": "eliboscolo77@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:52:19.083Z",
+      "role": "eliboscolo77@gmail.com (Genitore)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:49:17",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:49:15",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:49:15",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:48:52",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:48:52",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:48:06",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:48:04",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:48:04",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:47:51.502Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:47:49.783Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:47:49.780Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:46:47.462Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:46:44.400Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:46:44.398Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:42:01",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:41:59",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:41:59",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:40:23",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:40:21",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:40:21",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:38:29",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:38:28",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:38:28",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:36:15",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:36:13",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:36:13",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:36:03",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:36:03",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:35:30",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:35:29",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:35:29",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:32:00",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:31:59",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:31:59",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:31:27",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:31:25",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:31:25",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:29:56",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:29:54",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:29:54",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:18:27",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:18:26",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:18:26",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:15:27",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:15:26",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:15:26",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:12:44",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:12:42",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:12:42",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:55",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:53",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:53",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:30",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:28",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:11:28",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:02:57",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:02:55",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T18:02:55",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:56:57",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:56:55",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:56:55",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:56:09",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:56:09",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:52:19",
+      "role": "eliboscolo77@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:52:19",
+      "role": "eliboscolo77@gmail.com (Genitore)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:47:51",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:47:49",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:47:49",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:46:47",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:46:44",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-05T17:46:44",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T22:19:35",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T22:18:01",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T22:17:58",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T22:17:53",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T22:17:49",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T22:17:44",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T22:11:53",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T22:11:53",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T22:04:27",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:58:12",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:58:07",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:58:07",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:56:18",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:56:14",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:56:14",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:54:35",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:54:31",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:54:31",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:44:09",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:44:07",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:44:07",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:27:35",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:27:17",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:27:15",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:27:15",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:25:06",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:25:00",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:25:00",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:24:41",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:24:41",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:24:20",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:24:20",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:18:47",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:17:07",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:17:05",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:17:05",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:14:03",
+      "role": "eliboscolo77@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:14:03",
+      "role": "eliboscolo77@gmail.com (Genitore)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:13:03",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:48",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:29",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:28",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:26",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:26",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:24",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:23",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:22",
+      "role": "be.stefano1971@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:19",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:09",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:07",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:12:07",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T21:11:33",
+      "role": "matteo@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T19:14:52",
+      "role": "matteo@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:56:59",
+      "role": "matteo@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:56:26",
+      "role": "matteo@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:56:24",
+      "role": "matteo@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:56:24",
+      "role": "matteo@gmail.com (Dirigenza)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:54:17",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:54:15",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:54:15",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:53:27",
+      "role": "matteo@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:53:26",
+      "role": "matteo@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:53:26",
+      "role": "matteo@gmail.com (Dirigenza)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:50:12",
+      "role": "matteo@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:50:09",
+      "role": "matteo@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:41:11",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:41:01",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:40:59",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:40:59",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:32:13",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:27:28",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:24:34",
+      "role": "be.stefano1971",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:24:27",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:24:24",
+      "role": "be.stefano1971",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:24:17",
+      "role": "be.stefano1971",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:24:15",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:24:15",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:15:19",
+      "role": "be.stefano1971",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:15:15",
+      "role": "be.stefano1971",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:15:10",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:15:10",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:09:25",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:09:11",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:09:09",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:09:09",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:03:43",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:03:37",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:03:35",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:03:34",
+      "role": "be.stefano1971@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:03:33",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:03:32",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:03:31",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:03:28",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:03:23",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:03:23",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:01:03",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:01:00",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:01:00",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:00:36",
+      "role": "be.stefano1971",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:00:32",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T18:00:32",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:57:09",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:57:00",
+      "role": "be.stefano1971",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:57:00",
+      "role": "be.stefano1971",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:56:55",
+      "role": "be.stefano1971",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:56:54",
+      "role": "be.stefano1971",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:56:52",
+      "role": "be.stefano1971",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:56:45",
+      "role": "be.stefano1971",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:56:41",
+      "role": "be.stefano1971",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:56:36",
+      "role": "be.stefano1971",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:56:28",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:56:28",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:40:40",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:40:40",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:38:15",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:38:12",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:38:12",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:32:01",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:32:00",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:31:57",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T17:31:57",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:18:38",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:18:38",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:07:46",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:07:45",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:07:44",
+      "role": "be.stefano1971@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:07:43",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:07:31",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:07:11",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:07:11",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:01:07",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T16:01:07",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:51:40",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:51:40",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:49:11",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:49:10",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:49:08",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:49:05",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:48:41",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:48:41",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:43:41",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:43:31",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:43:22",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:43:22",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:35:15",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:34:58",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:34:53",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:34:51",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:34:50",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:34:49",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:27:28",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:27:12",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:26:57",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:26:54",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:26:50",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:26:50",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:18:21",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:17:22",
+      "role": "be.stefano1971@gmail.com",
+      "section": "grafici-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:17:20",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:17:20",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:10:07",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:10:05",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:10:04",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:10:01",
+      "role": "be.stefano1971@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:09:53",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:09:42",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:09:40",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:09:29",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:09:28",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:09:28",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:06:27",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:06:25",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:06:25",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:03:56",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:03:54",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:03:54",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:02:47",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:02:45",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T15:02:45",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:59:49",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:59:48",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:59:48",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:59:03",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:59:01",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:59:01",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:58:19",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:58:17",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:57:13",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:57:12",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:57:10",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:57:10",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:53:29",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:53:25",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:53:25",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:44:07",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:44:04",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:44:04",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:29:47",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:29:45",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:29:45",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:21:07",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:20:18",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:19:03",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:19:02",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:19:02",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:16:45",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:16:39",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:16:39",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:14:29",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:14:24",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:14:20",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:14:18",
+      "role": "be.stefano1971@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:14:16",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:12:23",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:12:21",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:12:21",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:06:54",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:06:51",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:06:51",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:04:59",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:04:56",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T14:04:56",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:14:10",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:14:06",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:14:06",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:10:24",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:10:21",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:10:21",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:04:44",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:04:41",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:04:41",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:00:44",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:00:42",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T05:00:42",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:57:33",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:57:28",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:57:28",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:53:43",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:53:42",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:53:35",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:53:31",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:52:42",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:52:38",
+      "role": "be.stefano1971@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:52:35",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:52:32",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:52:29",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:52:25",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:52:23",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:52:17",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:52:16",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:50:40",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:48:25",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-04T04:48:22",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:28:40",
+      "role": "be.stefano1971@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:28:38",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:28:36",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:28:20",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:28:18",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:28:18",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:26:32",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:26:30",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:26:30",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:24:19",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:24:17",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:24:17",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:20:09",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:20:05",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:20:01",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:20:00",
+      "role": "be.stefano1971@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:19:57",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:19:56",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:19:55",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:19:54",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:19:51",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:19:47",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:19:44",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:19:44",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:18:50",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:16:05",
+      "role": "be.stefano1971",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:15:56",
+      "role": "be.stefano1971",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:15:54",
+      "role": "be.stefano1971",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:15:52",
+      "role": "be.stefano1971",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:15:49",
+      "role": "be.stefano1971",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:15:29",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:15:27",
+      "role": "be.stefano1971",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:15:21",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:15:19",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:15:19",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:13:29",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:13:26",
+      "role": "be.stefano1971",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:13:11",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:13:08",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:13:08",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:10:27",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:10:25",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:10:24",
+      "role": "be.stefano1971",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:10:23",
+      "role": "be.stefano1971",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:10:21",
+      "role": "be.stefano1971",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:10:19",
+      "role": "be.stefano1971",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:10:15",
+      "role": "be.stefano1971",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:10:14",
+      "role": "be.stefano1971",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:09:40",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:09:37",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-02T23:09:37",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:38:05",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:38:03",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:38:03",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:34:59",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:34:59",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:33:03",
+      "role": "be.stefano1971 (Denied)",
+      "section": "setup-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:33:01",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:33:01",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:31:26",
+      "role": "admin@example.com (Denied)",
+      "section": "setup-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:31:24",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:31:24",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:30:58",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:30:58",
+      "role": "be.stefano1971@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:26:52",
+      "role": "admin@example.com (Denied)",
+      "section": "setup-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:26:47",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:26:47",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:26:10",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:26:10",
+      "role": "be.stefano1971@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:25:39",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:25:39",
+      "role": "be.stefano1971@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:05:51",
+      "role": "be.stefano1971@gmail.com (Denied)",
+      "section": "setup-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:05:41",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:05:41",
+      "role": "be.stefano1971@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:02:08",
+      "role": "stefano.murazze@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:02:04",
+      "role": "stefano.murazze@gmail.com (Denied)",
+      "section": "schemi-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:02:04",
+      "role": "stefano.murazze@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:02:03",
+      "role": "stefano.murazze@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:02:02",
+      "role": "stefano.murazze@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:02:01",
+      "role": "stefano.murazze@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:02:00",
+      "role": "stefano.murazze@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:01:56",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T11:01:56",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:59:12",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:59:12",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:58:31",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:58:31",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:54:31",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:54:31",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:52:17",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:52:17",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:44:54",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:44:54",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:44:20",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:44:20",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:17:00",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:16:51",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:16:51",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:16:26",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:16:24",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:16:24",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:12:51",
+      "role": "stefano.murazze@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:12:49",
+      "role": "stefano.murazze@gmail.com (Denied)",
+      "section": "relazioni-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:12:46",
+      "role": "stefano.murazze@gmail.com (Denied)",
+      "section": "schemi-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:12:34",
+      "role": "stefano.murazze@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:12:30",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:12:30",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:10:59",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:10:53",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:10:53",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:07:42",
+      "role": "be.stefano1971",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:07:34",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:07:09",
+      "role": "be.stefano1971",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:07:07",
+      "role": "be.stefano1971",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:07:06",
+      "role": "be.stefano1971",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:07:05",
+      "role": "be.stefano1971",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:07:04",
+      "role": "be.stefano1971",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:07:03",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:07:02",
+      "role": "be.stefano1971",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:07:00",
+      "role": "be.stefano1971",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:06:58",
+      "role": "be.stefano1971",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:06:57",
+      "role": "be.stefano1971",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T10:06:36",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:32",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:29",
+      "role": "be.stefano1971",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:28",
+      "role": "be.stefano1971",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:27",
+      "role": "be.stefano1971",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:26",
+      "role": "be.stefano1971",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:24",
+      "role": "be.stefano1971",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:23",
+      "role": "be.stefano1971",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:21",
+      "role": "be.stefano1971",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:20",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:12",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:15:12",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:05:32",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:05:30",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T09:05:30",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:54:04.125Z",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:54:01.564Z",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:54:01.563Z",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:47:37.906Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:47:35.234Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:47:35.234Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:46:00.451Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:45:54.716Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:45:54.715Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:37:25.489Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:37:21.542Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:37:21.539Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T06:20:26",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T06:20:21",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T06:20:21",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:13:56.801Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:13:48.770Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:13:48.769Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:17.356Z",
+      "role": "stefano.murazze@gmail.com (N/A)",
+      "section": "relazioni-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:15.176Z",
+      "role": "stefano.murazze@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:13.412Z",
+      "role": "stefano.murazze@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:11.279Z",
+      "role": "stefano.murazze@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:09.687Z",
+      "role": "stefano.murazze@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:08.487Z",
+      "role": "stefano.murazze@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:07.226Z",
+      "role": "stefano.murazze@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:01.934Z",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:01.933Z",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T06:10:55",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T06:10:47",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T06:10:47",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:08:38.764Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:08:36.259Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:08:36.259Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:06:11.271Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:06:08.766Z",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:06:08.764Z",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:00:33.488Z",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:00:28.598Z",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:00:28.597Z",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:55:08.545Z",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:55:01.169Z",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:55:01.169Z",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:54:04",
+      "role": "be.stefano1971",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:54:01",
+      "role": "be.stefano1971",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:54:01",
+      "role": "be.stefano1971 (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:52:51.707Z",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:52:47.119Z",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:52:47.103Z",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:50:10",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:50:08",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:50:08",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:47:37",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:47:35",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:47:35",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:46:00",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:45:54",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:45:54",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:37:25",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:37:21",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:37:21",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:13:56",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:13:48",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:13:48",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:17",
+      "role": "stefano.murazze@gmail.com (N/A)",
+      "section": "relazioni-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:15",
+      "role": "stefano.murazze@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:13",
+      "role": "stefano.murazze@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:11",
+      "role": "stefano.murazze@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:09",
+      "role": "stefano.murazze@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:08",
+      "role": "stefano.murazze@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:07",
+      "role": "stefano.murazze@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:01",
+      "role": "stefano.murazze@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:12:01",
+      "role": "stefano.murazze@gmail.com (Ospite)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:08:38",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:08:36",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:08:36",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:06:11",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:06:08",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:06:08",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:00:33",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:00:28",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T05:00:28",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:55:08",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:55:01",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:55:01",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:52:51",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:52:47",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T04:52:47",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T00:06:12.162Z",
+      "role": "admin@example.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T00:06:10.420Z",
+      "role": "admin@example.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T00:06:08.521Z",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T00:06:12",
+      "role": "admin@example.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T00:06:10",
+      "role": "admin@example.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2026-01-01T00:06:08",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:19:13.997Z",
+      "role": "admin@example.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:19:11.126Z",
+      "role": "admin@example.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:31.775Z",
+      "role": "admin@example.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:28.551Z",
+      "role": "admin@example.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:25.782Z",
+      "role": "admin@example.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:23.553Z",
+      "role": "admin@example.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:08.698Z",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:05.189Z",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:05.182Z",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:19:13",
+      "role": "admin@example.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:19:11",
+      "role": "admin@example.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:31",
+      "role": "admin@example.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:28",
+      "role": "admin@example.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:25",
+      "role": "admin@example.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:23",
+      "role": "admin@example.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:08",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:05",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-31T22:18:05",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T19:59:25.293Z",
+      "role": "admin@example.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T19:59:19.954Z",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T19:59:19.951Z",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T19:54:16.534Z",
+      "role": "admin@example.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T19:53:38.276Z",
+      "role": "admin@example.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T19:59:25",
+      "role": "admin@example.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T19:59:19",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T19:59:19",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T19:54:16",
+      "role": "admin@example.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T19:53:38",
+      "role": "admin@example.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T17:27:07.475Z",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T17:27:07.471Z",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T16:51:18.577Z",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T16:51:14.875Z",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T16:51:14.874Z",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T17:27:07",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T17:27:07",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T16:51:18",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T16:51:14",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T16:51:14",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:57:28.155Z",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:57:25.361Z",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:57:25.360Z",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:57:28",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:57:25",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:57:25",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:39:08",
+      "role": "eliboscolo77@gmail.com (N/A)",
+      "section": "setup-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:37:34",
+      "role": "eliboscolo77@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:35:44",
+      "role": "eliboscolo77@gmail.com (N/A)",
+      "section": "setup-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:35:22",
+      "role": "eliboscolo77@gmail.com (N/A)",
+      "section": "relazioni-view",
+      "success": false,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:35:17",
+      "role": "eliboscolo77@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:32:26",
+      "role": "admin@example.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:31:49",
+      "role": "admin@example.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:31:26",
+      "role": "admin@example.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:31:24",
+      "role": "admin@example.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:31:18",
+      "role": "admin@example.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:30:48",
+      "role": "admin@example.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:30:30",
+      "role": "admin@example.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:30:11",
+      "role": "admin@example.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T14:30:11",
+      "role": "admin@example.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:27:39",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:27:34",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:27:34",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:16:27",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:16:25",
+      "role": "be.stefano1971@gmail.com",
+      "section": "relazioni-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:16:21",
+      "role": "be.stefano1971@gmail.com",
+      "section": "schemi-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:16:19",
+      "role": "be.stefano1971@gmail.com",
+      "section": "classifica-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:16:15",
+      "role": "be.stefano1971@gmail.com",
+      "section": "calendario-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:16:13",
+      "role": "be.stefano1971@gmail.com",
+      "section": "stats-container-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:15:44",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:15:44",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:09:38",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:09:34",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:09:34",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:04:56",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:04:44",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:04:44",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:02:23",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T11:02:23",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T10:55:18",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T10:55:11",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T10:36:56",
+      "role": "be.stefano1971@gmail.com",
+      "section": "staff-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T10:22:23",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T10:22:17",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T10:22:17",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T10:20:30",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T10:20:23",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T10:20:23",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:46:05",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:45:54",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:45:46",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:45:46",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:42:52",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:42:49",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:42:49",
+      "role": "be.stefano1971@gmail.com (Admin)",
+      "section": "APP_START",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:37:22",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:37:19",
+      "role": "be.stefano1971@gmail.com",
+      "section": "roster-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:37:02",
+      "role": "be.stefano1971@gmail.com",
+      "section": "setup-view",
+      "success": true,
+      "device": "Restored"
+    },
+    {
+      "date": "2025-12-30T07:36:58",
+      "role": "be.stefano1971@gmail.com",
+      "section": "home-view",
+      "success": true,
+      "device": "Restored"
+    }
+  ]
+}
