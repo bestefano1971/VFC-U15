@@ -1249,6 +1249,7 @@
     <div id="first-team-view" class="view-content">
         <div class="sub-tabs layout-compact">
             <button class="sub-tab-btn active" data-subtarget="first-team-home-subview">Home</button>
+            <button class="sub-tab-btn" data-subtarget="first-team-rosa-subview">Rosa</button>
             <button class="sub-tab-btn" data-subtarget="first-team-staff-subview">Staff</button>
             <button class="sub-tab-btn" data-subtarget="first-team-calendario-subview">Calendario</button>
             <button class="sub-tab-btn" data-subtarget="first-team-classifica-subview">Classifica</button>
@@ -1271,7 +1272,13 @@
             <div class="quick-links"
                 style="padding: 1rem; border: none; background: transparent; max-width: 900px; margin: 0 auto;">
                 <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Rapido</h3>
-                <div class="links-grid" style="grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                <div class="links-grid" style="grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+                    <button class="quick-link-btn"
+                        onclick="document.querySelector('#first-team-view button[data-subtarget=\'first-team-rosa-subview\']').click()"
+                        style="padding: 0.75rem; font-size: 0.8rem;">
+                        <span class="link-icon" style="font-size: 1.2rem;">👕</span>
+                        <span class="link-text" style="font-size: 0.8rem;">Rosa</span>
+                    </button>
                     <button class="quick-link-btn"
                         onclick="document.querySelector('#first-team-view button[data-subtarget=\'first-team-staff-subview\']').click()"
                         style="padding: 0.75rem; font-size: 0.8rem;">
@@ -1290,6 +1297,128 @@
                         <span class="link-icon" style="font-size: 1.2rem;">🏆</span>
                         <span class="link-text" style="font-size: 0.8rem;">Classifica</span>
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rosa Sub-View -->
+        <div id="first-team-rosa-subview" class="sub-view">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Rosa 1^ Squadra</h2>
+                </div>
+                <div class="roster-grid">
+                    <!-- Portieri -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">🧤</div>
+                            <div class="player-role-badge">PORTIERE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Portiere 1</div>
+                        </div>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">🧤</div>
+                            <div class="player-role-badge">PORTIERE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Portiere 2</div>
+                        </div>
+                    </div>
+
+                    <!-- Giocatori di Movimento -->
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">👕</div>
+                            <div class="player-role-badge" style="background: var(--primary);">CENTRALE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Centrale 1</div>
+                        </div>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">👕</div>
+                            <div class="player-role-badge" style="background: var(--primary);">CENTRALE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Centrale 2</div>
+                        </div>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">🏃</div>
+                            <div class="player-role-badge" style="background: var(--primary);">LATERALE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Laterale 1</div>
+                        </div>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">🏃</div>
+                            <div class="player-role-badge" style="background: var(--primary);">LATERALE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Laterale 2</div>
+                        </div>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">🏃</div>
+                            <div class="player-role-badge" style="background: var(--primary);">LATERALE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Laterale 3</div>
+                        </div>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">🏃</div>
+                            <div class="player-role-badge" style="background: var(--primary);">LATERALE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Laterale 4</div>
+                        </div>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">⚡</div>
+                            <div class="player-role-badge" style="background: var(--primary);">UNIVERSALE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Universale 1</div>
+                        </div>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">⚡</div>
+                            <div class="player-role-badge" style="background: var(--primary);">UNIVERSALE</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Universale 2</div>
+                        </div>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">🥅</div>
+                            <div class="player-role-badge" style="background: var(--danger);">PIVOT</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Pivot 1</div>
+                        </div>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-container">
+                            <div class="player-placeholder" style="font-size:4rem; opacity:0.5;">🥅</div>
+                            <div class="player-role-badge" style="background: var(--danger);">PIVOT</div>
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">Pivot 2</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2046,7 +2175,7 @@
 
     <!-- Main Logic Script (No Module) -->
     <script src="./js/user_widget_logic.js"></script>
-    <script src="./js/script.js?v=20260124_0305"></script>
+    <script src="./js/script.js?v=20260124_0320"></script>
 
 </body>
 
