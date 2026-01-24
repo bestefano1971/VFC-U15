@@ -106,7 +106,16 @@ let APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: []
 function resetState() {
     APP_STATE = { players: {}, quartets: {}, goalkeepers: {}, processedFiles: [], totalGF: 0, totalGS: 0 };
     TOTAL_MINUTES_PROCESSED = 0;
+    TOTAL_MINUTES_PROCESSED = 0;
     logDebug("State Reset Success");
+}
+
+// CHECK DB LOAD
+if (typeof PRELOADED_DATABASE === 'undefined') {
+    alert("ERRORE CRITICO: Il Database non è stato caricato correttamente.\nControllare la console per dettagli.");
+    console.error("PRELOADED_DATABASE is undefined. Check database.js syntax.");
+} else {
+    console.log("Database Loaded successfully. Keys:", Object.keys(PRELOADED_DATABASE));
 }
 
 // --- CORE PARSING ---
@@ -2130,170 +2139,161 @@ function renderTeamCustomTables(prefix, sheetName) {
         return;
     }
 
-    function renderTeamCustomTables(prefix, sheetName) {
-        if (typeof PRELOADED_DATABASE === 'undefined' || !PRELOADED_DATABASE.extra_sheets) return;
+    // --- FIX: U15 Header Patch ---
+    // Ensures columns 4, 5, 6 have headers to prevent unwanted partitioning if they are empty in the Excel file
+    if (sheetName === 'U15' && data[0]) {
+        if (!data[0][4]) data[0][4] = "MEDIA";
+        if (!data[0][5]) data[0][5] = "MEDIA";
+        if (!data[0][6]) data[0][6] = "MEDIA";
+    }
+    // -----------------------------
 
-        const data = PRELOADED_DATABASE.extra_sheets[sheetName];
-        if (!data || data.length === 0) {
-            console.warn(`[renderTeamCustomTables] No data found for sheet: ${sheetName}`);
-            return;
+    console.log(`[renderTeamCustomTables] Rendering ${sheetName} for prefix ${prefix}. Rows: ${data.length}`);
+
+    const header = data[0];
+    const getCellContent = (cell, isHeader = false) => {
+        if (typeof cell === 'object' && cell && cell.url) return cell.text || (isHeader ? '' : '0');
+        const s = String(cell || '').trim();
+        if (s === '') return isHeader ? '' : '0';
+        return s;
+    };
+
+    // Partition data by empty columns
+    const partitions = [];
+    let currentPart = [];
+    header.forEach((val, i) => {
+        if (String(val || '').trim() === '' && i > 0) {
+            if (currentPart.length > 0) partitions.push(currentPart);
+            currentPart = [];
+        } else {
+            currentPart.push(i);
         }
+    });
+    if (currentPart.length > 0) partitions.push(currentPart);
 
-        // --- FIX: U15 Header Patch ---
-        // Ensures columns 4, 5, 6 have headers to prevent unwanted partitioning if they are empty in the Excel file
-        if (sheetName === 'U15' && data[0]) {
-            if (!data[0][4]) data[0][4] = "MEDIA";
-            if (!data[0][5]) data[0][5] = "MEDIA";
-            if (!data[0][6]) data[0][6] = "MEDIA";
+    let calIndices = null;
+    let claIndices = null;
+
+    partitions.forEach(indices => {
+        const rowText = indices.map(i => String(header[i] || '').toUpperCase()).join(' ');
+        const hasCalKeywords = rowText.includes('LOCALI') || rowText.includes('DATE') || rowText.includes('DATA') || rowText.includes('NR.') || rowText.includes('RIS') || rowText.includes('OSPITI');
+        const hasClaKeywords = rowText.includes('SQUADRE') || rowText.includes('SQUADRA') || rowText.includes('PT') || rowText.includes('POS');
+
+        if (hasCalKeywords && !calIndices) {
+            calIndices = indices;
+        } else if (hasClaKeywords && !claIndices) {
+            claIndices = indices;
         }
-        // -----------------------------
+    });
 
-        console.log(`[renderTeamCustomTables] Rendering ${sheetName} for prefix ${prefix}. Rows: ${data.length}`);
+    // Fallback logic
+    if (!calIndices && partitions.length > 0) {
+        console.warn(`[renderTeamCustomTables] ${sheetName}: Defaulting Calendar to partition 0`);
+        calIndices = partitions[0];
+    }
+    if (!claIndices && partitions.length > 1) {
+        console.warn(`[renderTeamCustomTables] ${sheetName}: Defaulting Classifica to partition 1`);
+        claIndices = partitions[1];
+    }
 
-        const header = data[0];
-        const getCellContent = (cell, isHeader = false) => {
-            if (typeof cell === 'object' && cell && cell.url) return cell.text || (isHeader ? '' : '0');
-            const s = String(cell || '').trim();
-            if (s === '') return isHeader ? '' : '0';
-            return s;
-        };
-
-        // Partition data by empty columns
-        const partitions = [];
-        let currentPart = [];
-        header.forEach((val, i) => {
-            if (String(val || '').trim() === '' && i > 0) {
-                if (currentPart.length > 0) partitions.push(currentPart);
-                currentPart = [];
-            } else {
-                currentPart.push(i);
-            }
-        });
-        if (currentPart.length > 0) partitions.push(currentPart);
-
-        let calIndices = null;
-        let claIndices = null;
-
-        partitions.forEach(indices => {
-            const rowText = indices.map(i => String(header[i] || '').toUpperCase()).join(' ');
-            const hasCalKeywords = rowText.includes('LOCALI') || rowText.includes('DATE') || rowText.includes('DATA') || rowText.includes('NR.') || rowText.includes('RIS') || rowText.includes('OSPITI');
-            const hasClaKeywords = rowText.includes('SQUADRE') || rowText.includes('SQUADRA') || rowText.includes('PT') || rowText.includes('POS');
-
-            if (hasCalKeywords && !calIndices) {
-                calIndices = indices;
-            } else if (hasClaKeywords && !claIndices) {
-                claIndices = indices;
-            }
-        });
-
-        // Fallback logic
-        if (!calIndices && partitions.length > 0) {
-            console.warn(`[renderTeamCustomTables] ${sheetName}: Defaulting Calendar to partition 0`);
-            calIndices = partitions[0];
-        }
-        if (!claIndices && partitions.length > 1) {
-            console.warn(`[renderTeamCustomTables] ${sheetName}: Defaulting Classifica to partition 1`);
-            claIndices = partitions[1];
-        }
-
-        // Specific Fix for Femminile if inverted
-        if (sheetName === 'Femminile' && partitions.length > 1) {
-            const p0 = partitions[0].map(i => String(header[i] || '').toUpperCase()).join(' ');
-            if (p0.includes('SQUADRE') || p0.includes('PT')) {
-                claIndices = partitions[0];
-                calIndices = partitions[1];
-            }
-        }
-
-        // 1. Calendario
-        const calTable = document.querySelector(`#${prefix}-calendario-table tbody`);
-        if (calTable && calIndices) {
-            calTable.innerHTML = '';
-            data.forEach((row, rowIndex) => {
-                const calRow = calIndices.map(i => row[i]);
-                if (!calRow || calRow.every(c => !c)) return;
-
-                // Header/Section Row Detection (e.g. "1 Giornata")
-                const rowTextRaw = calRow.map(c => getCellContent(c, true)).join(' ').toUpperCase();
-                if ((rowTextRaw.includes("GIORNATA") || rowTextRaw.includes("CAMPIONATO")) && calRow.every((c, i) => i === 0 || !c || (typeof c === 'object' && !c.url))) {
-                    const tr = document.createElement('tr');
-                    const td = document.createElement('td');
-                    td.textContent = getCellContent(calRow[0], true).toUpperCase();
-                    td.colSpan = 15; td.style.fontWeight = '800'; td.style.textAlign = 'center'; td.style.background = 'var(--bg)';
-                    tr.appendChild(td);
-                    calTable.appendChild(tr);
-                    return;
-                }
-
-                const tr = document.createElement('tr');
-                const isHeader = rowIndex === 0 || String(calRow[0]).toUpperCase().includes('DATA') || String(calRow[0]).toUpperCase().includes('NR.');
-
-                calRow.forEach((cell) => {
-                    if (typeof cell === 'object' && cell && cell.url) return;
-                    const td = document.createElement('td');
-                    const s = getCellContent(cell, isHeader);
-                    td.textContent = s;
-                    if (isHeader) td.style.fontWeight = 'bold';
-                    if (s.toUpperCase().includes('VALLI')) td.classList.add('highlight-valli');
-
-                    // Date specific class
-                    if (s.match(/\d{1,2}[\/\-]\d{1,2}/)) td.className = 'cal-date';
-                    else td.className = 'cal-content';
-
-                    tr.appendChild(td);
-                });
-
-                // Links (cols with objects)
-                let linkCells = calRow.filter(cell => cell && typeof cell === 'object' && cell.url);
-                if (linkCells.length > 0) {
-                    const getScore = (text) => {
-                        const t = (text || "").toUpperCase();
-                        if (t.includes('MDAY')) return 1;
-                        if (t.includes('HIGH') || t.includes('HIGHT')) return 2;
-                        if (t.includes('MVP')) return 3;
-                        return 4;
-                    };
-                    linkCells.sort((a, b) => getScore(a.text) - getScore(b.text));
-                    linkCells.forEach(cell => {
-                        const td = document.createElement('td');
-                        td.className = 'cal-link';
-                        const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
-                        let cleanUrl = cell.url.replace(/\\/g, '/');
-                        if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
-                        if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
-
-                        const displayText = cell.text.replace(/\.(jpg|png|mp4|jpeg)$/i, '');
-                        td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link" title="${displayText}">${icon} ${displayText}</a>`;
-                        tr.appendChild(td);
-                    });
-                }
-                calTable.appendChild(tr);
-            });
-        }
-
-        // 2. Classifica
-        const claTable = document.querySelector(`#${prefix}-classifica-table tbody`);
-        if (claTable && claIndices) {
-            claTable.innerHTML = '';
-            data.forEach((row, rowIndex) => {
-                const claRow = claIndices.map(i => row[i]);
-                if (!claRow || claRow.every(c => !c)) return;
-
-                const tr = document.createElement('tr');
-                if (claRow.join(' ').toUpperCase().includes("VALLI")) tr.classList.add('highlight-valli');
-
-                const isHeader = rowIndex === 0 || String(claRow[0]).toUpperCase().includes('SQUADRE') || String(claRow[0]).toUpperCase().includes('SQUADRA');
-                claRow.forEach(c => {
-                    const td = document.createElement('td');
-                    if (isHeader) td.style.fontWeight = 'bold';
-                    td.textContent = getCellContent(c, isHeader);
-                    tr.appendChild(td);
-                });
-                claTable.appendChild(tr);
-            });
+    // Specific Fix for Femminile if inverted
+    if (sheetName === 'Femminile' && partitions.length > 1) {
+        const p0 = partitions[0].map(i => String(header[i] || '').toUpperCase()).join(' ');
+        if (p0.includes('SQUADRE') || p0.includes('PT')) {
+            claIndices = partitions[0];
+            calIndices = partitions[1];
         }
     }
+
+    // 1. Calendario
+    const calTable = document.querySelector(`#${prefix}-calendario-table tbody`);
+    if (calTable && calIndices) {
+        calTable.innerHTML = '';
+        data.forEach((row, rowIndex) => {
+            const calRow = calIndices.map(i => row[i]);
+            if (!calRow || calRow.every(c => !c)) return;
+
+            // Header/Section Row Detection (e.g. "1 Giornata")
+            const rowTextRaw = calRow.map(c => getCellContent(c, true)).join(' ').toUpperCase();
+            if ((rowTextRaw.includes("GIORNATA") || rowTextRaw.includes("CAMPIONATO")) && calRow.every((c, i) => i === 0 || !c || (typeof c === 'object' && !c.url))) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.textContent = getCellContent(calRow[0], true).toUpperCase();
+                td.colSpan = 15; td.style.fontWeight = '800'; td.style.textAlign = 'center'; td.style.background = 'var(--bg)';
+                tr.appendChild(td);
+                calTable.appendChild(tr);
+                return;
+            }
+
+            const tr = document.createElement('tr');
+            const isHeader = rowIndex === 0 || String(calRow[0]).toUpperCase().includes('DATA') || String(calRow[0]).toUpperCase().includes('NR.');
+
+            calRow.forEach((cell) => {
+                if (typeof cell === 'object' && cell && cell.url) return;
+                const td = document.createElement('td');
+                const s = getCellContent(cell, isHeader);
+                td.textContent = s;
+                if (isHeader) td.style.fontWeight = 'bold';
+                if (s.toUpperCase().includes('VALLI')) td.classList.add('highlight-valli');
+
+                // Date specific class
+                if (s.match(/\d{1,2}[\/\-]\d{1,2}/)) td.className = 'cal-date';
+                else td.className = 'cal-content';
+
+                tr.appendChild(td);
+            });
+
+            // Links (cols with objects)
+            let linkCells = calRow.filter(cell => cell && typeof cell === 'object' && cell.url);
+            if (linkCells.length > 0) {
+                const getScore = (text) => {
+                    const t = (text || "").toUpperCase();
+                    if (t.includes('MDAY')) return 1;
+                    if (t.includes('HIGH') || t.includes('HIGHT')) return 2;
+                    if (t.includes('MVP')) return 3;
+                    return 4;
+                };
+                linkCells.sort((a, b) => getScore(a.text) - getScore(b.text));
+                linkCells.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.className = 'cal-link';
+                    const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
+                    let cleanUrl = cell.url.replace(/\\/g, '/');
+                    if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
+                    if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
+
+                    const displayText = cell.text.replace(/\.(jpg|png|mp4|jpeg)$/i, '');
+                    td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link" title="${displayText}">${icon} ${displayText}</a>`;
+                    tr.appendChild(td);
+                });
+            }
+            calTable.appendChild(tr);
+        });
+    }
+
+    // 2. Classifica
+    const claTable = document.querySelector(`#${prefix}-classifica-table tbody`);
+    if (claTable && claIndices) {
+        claTable.innerHTML = '';
+        data.forEach((row, rowIndex) => {
+            const claRow = claIndices.map(i => row[i]);
+            if (!claRow || claRow.every(c => !c)) return;
+
+            const tr = document.createElement('tr');
+            if (claRow.join(' ').toUpperCase().includes("VALLI")) tr.classList.add('highlight-valli');
+
+            const isHeader = rowIndex === 0 || String(claRow[0]).toUpperCase().includes('SQUADRE') || String(claRow[0]).toUpperCase().includes('SQUADRA');
+            claRow.forEach(c => {
+                const td = document.createElement('td');
+                if (isHeader) td.style.fontWeight = 'bold';
+                td.textContent = getCellContent(c, isHeader);
+                tr.appendChild(td);
+            });
+            claTable.appendChild(tr);
+        });
+    }
 }
+
 
 function renderU15Roster() {
     console.log("[renderU15Roster] Starting...");
