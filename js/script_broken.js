@@ -2123,9 +2123,39 @@ function renderTeamCustomTables(prefix, sheetName) {
         return;
     }
 
-    // PATCH REMOVED: Injected media links for U15 matches caused rendering issues.
-    // Restoring default behavior.
+    // PATCH: Inject media links for U15 recent matches (Jan 11 and Jan 18)
+    if (sheetName === 'U15') {
+        console.log('[PATCH] Checking U15 rows for missing media links...');
 
+        // Fix: Ensure headers exist for columns 4, 5, 6 so they are not treated as partitions break
+        if (data[0]) {
+            if (!data[0][4]) data[0][4] = "MEDIA";
+            if (!data[0][5]) data[0][5] = "MEDIA";
+            if (!data[0][6]) data[0][6] = "MEDIA";
+        }
+
+        data.forEach((row, idx) => {
+            if (idx === 0) return; // Skip header
+            let dateStr = "";
+            if (typeof row[0] === 'object' && row[0] !== null) dateStr = String(row[0].text || "");
+            else dateStr = String(row[0] || "");
+
+            if (dateStr.includes('2026-01-11') || dateStr.includes('11/01/2026') || dateStr.includes('11.01.26')) {
+                console.log(`[PATCH] Injecting media for match on ${dateStr}`);
+                if (!row[4] || row[4] === '' || row[4] === '0') row[4] = { text: 'MDAY6.jpg', url: 'assets/media/MDAY6.jpg' };
+                if (!row[5] || row[5] === '' || row[5] === '0') row[5] = { text: 'Hight-Lights6.mp4', url: 'assets/media/Hight-Lights6.mp4' };
+                if (!row[6] || row[6] === '' || row[6] === '0') row[6] = { text: 'MVP6.mp4', url: 'assets/media/MVP6.mp4' };
+            }
+            if (dateStr.includes('2026-01-18') || dateStr.includes('18/01/2026') || dateStr.includes('18.01.26')) {
+                console.log(`[PATCH] Injecting media for match on ${dateStr}`);
+                if (!row[4] || row[4] === '' || row[4] === '0') row[4] = { text: 'MDAY7', url: 'assets/media/MDAY7.jpg' };
+                // Hight-Lights7.mp4 is missing from folder, do not inject to avoid 404. 
+                // Set to "-" to prevent showing '0' since we forced the header to exist.
+                if (!row[5] || row[5] === '' || row[5] === '0') row[5] = "-";
+                if (!row[6] || row[6] === '' || row[6] === '0') row[6] = { text: 'MVP7', url: 'assets/media/MVP7.mp4' };
+            }
+        });
+    }
 
     console.log(`[renderTeamCustomTables] Rendering ${sheetName} for prefix ${prefix}. Rows: ${data.length}`);
 
@@ -2256,7 +2286,47 @@ function renderTeamCustomTables(prefix, sheetName) {
         });
     }
 
+    // VISUAL DEBUGGER FOR U15
+    if (sheetName === 'U15') {
+        let debugContainer = document.getElementById('u15-debug-log');
+        if (!debugContainer) {
+            debugContainer = document.createElement('div');
+            debugContainer.id = 'u15-debug-log';
+            debugContainer.style.background = '#333';
+            debugContainer.style.color = '#0f0';
+            debugContainer.style.padding = '10px';
+            debugContainer.style.marginBottom = '10px';
+            debugContainer.style.fontFamily = 'monospace';
+            debugContainer.style.fontSize = '12px';
+            const tableContainer = document.querySelector(`#${prefix}-calendario-table`);
+            if (tableContainer && tableContainer.parentElement) {
+                tableContainer.parentElement.insertBefore(debugContainer, tableContainer);
+            }
+        }
 
+        const debugLines = [];
+        debugLines.push(`[DEBUG] Sheet: ${sheetName}`);
+        debugLines.push(`[DEBUG] Header cols 4,5,6: ${header[4]}|${header[5]}|${header[6]}`);
+        debugLines.push(`[DEBUG] Partition counts: ${partitions.length}`);
+        debugLines.push(`[DEBUG] CalIndices: ${calIndices ? calIndices.join(',') : 'NULL'}`);
+
+        // Check Jan 11 Row
+        const jan11Row = data.find(r => {
+            let d = "";
+            if (typeof r[0] === 'object' && r[0]) d = r[0].text;
+            else d = String(r[0] || "");
+            return d.includes('2026-01-11');
+        });
+
+        if (jan11Row) {
+            debugLines.push(`[DEBUG] Jan 11 Row Found. Cols 4,5,6 types: ${typeof jan11Row[4]}|${typeof jan11Row[5]}|${typeof jan11Row[6]}`);
+            if (typeof jan11Row[4] === 'object') debugLines.push(`[DEBUG] Jan 11 MDAY: ${JSON.stringify(jan11Row[4])}`);
+        } else {
+            debugLines.push(`[DEBUG] Jan 11 Row NOT FOUND in DATA`);
+        }
+
+        debugContainer.innerHTML = debugLines.join('<br>');
+    }
 }
 
 function renderU15Roster() {
