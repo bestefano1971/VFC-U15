@@ -85,11 +85,8 @@ function renderTabsWithLocks() {
     });
 }
 
-console.log("SCRIPT.JS LOADED [v20260124_0241]");
-
 window.onerror = function (msg, url, line) {
     console.error(`Error: ${msg} at ${line}`);
-    alert(`Errore Critico:\n${msg}\nRiga: ${line}\nContatta lo sviluppatore.`);
 };
 
 // --- CONSTANTS ---
@@ -2126,168 +2123,209 @@ function renderTeamCustomTables(prefix, sheetName) {
         return;
     }
 
-    function renderTeamCustomTables(prefix, sheetName) {
-        if (typeof PRELOADED_DATABASE === 'undefined' || !PRELOADED_DATABASE.extra_sheets) return;
+    // PATCH: Inject media links for U15 recent matches (Jan 11 and Jan 18)
+    if (sheetName === 'U15') {
+        console.log('[PATCH] Checking U15 rows for missing media links...');
 
-        const data = PRELOADED_DATABASE.extra_sheets[sheetName];
-        if (!data || data.length === 0) {
-            console.warn(`[renderTeamCustomTables] No data found for sheet: ${sheetName}`);
-            return;
-        }
-
-        // --- FIX: U15 Header Patch ---
-        // Ensures columns 4, 5, 6 have headers to prevent unwanted partitioning if they are empty in the Excel file
-        if (sheetName === 'U15' && data[0]) {
+        // Fix: Ensure headers exist for columns 4, 5, 6 so they are not treated as partitions break
+        if (data[0]) {
             if (!data[0][4]) data[0][4] = "MEDIA";
             if (!data[0][5]) data[0][5] = "MEDIA";
             if (!data[0][6]) data[0][6] = "MEDIA";
         }
-        // -----------------------------
 
-        console.log(`[renderTeamCustomTables] Rendering ${sheetName} for prefix ${prefix}. Rows: ${data.length}`);
+        data.forEach((row, idx) => {
+            if (idx === 0) return; // Skip header
+            let dateStr = "";
+            if (typeof row[0] === 'object' && row[0] !== null) dateStr = String(row[0].text || "");
+            else dateStr = String(row[0] || "");
 
-        const header = data[0];
-        const getCellContent = (cell, isHeader = false) => {
-            if (typeof cell === 'object' && cell && cell.url) return cell.text || (isHeader ? '' : '0');
-            const s = String(cell || '').trim();
-            if (s === '') return isHeader ? '' : '0';
-            return s;
-        };
-
-        // Partition data by empty columns
-        const partitions = [];
-        let currentPart = [];
-        header.forEach((val, i) => {
-            if (String(val || '').trim() === '' && i > 0) {
-                if (currentPart.length > 0) partitions.push(currentPart);
-                currentPart = [];
-            } else {
-                currentPart.push(i);
+            if (dateStr.includes('2026-01-11') || dateStr.includes('11/01/2026') || dateStr.includes('11.01.26')) {
+                console.log(`[PATCH] Injecting media for match on ${dateStr}`);
+                if (!row[4] || row[4] === '' || row[4] === '0') row[4] = { text: 'MDAY6.jpg', url: 'assets/media/MDAY6.jpg' };
+                if (!row[5] || row[5] === '' || row[5] === '0') row[5] = { text: 'Hight-Lights6.mp4', url: 'assets/media/Hight-Lights6.mp4' };
+                if (!row[6] || row[6] === '' || row[6] === '0') row[6] = { text: 'MVP6.mp4', url: 'assets/media/MVP6.mp4' };
+            }
+            if (dateStr.includes('2026-01-18') || dateStr.includes('18/01/2026') || dateStr.includes('18.01.26')) {
+                console.log(`[PATCH] Injecting media for match on ${dateStr}`);
+                if (!row[4] || row[4] === '' || row[4] === '0') row[4] = { text: 'MDAY7', url: 'assets/media/MDAY7.jpg' };
+                // Hight-Lights7.mp4 is missing from folder, do not inject to avoid 404. 
+                // Set to "-" to prevent showing '0' since we forced the header to exist.
+                if (!row[5] || row[5] === '' || row[5] === '0') row[5] = "-";
+                if (!row[6] || row[6] === '' || row[6] === '0') row[6] = { text: 'MVP7', url: 'assets/media/MVP7.mp4' };
             }
         });
-        if (currentPart.length > 0) partitions.push(currentPart);
+    }
 
-        let calIndices = null;
-        let claIndices = null;
+    console.log(`[renderTeamCustomTables] Rendering ${sheetName} for prefix ${prefix}. Rows: ${data.length}`);
 
-        partitions.forEach(indices => {
-            const rowText = indices.map(i => String(header[i] || '').toUpperCase()).join(' ');
-            const hasCalKeywords = rowText.includes('LOCALI') || rowText.includes('DATE') || rowText.includes('DATA') || rowText.includes('NR.') || rowText.includes('RIS') || rowText.includes('OSPITI');
-            const hasClaKeywords = rowText.includes('SQUADRE') || rowText.includes('SQUADRA') || rowText.includes('PT') || rowText.includes('POS');
+    const header = data[0];
+    const getCellContent = (cell, isHeader = false) => {
+        if (typeof cell === 'object' && cell && cell.url) return cell.text || (isHeader ? '' : '0');
+        const s = String(cell || '').trim();
+        if (s === '') return isHeader ? '' : '0';
+        return s;
+    };
 
-            if (hasCalKeywords && !calIndices) {
-                calIndices = indices;
-            } else if (hasClaKeywords && !claIndices) {
-                claIndices = indices;
-            }
-        });
-
-        // Fallback logic
-        if (!calIndices && partitions.length > 0) {
-            console.warn(`[renderTeamCustomTables] ${sheetName}: Defaulting Calendar to partition 0`);
-            calIndices = partitions[0];
+    // Partition data by empty columns
+    const partitions = [];
+    let currentPart = [];
+    header.forEach((val, i) => {
+        if (String(val || '').trim() === '' && i > 0) {
+            if (currentPart.length > 0) partitions.push(currentPart);
+            currentPart = [];
+        } else {
+            currentPart.push(i);
         }
-        if (!claIndices && partitions.length > 1) {
-            console.warn(`[renderTeamCustomTables] ${sheetName}: Defaulting Classifica to partition 1`);
-            claIndices = partitions[1];
+    });
+    if (currentPart.length > 0) partitions.push(currentPart);
+
+    let calIndices = null;
+    let claIndices = null;
+
+    partitions.forEach(indices => {
+        const rowText = indices.map(i => String(header[i] || '').toUpperCase()).join(' ');
+        const hasCalKeywords = rowText.includes('LOCALI') || rowText.includes('DATE') || rowText.includes('DATA') || rowText.includes('NR.') || rowText.includes('RIS');
+        const hasClaKeywords = rowText.includes('SQUADRE') || rowText.includes('SQUADRA') || rowText.includes('PT') || rowText.includes('POS');
+
+        if (hasCalKeywords) {
+            calIndices = indices;
+        } else if (hasClaKeywords) {
+            claIndices = indices;
         }
+    });
 
-        // Specific Fix for Femminile if inverted
-        if (sheetName === 'Femminile' && partitions.length > 1) {
-            const p0 = partitions[0].map(i => String(header[i] || '').toUpperCase()).join(' ');
-            if (p0.includes('SQUADRE') || p0.includes('PT')) {
-                claIndices = partitions[0];
-                calIndices = partitions[1];
-            }
-        }
+    // Fallback: If only one partition and not identified, try default
+    if (partitions.length === 1 && !calIndices && !claIndices) {
+        const rowText = partitions[0].map(i => String(header[i] || '').toUpperCase()).join(' ');
+        if (rowText.includes('RIS') || rowText.includes('COLUMN')) calIndices = partitions[0];
+        else claIndices = partitions[0];
+    }
 
-        // 1. Calendario
-        const calTable = document.querySelector(`#${prefix}-calendario-table tbody`);
-        if (calTable && calIndices) {
-            calTable.innerHTML = '';
-            data.forEach((row, rowIndex) => {
-                const calRow = calIndices.map(i => row[i]);
-                if (!calRow || calRow.every(c => !c)) return;
+    // 1. Calendario
+    const calTable = document.querySelector(`#${prefix}-calendario-table tbody`);
+    if (!calTable) console.error(`[renderTeamCustomTables] Table container #${prefix}-calendario-table tbody NOT FOUND`);
+    if (calTable && calIndices) {
+        calTable.innerHTML = '';
+        data.forEach((row, rowIndex) => {
+            const calRow = calIndices.map(i => row[i]);
+            if (!calRow || calRow.every(c => !c)) return;
 
-                // Header/Section Row Detection (e.g. "1 Giornata")
-                const rowTextRaw = calRow.map(c => getCellContent(c, true)).join(' ').toUpperCase();
-                if ((rowTextRaw.includes("GIORNATA") || rowTextRaw.includes("CAMPIONATO")) && calRow.every((c, i) => i === 0 || !c || (typeof c === 'object' && !c.url))) {
-                    const tr = document.createElement('tr');
-                    const td = document.createElement('td');
-                    td.textContent = getCellContent(calRow[0], true).toUpperCase();
-                    td.colSpan = 15; td.style.fontWeight = '800'; td.style.textAlign = 'center'; td.style.background = 'var(--bg)';
-                    tr.appendChild(td);
-                    calTable.appendChild(tr);
-                    return;
-                }
-
+            const rowText = calRow.map(c => getCellContent(c, true)).join(' ').toUpperCase();
+            if ((rowText.includes("GIORNATA") || rowText.includes("CAMPIONATO")) && calRow.every((c, i) => i === 0 || !c || (typeof c === 'object' && !c.url))) {
                 const tr = document.createElement('tr');
-                const isHeader = rowIndex === 0 || String(calRow[0]).toUpperCase().includes('DATA') || String(calRow[0]).toUpperCase().includes('NR.');
-
-                calRow.forEach((cell) => {
-                    if (typeof cell === 'object' && cell && cell.url) return;
-                    const td = document.createElement('td');
-                    const s = getCellContent(cell, isHeader);
-                    td.textContent = s;
-                    if (isHeader) td.style.fontWeight = 'bold';
-                    if (s.toUpperCase().includes('VALLI')) td.classList.add('highlight-valli');
-
-                    // Date specific class
-                    if (s.match(/\d{1,2}[\/\-]\d{1,2}/)) td.className = 'cal-date';
-                    else td.className = 'cal-content';
-
-                    tr.appendChild(td);
-                });
-
-                // Links (cols with objects)
-                let linkCells = calRow.filter(cell => cell && typeof cell === 'object' && cell.url);
-                if (linkCells.length > 0) {
-                    const getScore = (text) => {
-                        const t = (text || "").toUpperCase();
-                        if (t.includes('MDAY')) return 1;
-                        if (t.includes('HIGH') || t.includes('HIGHT')) return 2;
-                        if (t.includes('MVP')) return 3;
-                        return 4;
-                    };
-                    linkCells.sort((a, b) => getScore(a.text) - getScore(b.text));
-                    linkCells.forEach(cell => {
-                        const td = document.createElement('td');
-                        td.className = 'cal-link';
-                        const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
-                        let cleanUrl = cell.url.replace(/\\/g, '/');
-                        if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
-                        if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
-
-                        const displayText = cell.text.replace(/\.(jpg|png|mp4|jpeg)$/i, '');
-                        td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link" title="${displayText}">${icon} ${displayText}</a>`;
-                        tr.appendChild(td);
-                    });
-                }
+                const td = document.createElement('td');
+                td.textContent = getCellContent(calRow[0], true).toUpperCase();
+                td.colSpan = 15; td.style.fontWeight = '800'; td.style.textAlign = 'center'; td.style.background = 'var(--bg)';
+                tr.appendChild(td);
                 calTable.appendChild(tr);
+                return;
+            }
+
+            const tr = document.createElement('tr');
+            const isHeader = rowIndex === 0 || String(calRow[0]).toUpperCase().includes('DATA') || String(calRow[0]).toUpperCase().includes('NR.');
+
+            calRow.forEach((cell) => {
+                if (typeof cell === 'object' && cell && cell.url) return;
+                const td = document.createElement('td');
+                const s = getCellContent(cell, isHeader);
+                td.textContent = s;
+                if (isHeader) td.style.fontWeight = 'bold';
+                if (s.toUpperCase().includes('VALLI')) td.classList.add('highlight-valli');
+                if (s.match(/\d{1,2}[\/\-]\d{1,2}/)) td.className = 'cal-date';
+                else td.className = 'cal-content';
+                tr.appendChild(td);
             });
-        }
 
-        // 2. Classifica
-        const claTable = document.querySelector(`#${prefix}-classifica-table tbody`);
-        if (claTable && claIndices) {
-            claTable.innerHTML = '';
-            data.forEach((row, rowIndex) => {
-                const claRow = claIndices.map(i => row[i]);
-                if (!claRow || claRow.every(c => !c)) return;
-
-                const tr = document.createElement('tr');
-                if (claRow.join(' ').toUpperCase().includes("VALLI")) tr.classList.add('highlight-valli');
-
-                const isHeader = rowIndex === 0 || String(claRow[0]).toUpperCase().includes('SQUADRE') || String(claRow[0]).toUpperCase().includes('SQUADRA');
-                claRow.forEach(c => {
+            let linkCells = calRow.filter(cell => cell && typeof cell === 'object' && cell.url);
+            if (linkCells.length > 0) {
+                const getScore = (text) => {
+                    const t = (text || "").toUpperCase();
+                    if (t.includes('MDAY')) return 1;
+                    if (t.includes('HIGH') || t.includes('HIGHT')) return 2; // Swap priority
+                    if (t.includes('MVP')) return 3;
+                    return 4;
+                };
+                linkCells.sort((a, b) => getScore(a.text) - getScore(b.text));
+                linkCells.forEach(cell => {
                     const td = document.createElement('td');
-                    if (isHeader) td.style.fontWeight = 'bold';
-                    td.textContent = getCellContent(c, isHeader);
+                    td.className = 'cal-link';
+                    const icon = cell.text.toUpperCase().includes('MDAY') || cell.url.match(/\.(jpg|png)$/i) ? '📸' : '🎬';
+                    let cleanUrl = cell.url.replace(/\\/g, '/');
+                    if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
+                    if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
+                    console.log('Rendering Link:', cleanUrl);
+                    const displayText = cell.text.replace(/\.(jpg|png|mp4|jpeg)$/i, '');
+                    td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link" title="${displayText}">${icon} ${displayText}</a>`;
                     tr.appendChild(td);
                 });
-                claTable.appendChild(tr);
+            }
+            calTable.appendChild(tr);
+        });
+    }
+
+    // 2. Classifica
+    const claTable = document.querySelector(`#${prefix}-classifica-table tbody`);
+    if (claTable && claIndices) {
+        claTable.innerHTML = '';
+        data.forEach((row, rowIndex) => {
+            const claRow = claIndices.map(i => row[i]);
+            if (!claRow || claRow.every(c => !c)) return;
+
+            const tr = document.createElement('tr');
+            if (claRow.join(' ').toUpperCase().includes("VALLI")) tr.classList.add('highlight-valli');
+
+            const isHeader = rowIndex === 0 || String(claRow[0]).toUpperCase().includes('SQUADRE');
+            claRow.forEach(c => {
+                const td = document.createElement('td');
+                if (isHeader) td.style.fontWeight = 'bold';
+                td.textContent = getCellContent(c, isHeader);
+                tr.appendChild(td);
             });
+            claTable.appendChild(tr);
+        });
+    }
+
+    // VISUAL DEBUGGER FOR U15
+    if (sheetName === 'U15') {
+        let debugContainer = document.getElementById('u15-debug-log');
+        if (!debugContainer) {
+            debugContainer = document.createElement('div');
+            debugContainer.id = 'u15-debug-log';
+            debugContainer.style.background = '#333';
+            debugContainer.style.color = '#0f0';
+            debugContainer.style.padding = '10px';
+            debugContainer.style.marginBottom = '10px';
+            debugContainer.style.fontFamily = 'monospace';
+            debugContainer.style.fontSize = '12px';
+            const tableContainer = document.querySelector(`#${prefix}-calendario-table`);
+            if (tableContainer && tableContainer.parentElement) {
+                tableContainer.parentElement.insertBefore(debugContainer, tableContainer);
+            }
         }
+
+        const debugLines = [];
+        debugLines.push(`[DEBUG] Sheet: ${sheetName}`);
+        debugLines.push(`[DEBUG] Header cols 4,5,6: ${header[4]}|${header[5]}|${header[6]}`);
+        debugLines.push(`[DEBUG] Partition counts: ${partitions.length}`);
+        debugLines.push(`[DEBUG] CalIndices: ${calIndices ? calIndices.join(',') : 'NULL'}`);
+
+        // Check Jan 11 Row
+        const jan11Row = data.find(r => {
+            let d = "";
+            if (typeof r[0] === 'object' && r[0]) d = r[0].text;
+            else d = String(r[0] || "");
+            return d.includes('2026-01-11');
+        });
+
+        if (jan11Row) {
+            debugLines.push(`[DEBUG] Jan 11 Row Found. Cols 4,5,6 types: ${typeof jan11Row[4]}|${typeof jan11Row[5]}|${typeof jan11Row[6]}`);
+            if (typeof jan11Row[4] === 'object') debugLines.push(`[DEBUG] Jan 11 MDAY: ${JSON.stringify(jan11Row[4])}`);
+        } else {
+            debugLines.push(`[DEBUG] Jan 11 Row NOT FOUND in DATA`);
+        }
+
+        debugContainer.innerHTML = debugLines.join('<br>');
     }
 }
 
