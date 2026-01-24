@@ -87,6 +87,7 @@ function renderTabsWithLocks() {
 
 window.onerror = function (msg, url, line) {
     console.error(`Error: ${msg} at ${line}`);
+    // alert(`Global Error: ${msg}\nLine: ${line}`);
 };
 
 // --- CONSTANTS ---
@@ -455,6 +456,8 @@ function updateUI() {
 
     } catch (err) {
         logDebug("CRITICAL ERROR in updateUI: " + err.stack);
+        console.error(err);
+        // alert("Errore nell'aggiornamento interfaccia: " + err.message); // Uncomment if needed for persistent errors
     }
 }
 
@@ -1594,6 +1597,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start !
     setTimeout(enforceLogin, 100);
 
+    // Default View
+    setTimeout(() => {
+        const defaultTab = document.querySelector('.tab-btn[data-target="staff-view"]');
+        if (defaultTab) {
+            activateView('staff-view', defaultTab);
+        }
+    }, 500);
+
     // Tabs
     document.querySelectorAll('.tab-btn').forEach(t => t.addEventListener('click', () => {
         const targetId = t.dataset.target;
@@ -1636,10 +1647,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function activateView(targetId, btn) {
         document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
-        document.querySelectorAll('.view-content').forEach(x => x.classList.remove('active'));
+        document.querySelectorAll('.view-content').forEach(x => {
+            x.classList.remove('active');
+            x.style.display = 'none'; // Ensure hidden
+        });
+
         btn.classList.add('active');
         const tg = document.getElementById(targetId);
-        if (tg) tg.classList.add('active');
+        if (tg) {
+            tg.classList.add('active');
+            tg.style.display = 'block'; // Ensure visible
+        } else {
+            console.error(`View content with id "${targetId}" NOT FOUND.`);
+        }
     }
 
     document.querySelectorAll('.sub-tab-btn').forEach(t => t.addEventListener('click', () => {
@@ -1743,12 +1763,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Explicitly render custom tables for all teams
         console.log("[loadDB] Triggering custom table rendering...");
-        renderTeamCustomTables('u15', 'U15');
-        renderU15Roster();
-        renderTeamCustomTables('first-team', '1^Squadra');
-        renderTeamCustomTables('u19', 'U19');
-        renderTeamCustomTables('csi', 'CSI');
-        renderTeamCustomTables('femminile', 'Femminile');
+        const safelyRender = (p, s) => {
+            try { renderTeamCustomTables(p, s); }
+            catch (e) { console.error(`Error rendering ${s}:`, e); }
+        };
+
+        safelyRender('u15', 'U15');
+        safelyRender('u15', 'U15'); // Just ensuring we didn't miss it? No, duplicate. remove.
+        try { renderU15Roster(); } catch (e) { console.error("Error rendering U15 Roster:", e); }
+
+        safelyRender('first-team', '1^Squadra');
+        safelyRender('u19', 'U19');
+        safelyRender('csi', 'CSI');
+        safelyRender('femminile', 'Femminile');
 
         if (typeof updateUI === 'function') {
             updateUI();
@@ -2123,10 +2150,6 @@ function renderTeamCustomTables(prefix, sheetName) {
         return;
     }
 
-    // PATCH REMOVED: Injected media links for U15 matches caused rendering issues.
-    // Restoring default behavior.
-
-
     console.log(`[renderTeamCustomTables] Rendering ${sheetName} for prefix ${prefix}. Rows: ${data.length}`);
 
     const header = data[0];
@@ -2155,34 +2178,59 @@ function renderTeamCustomTables(prefix, sheetName) {
 
     partitions.forEach(indices => {
         const rowText = indices.map(i => String(header[i] || '').toUpperCase()).join(' ');
-        const hasCalKeywords = rowText.includes('LOCALI') || rowText.includes('DATE') || rowText.includes('DATA') || rowText.includes('NR.') || rowText.includes('RIS');
+        // Expanded keywords list for robustness
+        const hasCalKeywords = rowText.includes('LOCALI') || rowText.includes('DATE') || rowText.includes('DATA') || rowText.includes('NR.') || rowText.includes('RIS') || rowText.includes('OSPITI');
         const hasClaKeywords = rowText.includes('SQUADRE') || rowText.includes('SQUADRA') || rowText.includes('PT') || rowText.includes('POS');
 
-        if (hasCalKeywords) {
+        // Logic: Try to assign to CAL or CLA. Prefer CAL for the first matching partition if both match (unlikely).
+        if (hasCalKeywords && !calIndices) {
             calIndices = indices;
-        } else if (hasClaKeywords) {
+        } else if (hasClaKeywords && !claIndices) {
             claIndices = indices;
         }
     });
 
-    // Fallback: If only one partition and not identified, try default
-    if (partitions.length === 1 && !calIndices && !claIndices) {
-        const rowText = partitions[0].map(i => String(header[i] || '').toUpperCase()).join(' ');
-        if (rowText.includes('RIS') || rowText.includes('COLUMN')) calIndices = partitions[0];
-        else claIndices = partitions[0];
+    // Fallback: If no indices identified, make best guess based on partition order
+    if (!calIndices && partitions.length > 0) {
+        console.warn(`[renderTeamCustomTables] ${sheetName}: Defaulting Calendar to partition 0`);
+        calIndices = partitions[0];
     }
+    if (!claIndices && partitions.length > 1) {
+        console.warn(`[renderTeamCustomTables] ${sheetName}: Defaulting Classifica to partition 1`);
+        claIndices = partitions[1];
+    }
+    if (sheetName === 'Femminile') {
+        // Specific override for Femminile if generic logic failed or inverted
+        // Femminile usually has Classifica (Partition 0) then Calendar (Partition 1)
+        // Check keywords in partitions specifically
+        if (partitions.length > 1) {
+            const p0 = partitions[0].map(i => String(header[i] || '').toUpperCase()).join(' ');
+            if (p0.includes('SQUADRE') || p0.includes('PT')) {
+                claIndices = partitions[0];
+                calIndices = partitions[1]; // Assume the other is Cal
+            }
+        }
+    }
+
 
     // 1. Calendario
     const calTable = document.querySelector(`#${prefix}-calendario-table tbody`);
-    if (!calTable) console.error(`[renderTeamCustomTables] Table container #${prefix}-calendario-table tbody NOT FOUND`);
+    if (!calTable) {
+        console.error(`[renderTeamCustomTables] Table container #${prefix}-calendario-table tbody NOT FOUND`);
+        // alert(`ERRORE INTERNO: Contenitore tabella #${prefix}-calendario-table non trovato!`);
+        return;
+    }
+
     if (calTable && calIndices) {
         calTable.innerHTML = '';
         data.forEach((row, rowIndex) => {
+            // Guard against short rows
             const calRow = calIndices.map(i => row[i]);
             if (!calRow || calRow.every(c => !c)) return;
 
-            const rowText = calRow.map(c => getCellContent(c, true)).join(' ').toUpperCase();
-            if ((rowText.includes("GIORNATA") || rowText.includes("CAMPIONATO")) && calRow.every((c, i) => i === 0 || !c || (typeof c === 'object' && !c.url))) {
+            // Separator Row Logic (Giornata/Campionato)
+            const rowTextRaw = calRow.map(c => getCellContent(c, true)).join(' ').toUpperCase();
+            if ((rowTextRaw.includes("GIORNATA") || rowTextRaw.includes("CAMPIONATO")) && calRow.every((c, i) => i === 0 || !c || (typeof c === 'object' && !c.url))) {
                 const tr = document.createElement('tr');
                 const td = document.createElement('td');
                 td.textContent = getCellContent(calRow[0], true).toUpperCase();
@@ -2196,7 +2244,7 @@ function renderTeamCustomTables(prefix, sheetName) {
             const isHeader = rowIndex === 0 || String(calRow[0]).toUpperCase().includes('DATA') || String(calRow[0]).toUpperCase().includes('NR.');
 
             calRow.forEach((cell) => {
-                if (typeof cell === 'object' && cell && cell.url) return;
+                if (typeof cell === 'object' && cell && cell.url) return; // Skip link cells in iteration, specific handling below
                 const td = document.createElement('td');
                 const s = getCellContent(cell, isHeader);
                 td.textContent = s;
@@ -2207,12 +2255,13 @@ function renderTeamCustomTables(prefix, sheetName) {
                 tr.appendChild(td);
             });
 
+            // Handle Media Links (cols 4,5,6 usually)
             let linkCells = calRow.filter(cell => cell && typeof cell === 'object' && cell.url);
             if (linkCells.length > 0) {
                 const getScore = (text) => {
                     const t = (text || "").toUpperCase();
                     if (t.includes('MDAY')) return 1;
-                    if (t.includes('HIGH') || t.includes('HIGHT')) return 2; // Swap priority
+                    if (t.includes('HIGH') || t.includes('HIGHT')) return 2;
                     if (t.includes('MVP')) return 3;
                     return 4;
                 };
@@ -2224,7 +2273,7 @@ function renderTeamCustomTables(prefix, sheetName) {
                     let cleanUrl = cell.url.replace(/\\/g, '/');
                     if (cleanUrl.startsWith('../')) cleanUrl = cleanUrl.substring(3);
                     if (cleanUrl.startsWith('./')) cleanUrl = cleanUrl.substring(2);
-                    console.log('Rendering Link:', cleanUrl);
+
                     const displayText = cell.text.replace(/\.(jpg|png|mp4|jpeg)$/i, '');
                     td.innerHTML = `<a href="${cleanUrl}" target="_blank" class="highlight-link" title="${displayText}">${icon} ${displayText}</a>`;
                     tr.appendChild(td);
@@ -2245,7 +2294,7 @@ function renderTeamCustomTables(prefix, sheetName) {
             const tr = document.createElement('tr');
             if (claRow.join(' ').toUpperCase().includes("VALLI")) tr.classList.add('highlight-valli');
 
-            const isHeader = rowIndex === 0 || String(claRow[0]).toUpperCase().includes('SQUADRE');
+            const isHeader = rowIndex === 0 || String(claRow[0]).toUpperCase().includes('SQUADRE') || String(claRow[0]).toUpperCase().includes('SQUADRA');
             claRow.forEach(c => {
                 const td = document.createElement('td');
                 if (isHeader) td.style.fontWeight = 'bold';
@@ -2255,8 +2304,6 @@ function renderTeamCustomTables(prefix, sheetName) {
             claTable.appendChild(tr);
         });
     }
-
-
 }
 
 function renderU15Roster() {
